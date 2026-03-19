@@ -58,6 +58,39 @@
                         {{ form_row(form.content) }}
                     </div>
                 </div>
+
+                <div id="kb-root-settings-panel" class="panel panel-default mt-lg">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">{{ 'plugin.kbpages.root_shell.title'|trans }}</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p class="text-muted">{{ 'plugin.kbpages.root_shell.help'|trans }}</p>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                {{ form_row(form.headerHtml) }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                {{ form_row(form.footerHtml) }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                {{ form_row(form.containerWidth) }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                {{ form_row(form.customCss) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -67,4 +100,25 @@
     </div>
 
     {{ form_end(form) }}
+
+    <script>
+        (function () {
+            var typeField = document.getElementById('knowledgebase_item_type');
+            var parentField = document.getElementById('knowledgebase_item_parent');
+            var panel = document.getElementById('kb-root-settings-panel');
+
+            if (!typeField || !parentField || !panel) {
+                return;
+            }
+
+            function toggleRootSettings() {
+                var isRootGroup = typeField.value === 'group' && !parentField.value;
+                panel.style.display = isRootGroup ? '' : 'none';
+            }
+
+            typeField.addEventListener('change', toggleRootSettings);
+            parentField.addEventListener('change', toggleRootSettings);
+            toggleRootSettings();
+        })();
+    </script>
 {% endblock %}

@@ -1,6 +1,6 @@
-# Mautic Multi Domain Plugin
+# Mautic KB Pages Plugin
 
-Tracking domain rewriting for Mautic. Maps sender email addresses to tracking domains so emails and tracking JS use per-sender CNAME domains instead of the main Mautic URL.
+Knowledge base pages for Mautic with grouped article trees, host-aware root routing, and per-root public shell settings.
 
 ## Features
 
@@ -34,6 +34,23 @@ docker exec --user root mautic_web mkdir -p /var/www/.npm
 docker exec --user root mautic_web chown -R www-data:www-data /var/www/.npm
 ```
 
+If the Docker containers were recreated and these paths are not persisted, run the same commands again before `composer require` or `composer update`. Otherwise Composer may fail with errors like:
+
+```text
+Cannot create cache directory /var/www/.composer/cache/repo/...
+```
+
+For more stable updates, set these env vars when running Composer inside the container:
+
+```bash
+docker exec --user www-data \
+  -e HOME=/var/www \
+  -e COMPOSER_HOME=/var/www/.composer \
+  -e COMPOSER_CACHE_DIR=/var/www/.composer/cache \
+  --workdir /var/www/html mautic_web \
+  composer update radata/mautic-kb-pages -W --no-interaction --ignore-platform-req=ext-gd
+```
+
 Allow dev packages (only needed once per Mautic installation):
 
 ```bash
@@ -54,8 +71,8 @@ docker exec --user www-data --workdir /var/www/html mautic_web \
   -W --no-interaction --ignore-platform-req=ext-gd
 ```
 
-# if first run fails the the migration has to be forced
-```bash 
+# Check whether Mautic registered the plugin version:
+```bash
 docker exec --user www-data --workdir /var/www/html mautic_web php bin/console doctrine:query:sql --force-fetch "SELECT id, bundle, name, version FROM plugins WHERE bundle='MauticKbPagesBundle'"
 ```
 
@@ -68,6 +85,48 @@ docker exec --user www-data --workdir /var/www/html mautic_web \
   composer update radata/mautic-kb-pages \
   -W --no-interaction --ignore-platform-req=ext-gd
 ```
+
+Recommended update command with explicit Composer cache env:
+
+```bash
+docker exec --user www-data \
+  -e HOME=/var/www \
+  -e COMPOSER_HOME=/var/www/.composer \
+  -e COMPOSER_CACHE_DIR=/var/www/.composer/cache \
+  --workdir /var/www/html mautic_web \
+  composer update radata/mautic-kb-pages -W --no-interaction --ignore-platform-req=ext-gd
+docker exec --user www-data --workdir /var/www/html mautic_web \
+  php bin/console mautic:plugins:reload
+docker exec --user www-data mautic_web rm -rf /var/www/html/var/cache/prod /var/www/html/var/cache/dev
+docker exec --user www-data --workdir /var/www/html mautic_web \
+  php bin/console cache:warmup --env=prod
+```
+
+### Plugin Migrations
+
+Container restart logs only show Mautic core migrations. Rebooting the Docker containers does **not** apply KB plugin schema changes by itself.
+
+For this plugin, schema updates are picked up when all of these are true:
+
+1. the new plugin code is installed with `composer require` or `composer update`
+2. the plugin `version` in [Config/config.php](Config/config.php) changed
+3. `php bin/console mautic:plugins:reload` is executed
+
+Use this to confirm the installed plugin version:
+
+```bash
+docker exec --user www-data --workdir /var/www/html mautic_web \
+  php bin/console doctrine:query:sql --force-fetch "SELECT id, bundle, name, version FROM plugins WHERE bundle='MauticKbPagesBundle'"
+```
+
+Use this to verify the KB table schema after an update:
+
+```bash
+docker exec --user www-data --workdir /var/www/html mautic_web \
+  php bin/console doctrine:query:sql --force-fetch "DESCRIBE kb_pages"
+```
+
+If a plugin migration was missed, first run `mautic:plugins:reload` again after the composer update. Only use manual `ALTER TABLE` fallback if the plugin version is correct and the schema is still missing expected columns.
 
 If the npm post-install hook fails after composer require, fix it:
 
@@ -83,9 +142,9 @@ docker exec --user www-data --workdir /var/www/html mautic_web npm ci --no-audit
 Clear cache (hard delete required), reload plugins, then enable in UI:
 
 ```bash
-docker exec --user www-data mautic_web rm -rf /var/www/html/var/cache/prod
-docker exec --user www-data --workdir /var/www/html mautic_web php bin/console cache:warmup --env=prod
 docker exec --user www-data --workdir /var/www/html mautic_web php bin/console mautic:plugins:reload
+docker exec --user www-data mautic_web rm -rf /var/www/html/var/cache/prod /var/www/html/var/cache/dev
+docker exec --user www-data --workdir /var/www/html mautic_web php bin/console cache:warmup --env=prod
 ```
 
 1. Go to **Settings > Plugins > Multi Domain**

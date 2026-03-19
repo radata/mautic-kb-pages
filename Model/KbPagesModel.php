@@ -79,10 +79,6 @@ class KbPagesModel extends FormModel
             $entity->setType(KbPages::TYPE_GROUP);
         }
 
-        if ($entity->isGroup()) {
-            $entity->setParent(null);
-        }
-
         $entity->setSlug($this->createUniqueSlug($entity));
         $entity->setPosition((int) $entity->getPosition());
 
@@ -94,9 +90,13 @@ class KbPagesModel extends FormModel
         $baseSlug = $this->slugify((string) ($entity->getSlug() ?: $entity->getTitle() ?: 'page'));
         $slug     = $baseSlug;
         $counter  = 2;
+        $parent   = $entity->getParent();
 
         do {
-            $existing = $this->getRepository()->findOneBy(['slug' => $slug]);
+            $existing = $this->getRepository()->findOneBy([
+                'slug'   => $slug,
+                'parent' => $parent,
+            ]);
 
             if (!$existing instanceof KbPages || $existing->getId() === $entity->getId()) {
                 return $slug;
