@@ -6,6 +6,7 @@ use Mautic\CoreBundle\Controller\CommonController;
 use Mautic\PageBundle\Model\PageModel;
 use MauticPlugin\MauticKbPagesBundle\Entity\KbPages;
 use MauticPlugin\MauticKbPagesBundle\Model\KbPagesModel;
+use MauticPlugin\MauticKbPagesBundle\Service\KbPagesSettings;
 use Symfony\Component\HttpFoundation\Response;
 
 class PublicController extends CommonController
@@ -29,12 +30,18 @@ class PublicController extends CommonController
     public function homeAction(): Response
     {
         $repo = $this->getKnowledgebaseModel()->getRepository();
+        $groups = array_map(function (KbPages $group): array {
+            return [
+                'entity'    => $group,
+                'iconHtml'  => $this->getSettingsProvider()->renderIconHtml($group->getIcon()),
+            ];
+        }, $repo->findPublishedGroups());
 
         return new Response(
             $this->renderView(
                 '@MauticKbPages/Public/index.html.twig',
                 $this->getPublicViewParameters([
-                    'groups' => $repo->findPublishedGroups(),
+                    'groups' => $groups,
                 ])
             )
         );
@@ -67,6 +74,7 @@ class PublicController extends CommonController
                 $this->getPublicViewParameters([
                     'article'        => $article,
                     'articleContent' => $this->renderPublicHtml($article->getContent()),
+                    'articleIconHtml' => $this->getSettingsProvider()->renderIconHtml($article->getIcon()),
                     'group'          => $article->getParent(),
                 ])
             )
@@ -80,13 +88,18 @@ class PublicController extends CommonController
      */
     private function getPublicViewParameters(array $parameters): array
     {
+        $kbSettings = $this->getSettingsProvider()->getPublicSettings();
+
         return array_merge(
             [
                 'kbSettings' => [
-                    'headerHtml'    => $this->renderPublicHtml((string) $this->coreParametersHelper->get('kbpages_header_html', '')),
-                    'footerHtml'    => $this->renderPublicHtml((string) $this->coreParametersHelper->get('kbpages_footer_html', '')),
-                    'customCss'     => (string) $this->coreParametersHelper->get('kbpages_custom_css', ''),
-                    'containerWidth' => (int) $this->coreParametersHelper->get('kbpages_container_width', 960),
+                    'headerHtml'      => $this->renderPublicHtml((string) ($kbSettings['headerHtml'] ?? '')),
+                    'footerHtml'      => $this->renderPublicHtml((string) ($kbSettings['footerHtml'] ?? '')),
+                    'customCss'       => (string) ($kbSettings['customCss'] ?? ''),
+                    'containerWidth'  => (int) ($kbSettings['containerWidth'] ?? 960),
+                    'tablerCssUrl'    => (string) ($kbSettings['tablerCssUrl'] ?? ''),
+                    'mediaCdnUrl'     => (string) ($kbSettings['mediaCdnUrl'] ?? ''),
+                    'iconDocsUrl'     => (string) ($kbSettings['iconDocsUrl'] ?? ''),
                 ],
             ],
             $parameters
@@ -103,7 +116,9 @@ class PublicController extends CommonController
             return $this->resolvePageLinkToken($matches[0], (int) $matches[1]);
         }, $html);
 
-        return is_string($rendered) ? $rendered : $html;
+        $rendered = is_string($rendered) ? $rendered : $html;
+
+        return $this->getSettingsProvider()->rewriteMediaUrls($rendered);
     }
 
     private function resolvePageLinkToken(string $token, int $pageId): string
@@ -140,7 +155,13 @@ class PublicController extends CommonController
                 $this->getPublicViewParameters([
                     'group'        => $group,
                     'groupContent' => $this->renderPublicHtml($group->getContent()),
-                    'articles'     => $repo->findPublishedArticlesByGroup($group),
+                    'groupIconHtml' => $this->getSettingsProvider()->renderIconHtml($group->getIcon()),
+                    'articles'     => array_map(function (KbPages $article): array {
+                        return [
+                            'entity'   => $article,
+                            'iconHtml' => $this->getSettingsProvider()->renderIconHtml($article->getIcon()),
+                        ];
+                    }, $repo->findPublishedArticlesByGroup($group)),
                 ])
             )
         );
@@ -160,5 +181,13 @@ class PublicController extends CommonController
         \assert($model instanceof PageModel);
 
         return $model;
+    }
+
+    private function getSettingsProvider(): KbPagesSettings
+    {
+        $service = $this->container->get('mautic.kbpages.settings');
+        \assert($service instanceof KbPagesSettings);
+
+        return $service;
     }
 }

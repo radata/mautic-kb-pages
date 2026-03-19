@@ -2,8 +2,8 @@
 
 namespace MauticPlugin\MauticKbPagesBundle;
 
-use Mautic\PluginBundle\Bundle\PluginBundleBase;
+use Mautic\IntegrationsBundle\Bundle\AbstractPluginBundle;
 
-class MauticKbPagesBundle extends PluginBundleBase
+class MauticKbPagesBundle extends AbstractPluginBundle
 {
 }

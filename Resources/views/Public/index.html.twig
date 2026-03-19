@@ -9,9 +9,14 @@
     {% if groups %}
         {% for group in groups %}
             <div class="kb-card">
-                <h2><a href="{{ path('mautic_knowledgebase_group', {slug: group.getSlug()}) }}">{{ group.getTitle() }}</a></h2>
-                {% if group.getSummary() %}
-                    <p>{{ group.getSummary()|striptags }}</p>
+                <h2 class="kb-title">
+                    {% if group.iconHtml %}
+                        <span class="kb-icon">{{ group.iconHtml|raw }}</span>
+                    {% endif %}
+                    <a href="{{ path('mautic_knowledgebase_group', {slug: group.entity.getSlug()}) }}">{{ group.entity.getTitle() }}</a>
+                </h2>
+                {% if group.entity.getSummary() %}
+                    <p>{{ group.entity.getSummary()|striptags }}</p>
                 {% endif %}
             </div>
         {% endfor %}

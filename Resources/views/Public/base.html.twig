@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block pageTitle %}Knowledge Base{% endblock %}</title>
+    {% if kbSettings.tablerCssUrl %}
+        <link rel="stylesheet" href="{{ kbSettings.tablerCssUrl }}">
+    {% endif %}
     <style>
         :root {
             --kb-shell-width: {{ kbSettings.containerWidth|default(960) }}px;
@@ -48,6 +51,38 @@
         }
         .kb-breadcrumb {
             margin: 0 0 20px;
+        }
+        .kb-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .kb-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #eff6ff;
+            color: #2563eb;
+        }
+        .kb-icon i {
+            font-size: 20px;
+            line-height: 1;
+        }
+        .kb-icon img,
+        .kb-icon svg {
+            display: block;
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+        }
+        .kb-list-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
         .kb-card figure.table,
         .kb-rich figure.table {

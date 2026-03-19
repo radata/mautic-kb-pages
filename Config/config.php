@@ -4,7 +4,7 @@ return [
     'name'        => 'Knowledge Base',
     'description' => 'Manage grouped support articles with knowledge base pages.',
     'author'      => 'Abdullah Kiser / Friendly Automate',
-    'version'     => '1.0.10',
+    'version'     => '1.0.11',
     'routes'      => [
         'main' => [
             'mautic_knowledgebase_index' => [
@@ -36,6 +36,29 @@ return [
         ],
     ],
     'services' => [
+        'integrations' => [
+            'mautic.integration.kbpages' => [
+                'class'     => \MauticPlugin\MauticKbPagesBundle\Integration\KbPagesIntegration::class,
+                'arguments' => [
+                    'event_dispatcher',
+                    'mautic.helper.cache_storage',
+                    'doctrine.orm.entity_manager',
+                    'request_stack',
+                    'router',
+                    'translator',
+                    'monolog.logger.mautic',
+                    'mautic.helper.encryption',
+                    'mautic.lead.model.lead',
+                    'mautic.lead.model.company',
+                    'mautic.helper.paths',
+                    'mautic.core.model.notification',
+                    'mautic.lead.model.field',
+                    'mautic.plugin.model.integration_entity',
+                    'mautic.lead.model.dnc',
+                    'mautic.lead.field.fields_with_unique_identifier',
+                ],
+            ],
+        ],
         'events' => [
             'mautic.kbpages.config.subscriber' => [
                 'class' => \MauticPlugin\MauticKbPagesBundle\EventListener\ConfigSubscriber::class,
@@ -70,6 +93,15 @@ return [
                     'mautic.helper.core_parameters',
                 ],
                 'alias' => 'model.kbpages.kbpages',
+            ],
+        ],
+        'others' => [
+            'mautic.kbpages.settings' => [
+                'class'     => \MauticPlugin\MauticKbPagesBundle\Service\KbPagesSettings::class,
+                'arguments' => [
+                    'mautic.helper.core_parameters',
+                    'mautic.helper.integration',
+                ],
             ],
         ],
     ],

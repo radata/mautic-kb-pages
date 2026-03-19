@@ -10,7 +10,12 @@
     {% endif %}
 
     <div class="kb-card">
-        <h1>{{ article.getTitle() }}</h1>
+        <h1 class="kb-title">
+            {% if articleIconHtml %}
+                <span class="kb-icon">{{ articleIconHtml|raw }}</span>
+            {% endif %}
+            <span>{{ article.getTitle() }}</span>
+        </h1>
         {% if article.getSummary() %}
             <p>{{ article.getSummary()|striptags }}</p>
         {% endif %}

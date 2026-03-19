@@ -102,9 +102,10 @@ class KbPagesType extends AbstractType
             'label'      => 'plugin.kbpages.icon',
             'label_attr' => ['class' => 'control-label'],
             'required'   => false,
+            'help'       => 'plugin.kbpages.icon.help',
             'attr'       => [
                 'class'       => 'form-control',
-                'placeholder' => 'book-open, life-buoy, settings',
+                'placeholder' => 'book, ti ti-book, <svg>...</svg>, icons/help.svg',
             ],
         ]);
 

@@ -4,7 +4,12 @@
 
 {% block kbBody %}
     <div class="kb-card">
-        <h1>{{ group.getTitle() }}</h1>
+        <h1 class="kb-title">
+            {% if groupIconHtml %}
+                <span class="kb-icon">{{ groupIconHtml|raw }}</span>
+            {% endif %}
+            <span>{{ group.getTitle() }}</span>
+        </h1>
         {% if group.getSummary() %}
             <p>{{ group.getSummary()|striptags }}</p>
         {% endif %}
@@ -19,10 +24,15 @@
             <ul class="kb-list">
                 {% for article in articles %}
                     <li>
-                        <a href="{{ path('mautic_knowledgebase_article', {
+                        <a class="kb-list-link" href="{{ path('mautic_knowledgebase_article', {
                             groupSlug: group.getSlug(),
-                            slug: article.getSlug()
-                        }) }}">{{ article.getTitle() }}</a>
+                            slug: article.entity.getSlug()
+                        }) }}">
+                            {% if article.iconHtml %}
+                                <span class="kb-icon">{{ article.iconHtml|raw }}</span>
+                            {% endif %}
+                            <span>{{ article.entity.getTitle() }}</span>
+                        </a>
                     </li>
                 {% endfor %}
             </ul>
