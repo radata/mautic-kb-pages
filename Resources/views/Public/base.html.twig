@@ -49,6 +49,32 @@
         .kb-breadcrumb {
             margin: 0 0 20px;
         }
+        .kb-card figure.table,
+        .kb-rich figure.table {
+            margin: 16px 0;
+            overflow-x: auto;
+        }
+        .kb-card table,
+        .kb-rich table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+        .kb-card th,
+        .kb-card td,
+        .kb-rich th,
+        .kb-rich td {
+            min-width: 96px;
+            padding: 10px 12px;
+            border: 1px solid var(--kb-panel-border);
+            vertical-align: top;
+        }
+        .kb-card thead th,
+        .kb-rich thead th {
+            background: #f8fafc;
+            color: var(--kb-text);
+            font-weight: 600;
+        }
     </style>
     {% if kbSettings.customCss %}
         <style>{{ kbSettings.customCss|raw }}</style>
