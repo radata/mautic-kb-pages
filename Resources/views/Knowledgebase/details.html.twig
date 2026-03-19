@@ -6,6 +6,7 @@
 {% block preHeader %}
     {{ include('@MauticCore/Helper/page_actions.html.twig', {
         item: item,
+        routeBase: 'knowledgebase',
         actionRoute: actionRoute,
         indexRoute: indexRoute,
         langVar: 'kbpages',
@@ -20,6 +21,7 @@
 {% block actions %}
     {{ include('@MauticCore/Helper/page_actions.html.twig', {
         item: item,
+        routeBase: 'knowledgebase',
         actionRoute: actionRoute,
         indexRoute: indexRoute,
         langVar: 'kbpages',
