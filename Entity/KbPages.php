@@ -25,6 +25,7 @@ class KbPages extends FormEntity
     private ?string $headerHtml = null;
     private ?string $footerHtml = null;
     private ?string $customCss = null;
+    private ?string $snippetsHtml = null;
     private ?int $containerWidth = null;
     private int $position = 0;
     private ?self $parent = null;
@@ -104,6 +105,11 @@ class KbPages extends FormEntity
 
         $builder->createField('customCss', 'text')
             ->columnName('custom_css')
+            ->nullable()
+            ->build();
+
+        $builder->createField('snippetsHtml', 'text')
+            ->columnName('snippets_html')
             ->nullable()
             ->build();
 
@@ -254,6 +260,18 @@ class KbPages extends FormEntity
     public function setCustomCss(?string $customCss): self
     {
         $this->customCss = $customCss;
+
+        return $this;
+    }
+
+    public function getSnippetsHtml(): ?string
+    {
+        return $this->snippetsHtml;
+    }
+
+    public function setSnippetsHtml(?string $snippetsHtml): self
+    {
+        $this->snippetsHtml = $snippetsHtml;
 
         return $this;
     }

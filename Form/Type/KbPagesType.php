@@ -29,6 +29,7 @@ class KbPagesType extends AbstractType
             'content'    => 'raw',
             'headerHtml' => 'raw',
             'footerHtml' => 'raw',
+            'snippetsHtml' => 'raw',
         ]));
         $builder->addEventSubscriber(new FormExitSubscriber('knowledgebase', $options));
 
@@ -69,6 +70,18 @@ class KbPagesType extends AbstractType
             'required'      => false,
             'placeholder'   => 'plugin.kbpages.parent.placeholder',
             'attr'          => ['class' => 'form-control'],
+            'choice_attr'   => function (?KbPages $choice): array {
+                if (!$choice instanceof KbPages) {
+                    return [];
+                }
+
+                $width = $this->resolveRootPreviewWidth($choice);
+                if (null === $width) {
+                    return [];
+                }
+
+                return ['data-root-width' => (string) $width];
+            },
             'query_builder' => function (EntityRepository $repository) use ($currentId) {
                 $qb = $repository->createQueryBuilder('e')
                     ->where('e.type = :groupType')
@@ -233,6 +246,19 @@ class KbPagesType extends AbstractType
             ],
         ]);
 
+        $builder->add('snippetsHtml', TextareaType::class, [
+            'label'      => 'plugin.kbpages.root_snippets_html',
+            'label_attr' => ['class' => 'control-label'],
+            'required'   => false,
+            'help'       => 'plugin.kbpages.root_snippets_html.help',
+            'attr'       => [
+                'class'      => 'form-control',
+                'rows'       => 12,
+                'style'      => 'font-family: monospace;',
+                'spellcheck' => 'false',
+            ],
+        ]);
+
         $builder->add('position', IntegerType::class, [
             'label'      => 'plugin.kbpages.position',
             'label_attr' => ['class' => 'control-label'],
@@ -286,6 +312,22 @@ class KbPagesType extends AbstractType
         }
 
         unset($data[$toggleField], $data[$rawField]);
+    }
+
+    private function resolveRootPreviewWidth(?KbPages $item): ?int
+    {
+        $current = $item;
+
+        while ($current instanceof KbPages) {
+            $width = $current->getContainerWidth();
+            if (null !== $width && $width >= 480) {
+                return $width;
+            }
+
+            $current = $current->getParent();
+        }
+
+        return null;
     }
 
     public function getBlockPrefix()

@@ -50,6 +50,27 @@ class PublicController extends CommonController
         );
     }
 
+    public function snippetsAction(?string $rootSlug = null): Response
+    {
+        $visibleRootGroup = null !== $rootSlug ? $this->resolveVisibleRootGroupBySlug($rootSlug) : $this->resolveRootGroup();
+        if (!$visibleRootGroup instanceof KbPages) {
+            throw $this->createNotFoundException();
+        }
+
+        $ownerRootGroup = $this->getRootAncestor($visibleRootGroup);
+
+        return new Response(
+            $this->renderView(
+                '@MauticKbPages/Public/snippets.html.twig',
+                $this->getPublicViewParameters([
+                    'rootGroup'       => $visibleRootGroup,
+                    'rootUrl'         => $this->generatePublicUrl($visibleRootGroup),
+                    'snippetsContent' => $this->renderPublicHtml($ownerRootGroup->getSnippetsHtml()),
+                ], $ownerRootGroup)
+            )
+        );
+    }
+
     public function groupAction(string $slug): Response
     {
         $group = $this->resolveVisibleGroupBySlug($slug);

@@ -63,8 +63,13 @@ class KbPagesController extends AbstractStandardFormController
             }
         }
 
+        $viewParameters['editorPreviewWidth'] = $this->resolveEditorPreviewWidth(
+            ($viewParameters['item'] ?? null) instanceof KbPages ? $viewParameters['item'] : null
+        );
+
         if (($viewParameters['item'] ?? null) instanceof KbPages) {
             $viewParameters['previewUrl'] = $this->buildPreviewUrl($viewParameters['item']);
+            $viewParameters['snippetsPreviewUrl'] = $this->buildSnippetsPreviewUrl($viewParameters['item']);
         }
 
         $args['viewParameters'] = $viewParameters;
@@ -283,6 +288,23 @@ class KbPagesController extends AbstractStandardFormController
         ]);
     }
 
+    private function buildSnippetsPreviewUrl(KbPages $item): ?string
+    {
+        if (!$item->isGroup() || $item->getParent() instanceof KbPages) {
+            return null;
+        }
+
+        $canonicalSegments = $this->getCanonicalPreviewSegments($item);
+        $pathSegments      = $item->getPathSlugs();
+        if (1 !== count($canonicalSegments) || $canonicalSegments !== $pathSegments) {
+            return null;
+        }
+
+        return $this->generateUrl('mautic_knowledgebase_snippets', [
+            'rootSlug' => $canonicalSegments[0],
+        ]);
+    }
+
     /**
      * @return string[]
      */
@@ -306,6 +328,34 @@ class KbPagesController extends AbstractStandardFormController
         }
 
         return $segments;
+    }
+
+    private function resolveEditorPreviewWidth(?KbPages $item): int
+    {
+        $fallback = max(480, (int) $this->coreParametersHelper->get('kbpages_container_width', 960));
+        $current  = $item;
+
+        while ($current instanceof KbPages) {
+            $width = $current->getContainerWidth();
+            if (null !== $width && $width >= 480) {
+                return $width;
+            }
+
+            $current = $current->getParent();
+        }
+
+        return $fallback;
+    }
+
+    private function getRootAncestor(KbPages $item): KbPages
+    {
+        $current = $item;
+
+        while ($current->getParent() instanceof KbPages) {
+            $current = $current->getParent();
+        }
+
+        return $current;
     }
 
     /**

@@ -98,6 +98,15 @@
                     </div>
                 {% endif %}
 
+                {% if snippetsPreviewUrl|default(null) %}
+                    <div class="row mb-md">
+                        <div class="col-md-3"><strong>{{ 'plugin.kbpages.snippets'|trans }}</strong></div>
+                        <div class="col-md-9">
+                            <a href="{{ snippetsPreviewUrl }}" target="_blank" rel="noopener noreferrer">{{ snippetsPreviewUrl }}</a>
+                        </div>
+                    </div>
+                {% endif %}
+
                 <div class="row mb-md">
                     <div class="col-md-3"><strong>{{ 'plugin.kbpages.group'|trans }}</strong></div>
                     <div class="col-md-9">

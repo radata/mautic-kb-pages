@@ -1,0 +1,24 @@
+{% extends '@MauticKbPages/Public/base.html.twig' %}
+
+{% block pageTitle %}{{ rootGroup.getTitle() }} - {{ 'plugin.kbpages.snippets'|trans }}{% endblock %}
+
+{% block kbBody %}
+    {% if rootUrl %}
+        <p class="kb-breadcrumb">
+            <a href="{{ rootUrl }}">{{ rootGroup.getTitle() }}</a>
+        </p>
+    {% endif %}
+
+    <div class="kb-card">
+        <h1>{{ 'plugin.kbpages.snippets'|trans }}</h1>
+        <p>{{ 'plugin.kbpages.snippets.help'|trans }}</p>
+    </div>
+
+    <div class="kb-card">
+        {% if snippetsContent is not empty %}
+            <div>{{ snippetsContent|raw }}</div>
+        {% else %}
+            <p>{{ 'plugin.kbpages.snippets.empty'|trans }}</p>
+        {% endif %}
+    </div>
+{% endblock %}

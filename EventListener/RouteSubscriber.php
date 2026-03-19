@@ -43,6 +43,17 @@ class RouteSubscriber implements EventSubscriberInterface
             $hostCondition
         ));
 
+        $collection->add('mautic_knowledgebase_root_snippets', new Route(
+            '/_snippets',
+            ['_controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::snippetsAction'],
+            [],
+            [],
+            '',
+            [],
+            [],
+            $hostCondition
+        ));
+
         if ('' !== $hostCondition) {
             $collection->add('mautic_knowledgebase_host_tree', new Route(
                 '/{slugPath}',
@@ -63,6 +74,15 @@ class RouteSubscriber implements EventSubscriberInterface
         }
 
         $requirement = '(?:'.implode('|', array_map(static fn (string $root): string => preg_quote($root, '/'), $roots)).')';
+
+        $collection->add('mautic_knowledgebase_snippets', new Route(
+            '/{rootSlug}/_snippets',
+            ['_controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::snippetsAction'],
+            [
+                'rootSlug' => $requirement,
+            ],
+            []
+        ));
 
         $collection->add('mautic_knowledgebase_tree', new Route(
             '/{rootSlug}/{slugPath}',
@@ -157,6 +177,7 @@ class RouteSubscriber implements EventSubscriberInterface
             's',
             'api',
             '_knowledgebase',
+            '_snippets',
             '_profiler',
             '_wdt',
             'css',

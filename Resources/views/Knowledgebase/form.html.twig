@@ -10,6 +10,13 @@
 {% block content %}
     {{ form_start(form) }}
 
+    <style>
+        #kb-editor-width-preview {
+            max-width: {{ editorPreviewWidth|default(960) }}px;
+            transition: max-width 0.15s ease;
+        }
+    </style>
+
     <div class="box-layout">
         <div class="col-md-9 height-auto bdr-r">
             <div class="pa-md">
@@ -47,82 +54,98 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-xs-12">
-                        {{ form_row(form.summary) }}
+                <div id="kb-editor-width-preview" data-default-width="{{ editorPreviewWidth|default(960) }}">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            {{ form_row(form.summary) }}
+                        </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-xs-12">
-                        {{ form_row(form.content) }}
+                    <div class="row">
+                        <div class="col-xs-12">
+                            {{ form_row(form.content) }}
+                        </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-xs-12">
-                        {{ form_row(form.contentUseRaw) }}
+                    <div class="row">
+                        <div class="col-xs-12">
+                            {{ form_row(form.contentUseRaw) }}
+                        </div>
                     </div>
-                </div>
 
-                <div id="kb-content-raw-panel" class="row">
-                    <div class="col-xs-12">
-                        {{ form_row(form.contentRaw) }}
+                    <div id="kb-content-raw-panel" class="row">
+                        <div class="col-xs-12">
+                            {{ form_row(form.contentRaw) }}
+                        </div>
                     </div>
-                </div>
 
-                <div id="kb-root-settings-panel" class="panel panel-default mt-lg">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">{{ 'plugin.kbpages.root_shell.title'|trans }}</h4>
-                    </div>
-                    <div class="panel-body">
-                        <p class="text-muted">{{ 'plugin.kbpages.root_shell.help'|trans }}</p>
-
-                        <div class="row">
-                            <div class="col-xs-12">
-                                {{ form_row(form.headerHtml) }}
-                            </div>
+                    <div id="kb-root-settings-panel" class="panel panel-default mt-lg">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">{{ 'plugin.kbpages.root_shell.title'|trans }}</h4>
                         </div>
+                        <div class="panel-body">
+                            <p class="text-muted">{{ 'plugin.kbpages.root_shell.help'|trans }}</p>
 
-                        <div class="row">
-                            <div class="col-xs-12">
-                                {{ form_row(form.headerHtmlUseRaw) }}
+                            {% if snippetsPreviewUrl|default(null) %}
+                                <p class="small">
+                                    <a href="{{ snippetsPreviewUrl }}" target="_blank" rel="noopener noreferrer">
+                                        {{ 'plugin.kbpages.root_snippets_preview'|trans }}
+                                    </a>
+                                </p>
+                            {% endif %}
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    {{ form_row(form.headerHtml) }}
+                                </div>
                             </div>
-                        </div>
 
-                        <div id="kb-header-raw-panel" class="row">
-                            <div class="col-xs-12">
-                                {{ form_row(form.headerHtmlRaw) }}
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    {{ form_row(form.headerHtmlUseRaw) }}
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-xs-12">
-                                {{ form_row(form.footerHtml) }}
+                            <div id="kb-header-raw-panel" class="row">
+                                <div class="col-xs-12">
+                                    {{ form_row(form.headerHtmlRaw) }}
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-xs-12">
-                                {{ form_row(form.footerHtmlUseRaw) }}
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    {{ form_row(form.footerHtml) }}
+                                </div>
                             </div>
-                        </div>
 
-                        <div id="kb-footer-raw-panel" class="row">
-                            <div class="col-xs-12">
-                                {{ form_row(form.footerHtmlRaw) }}
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    {{ form_row(form.footerHtmlUseRaw) }}
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-md-4">
-                                {{ form_row(form.containerWidth) }}
+                            <div id="kb-footer-raw-panel" class="row">
+                                <div class="col-xs-12">
+                                    {{ form_row(form.footerHtmlRaw) }}
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-xs-12">
-                                {{ form_row(form.customCss) }}
+                            <div class="row">
+                                <div class="col-md-4">
+                                    {{ form_row(form.containerWidth) }}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    {{ form_row(form.customCss) }}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    {{ form_row(form.snippetsHtml) }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -154,6 +177,8 @@
             var footerUseRawField = document.getElementById('knowledgebase_item_footerHtmlUseRaw');
             var footerRawField = document.getElementById('knowledgebase_item_footerHtmlRaw');
             var footerRawPanel = document.getElementById('kb-footer-raw-panel');
+            var widthField = document.getElementById('knowledgebase_item_containerWidth');
+            var editorWidthPreview = document.getElementById('kb-editor-width-preview');
 
             if (!typeField || !parentField || !panel) {
                 return;
@@ -162,6 +187,43 @@
             function toggleRootSettings() {
                 var isRootGroup = typeField.value === 'group' && !parentField.value;
                 panel.style.display = isRootGroup ? '' : 'none';
+            }
+
+            function resolvePreviewWidth() {
+                if (!editorWidthPreview) {
+                    return 960;
+                }
+
+                var defaultWidth = parseInt(editorWidthPreview.getAttribute('data-default-width') || '960', 10);
+                if (isNaN(defaultWidth) || defaultWidth < 480) {
+                    defaultWidth = 960;
+                }
+
+                var isRootGroup = typeField.value === 'group' && !parentField.value;
+                if (isRootGroup && widthField) {
+                    var rootWidth = parseInt(widthField.value || '', 10);
+                    if (!isNaN(rootWidth) && rootWidth >= 480) {
+                        return rootWidth;
+                    }
+                }
+
+                if (parentField && parentField.selectedIndex > 0) {
+                    var selectedOption = parentField.options[parentField.selectedIndex];
+                    var parentWidth = parseInt(selectedOption.getAttribute('data-root-width') || '', 10);
+                    if (!isNaN(parentWidth) && parentWidth >= 480) {
+                        return parentWidth;
+                    }
+                }
+
+                return defaultWidth;
+            }
+
+            function updatePreviewWidth() {
+                if (!editorWidthPreview) {
+                    return;
+                }
+
+                editorWidthPreview.style.maxWidth = resolvePreviewWidth() + 'px';
             }
 
             function getEditorInstance(textarea) {
@@ -202,6 +264,13 @@
 
             typeField.addEventListener('change', toggleRootSettings);
             parentField.addEventListener('change', toggleRootSettings);
+            typeField.addEventListener('change', updatePreviewWidth);
+            parentField.addEventListener('change', updatePreviewWidth);
+
+            if (widthField) {
+                widthField.addEventListener('input', updatePreviewWidth);
+                widthField.addEventListener('change', updatePreviewWidth);
+            }
 
             if (contentUseRawField) {
                 contentUseRawField.addEventListener('change', function () {
@@ -222,6 +291,7 @@
             }
 
             toggleRootSettings();
+            updatePreviewWidth();
             syncRawToggle(contentUseRawField, contentField, contentRawField, contentRawPanel);
             syncRawToggle(headerUseRawField, headerField, headerRawField, headerRawPanel);
             syncRawToggle(footerUseRawField, footerField, footerRawField, footerRawPanel);
