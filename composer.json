@@ -1,12 +1,12 @@
 {
-  "name": "radata/mautic-multi-domain",
-  "description": "Mautic Multi Domain Plugin - support multiple tracking domains",
+  "name": "radata/mautic-kb-pages",
+  "description": "Mautic KB Pages Plugin - support knowlage pages",
   "type": "mautic-plugin",
   "license": "MIT",
   "require": {
     "mautic/core-lib": "^7.0"
   },
   "extra": {
-    "install-directory-name": "MauticMultiDomainBundle"
+    "install-directory-name": "MauticKbPagesBundle"
   }
 }

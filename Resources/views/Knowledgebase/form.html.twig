@@ -1,0 +1,70 @@
+{% extends '@MauticCore/Default/content.html.twig' %}
+
+{% set header = entity.getId()
+    ? 'mautic.kbpages.edit'|trans({'%title%': entity.getTitle()})
+    : 'mautic.kbpages.new'|trans %}
+
+{% block headerTitle %}{{ header }}{% endblock %}
+{% block mauticContent %}{{ mauticContent }}{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+
+    <div class="box-layout">
+        <div class="col-md-9 height-auto bdr-r">
+            <div class="pa-md">
+                <div class="alert alert-info">
+                    {{ 'plugin.kbpages.form.help'|trans }}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.title) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.slug) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.type) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.parent) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ form_row(form.icon) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(form.position) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(form.isPublished) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        {{ form_row(form.summary) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        {{ form_row(form.content) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pa-md">
+        {{ form_row(form.buttons) }}
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

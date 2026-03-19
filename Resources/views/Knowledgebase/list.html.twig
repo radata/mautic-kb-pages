@@ -1,0 +1,163 @@
+{% set isIndex = tmpl == 'index' ? true : false %}
+{% set tmpl = 'list' %}
+
+{% extends isIndex ? '@MauticCore/Default/content.html.twig' : '@MauticCore/Default/raw_output.html.twig' %}
+
+{% block mauticContent %}{{ mauticContent }}{% endblock %}
+{% block headerTitle %}{{ 'mautic.kbpages.title'|trans }}{% endblock %}
+
+{% block content %}
+    {% if isIndex %}
+        <div id="page-list-wrapper" class="panel panel-default">
+            {{ include('@MauticCore/Helper/list_toolbar.html.twig', {
+                searchValue: searchValue,
+                action: currentRoute,
+                page_actions: {
+                    templateButtons: {
+                        new: permissions[permissionBase ~ ':create'],
+                    },
+                    routeBase: 'knowledgebase',
+                    langVar: 'kbpages',
+                },
+                bulk_actions: {
+                    langVar: 'kbpages',
+                    routeBase: 'knowledgebase',
+                    templateButtons: {
+                        delete: permissions[permissionBase ~ ':deleteown'] or permissions[permissionBase ~ ':deleteother'] or permissions[permissionBase ~ ':delete'],
+                    },
+                },
+            }) }}
+
+            <div class="page-list">
+                {{ block('listResults') }}
+            </div>
+        </div>
+    {% else %}
+        {{ block('listResults') }}
+    {% endif %}
+{% endblock %}
+
+{% block listResults %}
+    {% if items|length %}
+        <div class="table-responsive">
+            <table class="table table-hover" id="knowledgebaseTable">
+                <thead>
+                <tr>
+                    {{ include('@MauticCore/Helper/tableheader.html.twig', {
+                        checkall: 'true',
+                        target: '#knowledgebaseTable',
+                    }) }}
+                    {{ include('@MauticCore/Helper/tableheader.html.twig', {
+                        sessionVar: sessionVar,
+                        orderBy: tablePrefix ~ '.title',
+                        text: 'plugin.kbpages.title',
+                        class: 'col-kb-title',
+                        default: true,
+                    }) }}
+                    {{ include('@MauticCore/Helper/tableheader.html.twig', {
+                        sessionVar: sessionVar,
+                        orderBy: tablePrefix ~ '.type',
+                        text: 'plugin.kbpages.type',
+                        class: 'visible-md visible-lg',
+                    }) }}
+                    {{ include('@MauticCore/Helper/tableheader.html.twig', {
+                        sessionVar: sessionVar,
+                        orderBy: tablePrefix ~ '.slug',
+                        text: 'plugin.kbpages.slug',
+                        class: 'visible-md visible-lg',
+                    }) }}
+                    <th class="visible-md visible-lg">{{ 'plugin.kbpages.group'|trans }}</th>
+                    {{ include('@MauticCore/Helper/tableheader.html.twig', {
+                        sessionVar: sessionVar,
+                        orderBy: tablePrefix ~ '.dateModified',
+                        text: 'mautic.core.updated',
+                        class: 'visible-md visible-lg',
+                    }) }}
+                    {{ include('@MauticCore/Helper/tableheader.html.twig', {
+                        sessionVar: sessionVar,
+                        orderBy: tablePrefix ~ '.id',
+                        text: 'mautic.core.id',
+                        class: 'visible-md visible-lg',
+                    }) }}
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    {% set updatedAt = item.getDateModified() ?: item.getDateAdded() %}
+                    <tr>
+                        <td>
+                            {{ include('@MauticCore/Helper/list_actions.html.twig', {
+                                item: item,
+                                actionRoute: actionRoute,
+                                translationBase: translationBase,
+                                nameGetter: 'getTitle',
+                                templateButtons: {
+                                    edit: securityHasEntityAccess(
+                                        permissions[permissionBase ~ ':editown'],
+                                        permissions[permissionBase ~ ':editother'],
+                                        item.getCreatedBy()
+                                    ),
+                                    clone: permissions[permissionBase ~ ':create'],
+                                    delete: securityHasEntityAccess(
+                                        permissions[permissionBase ~ ':deleteown'],
+                                        permissions[permissionBase ~ ':deleteother'],
+                                        item.getCreatedBy()
+                                    ),
+                                },
+                            }) }}
+                        </td>
+                        <td>
+                            <div class="d-flex ai-center gap-xs">
+                                {{ include('@MauticCore/Helper/publishstatus_icon.html.twig', {
+                                    item: item,
+                                    model: modelName,
+                                }) }}
+                                <a data-toggle="ajax" href="{{ path(actionRoute, {
+                                    objectAction: 'view',
+                                    objectId: item.getId(),
+                                }) }}">
+                                    {{ item.getTitle() }}
+                                </a>
+                            </div>
+                            {% if item.getSummary() %}
+                                {{ include('@MauticCore/Helper/description--inline.html.twig', {
+                                    description: item.getSummary()|striptags,
+                                }) }}
+                            {% endif %}
+                        </td>
+                        <td class="visible-md visible-lg">
+                            {% include '@MauticCore/Helper/_tag.html.twig' with {
+                                tags: [{
+                                    label: (item.isGroup() ? 'plugin.kbpages.type.group' : 'plugin.kbpages.type.article')|trans,
+                                    color: item.isGroup() ? 'green' : 'warm-gray'
+                                }]
+                            } %}
+                        </td>
+                        <td class="visible-md visible-lg"><code>{{ item.getSlug() }}</code></td>
+                        <td class="visible-md visible-lg">{{ item.getParent() ? item.getParent().getTitle() : 'plugin.kbpages.empty'|trans }}</td>
+                        <td class="visible-md visible-lg" title="{{ updatedAt ? dateToFullConcat(updatedAt) : '' }}">
+                            {{ updatedAt ? dateToDate(updatedAt) : '' }}
+                        </td>
+                        <td class="visible-md visible-lg">{{ item.getId() }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel-footer">
+            {{ include('@MauticCore/Helper/pagination.html.twig', {
+                totalItems: totalItems,
+                page: page,
+                limit: limit,
+                menuLinkId: 'mautic_knowledgebase_index',
+                baseUrl: path(indexRoute),
+                sessionVar: sessionVar,
+            }) }}
+        </div>
+    {% else %}
+        {{ include('@MauticCore/Helper/noresults.html.twig', {
+            tip: 'mautic.kbpages.noresults.tip',
+        }) }}
+    {% endif %}
+{% endblock %}

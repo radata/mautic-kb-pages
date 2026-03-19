@@ -7,7 +7,7 @@ Tracking domain rewriting for Mautic. Maps sender email addresses to tracking do
 - Replaces tracking domains in emails based on sender email address
 - Rewrites list unsubscribe, image pixel, webview and unsubscribe tokens
 - Rewrites all tracking JS domains to match the HTTP request domain (CNAME-aware)
-- REST API for managing domain mappings (`/api/multidomain`)
+- REST API for managing domain mappings (`/api/kbpages`)
 - Role-based permissions for domain management
 - Owner-as-mailer support (uses contact owner's email for domain lookup)
 - RFC-compliant Message-ID headers per domain
@@ -47,10 +47,10 @@ Add the GitHub repository and install the plugin:
 
 ```bash
 docker exec --user www-data --workdir /var/www/html mautic_web \
-  composer config repositories.mautic-multi-domain vcs \
-  https://github.com/radata/mautic-multi-domain --no-interaction
+  composer config repositories.mautic-kb-pages vcs \
+  https://github.com/radata/mautic-kb-pages --no-interaction
 docker exec --user www-data --workdir /var/www/html mautic_web \
-  composer require radata/mautic-multi-domain:dev-main \
+  composer require radata/mautic-kb-pages:dev-main \
   -W --no-interaction --ignore-platform-req=ext-gd
 ```
 
@@ -60,7 +60,7 @@ Update to the latest version:
 
 ```bash
 docker exec --user www-data --workdir /var/www/html mautic_web \
-  composer update radata/mautic-multi-domain \
+  composer update radata/mautic-kb-pages \
   -W --no-interaction --ignore-platform-req=ext-gd
 ```
 
@@ -90,13 +90,14 @@ docker exec --user www-data --workdir /var/www/html mautic_web php bin/console m
 
 ## API
 
+
 REST API for managing domain mappings:
 
-- **Get domain**: `GET /api/multidomain/ID`
-- **List all**: `GET /api/multidomain`
-- **Create**: `POST /api/multidomain/new` (body: `email`, `domain`)
-- **Edit**: `PUT /api/multidomain/ID/edit` or `PATCH /api/multidomain/ID/edit` (body: `email`, `domain`)
-- **Delete**: `DELETE /api/multidomain/ID/delete`
+- **Get domain**: `GET /api/kbpages/ID`
+- **List all**: `GET /api/kbpages`
+- **Create**: `POST /api/kbpages/new` (body: `email`, `domain`)
+- **Edit**: `PUT /api/kbpages/ID/edit` or `PATCH /api/kbpages/ID/edit` (body: `email`, `domain`)
+- **Delete**: `DELETE /api/kbpages/ID/delete`
 
 ## Permissions
 
@@ -105,39 +106,39 @@ The plugin uses the Mautic permissions system. Roles can be configured for domai
 ## Plugin Structure
 
 ```
-plugins/MauticMultiDomainBundle/
+plugins/MauticKbPagesBundle/
 ├── Assets/img/
 │   └── icon.png                             # Plugin icon
 ├── Config/config.php                        # Service, route & menu registration
 ├── Controller/
 │   ├── Api/
-│   │   └── MultidomainApiController.php     # REST API controller
-│   └── MultidomainController.php            # UI controller (list, create, edit, delete)
+│   │   └── KbPagesApiController.php     # REST API controller
+│   └── KbPagesController.php            # UI controller (list, create, edit, delete)
 ├── Entity/
-│   ├── Multidomain.php                      # Domain mapping entity (email + domain)
-│   └── MultidomainRepository.php            # Database queries
+│   ├── KbPages.php                      # Domain mapping entity (email + domain)
+│   └── KbPagesRepository.php            # Database queries
 ├── Event/
-│   └── MultidomainEvent.php                 # Custom event class
+│   └── KbPagesEvent.php                 # Custom event class
 ├── EventListener/
 │   ├── BuilderSubscriber.php                # Rewrites tracking URLs in emails
 │   ├── BuildJsSubscriber.php                # Rewrites tracking JS domains
 │   └── MultidomianSubscriber.php            # Audit log & domain event handling
 ├── Form/Type/
-│   └── MultidomainType.php                  # Domain mapping form
+│   └── KbPagesType.php                  # Domain mapping form
 ├── Model/
-│   └── MultidomainModel.php                 # Business logic & domain lookups
-├── Resources/views/Multidomain/
+│   └── KbPagesModel.php                 # Business logic & domain lookups
+├── Resources/views/KbPages/
 │   ├── details.html.twig                    # Detail view
 │   ├── form.html.twig                       # Create/edit form
 │   ├── index.html.twig                      # Index page
 │   └── list.html.twig                       # List table
 ├── Security/Permissions/
-│   └── MultidomainPermissions.php           # Role-based access control
+│   └── KbPagesPermissions.php           # Role-based access control
 ├── Translations/
 │   └── en_US/
 │       ├── messages.ini
 │       └── validators.ini
-├── MauticMultiDomainBundle.php              # Bundle class
+├── MauticKbPagesBundle.php              # Bundle class
 └── composer.json
 ```
 
@@ -145,9 +146,9 @@ plugins/MauticMultiDomainBundle/
 
 ```bash
 docker exec --user www-data --workdir /var/www/html mautic_web \
-  composer remove radata/mautic-multi-domain -W --no-interaction
+  composer remove radata/mautic-kb-pages -W --no-interaction
 docker exec --user www-data --workdir /var/www/html mautic_web \
-  composer config --unset repositories.mautic-multi-domain
+  composer config --unset repositories.mautic-kb-pages
 docker exec --user www-data mautic_web rm -rf /var/www/html/var/cache/prod
 docker exec --user www-data --workdir /var/www/html mautic_web php bin/console cache:warmup --env=prod
 docker exec --user www-data --workdir /var/www/html mautic_web php bin/console mautic:plugins:reload
@@ -155,7 +156,7 @@ docker exec --user www-data --workdir /var/www/html mautic_web php bin/console m
 
 ## Credits
 
-Original work: https://github.com/friendly-ch/mautic-multi-domain
+Original work: https://github.com/friendly-ch/mautic-kb-pages
 Upgrade by: https://github.com/rjocoleman
 
 ## License

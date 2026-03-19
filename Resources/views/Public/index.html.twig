@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Knowledge Base</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; background: #f5f7fb; color: #1f2937; }
+        .wrap { max-width: 960px; margin: 0 auto; padding: 48px 20px; }
+        .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        a { color: #2563eb; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        p { color: #4b5563; }
+        ul { margin: 12px 0 0; padding-left: 18px; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <h1>Knowledge Base</h1>
+    <p>Browse grouped support articles.</p>
+
+    {% if groups %}
+        {% for group in groups %}
+            <div class="card">
+                <h2><a href="{{ path('mautic_knowledgebase_group', {slug: group.getSlug()}) }}">{{ group.getTitle() }}</a></h2>
+                {% if group.getSummary() %}
+                    <p>{{ group.getSummary()|striptags }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="card">
+            <p>No knowledge base groups are published yet.</p>
+        </div>
+    {% endif %}
+</div>
+</body>
+</html>

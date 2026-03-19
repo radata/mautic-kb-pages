@@ -1,0 +1,99 @@
+{% extends '@MauticCore/Default/content.html.twig' %}
+
+{% block mauticContent %}{{ mauticContent }}{% endblock %}
+{% block headerTitle %}{{ item.getTitle() }}{% endblock %}
+
+{% block preHeader %}
+    {{ include('@MauticCore/Helper/page_actions.html.twig', {
+        item: item,
+        actionRoute: actionRoute,
+        indexRoute: indexRoute,
+        langVar: 'kbpages',
+        nameGetter: 'getTitle',
+        targetLabel: 'mautic.kbpages.title'|trans,
+        templateButtons: {
+            close: permissions[permissionBase ~ ':view'] or permissions[permissionBase ~ ':viewown'] or permissions[permissionBase ~ ':viewother'],
+        },
+    }) }}
+{% endblock %}
+
+{% block actions %}
+    {{ include('@MauticCore/Helper/page_actions.html.twig', {
+        item: item,
+        actionRoute: actionRoute,
+        indexRoute: indexRoute,
+        langVar: 'kbpages',
+        nameGetter: 'getTitle',
+        templateButtons: {
+            edit: securityHasEntityAccess(
+                permissions[permissionBase ~ ':editown'],
+                permissions[permissionBase ~ ':editother'],
+                item.getCreatedBy()
+            ),
+            clone: permissions[permissionBase ~ ':create'],
+            delete: securityHasEntityAccess(
+                permissions[permissionBase ~ ':deleteown'],
+                permissions[permissionBase ~ ':deleteother'],
+                item.getCreatedBy()
+            ),
+        },
+    }) }}
+{% endblock %}
+
+{% block content %}
+    <div class="box-layout">
+        <div class="col-md-9 height-auto bdr-r">
+            <div class="pa-md">
+                <div class="row mb-md">
+                    <div class="col-md-3"><strong>{{ 'plugin.kbpages.type'|trans }}</strong></div>
+                    <div class="col-md-9">
+                        {% include '@MauticCore/Helper/_tag.html.twig' with {
+                            tags: [{
+                                label: (item.isGroup() ? 'plugin.kbpages.type.group' : 'plugin.kbpages.type.article')|trans,
+                                color: item.isGroup() ? 'green' : 'warm-gray'
+                            }]
+                        } %}
+                    </div>
+                </div>
+
+                <div class="row mb-md">
+                    <div class="col-md-3"><strong>{{ 'plugin.kbpages.slug'|trans }}</strong></div>
+                    <div class="col-md-9"><code>{{ item.getSlug() }}</code></div>
+                </div>
+
+                <div class="row mb-md">
+                    <div class="col-md-3"><strong>{{ 'plugin.kbpages.group'|trans }}</strong></div>
+                    <div class="col-md-9">{{ item.getParent() ? item.getParent().getTitle() : 'plugin.kbpages.empty'|trans }}</div>
+                </div>
+
+                <div class="row mb-md">
+                    <div class="col-md-3"><strong>{{ 'plugin.kbpages.icon'|trans }}</strong></div>
+                    <div class="col-md-9">{{ item.getIcon() ?: 'plugin.kbpages.empty'|trans }}</div>
+                </div>
+
+                <div class="row mb-md">
+                    <div class="col-md-3"><strong>{{ 'plugin.kbpages.position'|trans }}</strong></div>
+                    <div class="col-md-9">{{ item.getPosition() }}</div>
+                </div>
+
+                {% if item.getSummary() %}
+                    <hr>
+                    <h4>{{ 'plugin.kbpages.summary'|trans }}</h4>
+                    <p>{{ item.getSummary()|striptags|nl2br }}</p>
+                {% endif %}
+
+                <hr>
+                <h4>{{ 'plugin.kbpages.content'|trans }}</h4>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {% if item.getContent() %}
+                            {{ item.getContent()|raw }}
+                        {% else %}
+                            <p class="mb-0">{{ 'plugin.kbpages.article.empty'|trans }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
