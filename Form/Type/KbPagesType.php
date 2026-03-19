@@ -10,10 +10,13 @@ use Mautic\CoreBundle\Form\Type\YesNoButtonGroupType;
 use MauticPlugin\MauticKbPagesBundle\Entity\KbPages;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -103,6 +106,29 @@ class KbPagesType extends AbstractType
             ],
         ]);
 
+        $builder->add('contentUseRaw', CheckboxType::class, [
+            'mapped'      => false,
+            'required'    => false,
+            'label'       => 'plugin.kbpages.content.use_raw',
+            'help'        => 'plugin.kbpages.content.use_raw.help',
+            'label_attr'  => ['class' => 'control-label'],
+        ]);
+
+        $builder->add('contentRaw', TextareaType::class, [
+            'mapped'      => false,
+            'required'    => false,
+            'label'       => 'plugin.kbpages.content.raw',
+            'label_attr'  => ['class' => 'control-label'],
+            'help'        => 'plugin.kbpages.content.raw.help',
+            'data'        => $data?->getContent(),
+            'attr'        => [
+                'class' => 'form-control',
+                'rows'  => 16,
+                'style' => 'font-family: monospace;',
+                'spellcheck' => 'false',
+            ],
+        ]);
+
         $builder->add('icon', TextType::class, [
             'label'      => 'plugin.kbpages.icon',
             'label_attr' => ['class' => 'control-label'],
@@ -126,6 +152,29 @@ class KbPagesType extends AbstractType
             ],
         ]);
 
+        $builder->add('headerHtmlUseRaw', CheckboxType::class, [
+            'mapped'      => false,
+            'required'    => false,
+            'label'       => 'plugin.kbpages.content.use_raw',
+            'help'        => 'plugin.kbpages.content.use_raw.help',
+            'label_attr'  => ['class' => 'control-label'],
+        ]);
+
+        $builder->add('headerHtmlRaw', TextareaType::class, [
+            'mapped'      => false,
+            'required'    => false,
+            'label'       => 'plugin.kbpages.root_header_html.raw',
+            'label_attr'  => ['class' => 'control-label'],
+            'help'        => 'plugin.kbpages.content.raw.help',
+            'data'        => $data?->getHeaderHtml(),
+            'attr'        => [
+                'class' => 'form-control',
+                'rows'  => 8,
+                'style' => 'font-family: monospace;',
+                'spellcheck' => 'false',
+            ],
+        ]);
+
         $builder->add('footerHtml', TextareaType::class, [
             'label'      => 'plugin.kbpages.root_footer_html',
             'label_attr' => ['class' => 'control-label'],
@@ -135,6 +184,29 @@ class KbPagesType extends AbstractType
                 'class'           => 'form-control editor editor-advanced',
                 'rows'            => 8,
                 'allow-full-html' => true,
+            ],
+        ]);
+
+        $builder->add('footerHtmlUseRaw', CheckboxType::class, [
+            'mapped'      => false,
+            'required'    => false,
+            'label'       => 'plugin.kbpages.content.use_raw',
+            'help'        => 'plugin.kbpages.content.use_raw.help',
+            'label_attr'  => ['class' => 'control-label'],
+        ]);
+
+        $builder->add('footerHtmlRaw', TextareaType::class, [
+            'mapped'      => false,
+            'required'    => false,
+            'label'       => 'plugin.kbpages.root_footer_html.raw',
+            'label_attr'  => ['class' => 'control-label'],
+            'help'        => 'plugin.kbpages.content.raw.help',
+            'data'        => $data?->getFooterHtml(),
+            'attr'        => [
+                'class' => 'form-control',
+                'rows'  => 8,
+                'style' => 'font-family: monospace;',
+                'spellcheck' => 'false',
             ],
         ]);
 
@@ -175,6 +247,19 @@ class KbPagesType extends AbstractType
 
         $builder->add('buttons', FormButtonsType::class);
 
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
+            $data = $event->getData();
+            if (!is_array($data)) {
+                return;
+            }
+
+            $this->applyRawOverride($data, 'content');
+            $this->applyRawOverride($data, 'headerHtml');
+            $this->applyRawOverride($data, 'footerHtml');
+
+            $event->setData($data);
+        });
+
         if (!empty($options['action'])) {
             $builder->setAction($options['action']);
         }
@@ -185,6 +270,22 @@ class KbPagesType extends AbstractType
         $resolver->setDefaults([
             'data_class' => KbPages::class,
         ]);
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    private function applyRawOverride(array &$data, string $field): void
+    {
+        $toggleField = $field.'UseRaw';
+        $rawField    = $field.'Raw';
+
+        $useRaw = in_array($data[$toggleField] ?? null, [true, 1, '1', 'true', 'on'], true);
+        if ($useRaw) {
+            $data[$field] = (string) ($data[$rawField] ?? '');
+        }
+
+        unset($data[$toggleField], $data[$rawField]);
     }
 
     public function getBlockPrefix()
