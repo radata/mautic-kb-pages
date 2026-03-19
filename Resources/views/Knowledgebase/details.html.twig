@@ -1,14 +1,16 @@
 {% extends '@MauticCore/Default/content.html.twig' %}
 
 {% set pathSlugs = item.getPathSlugs() %}
-{% set previewUrl = null %}
-{% if pathSlugs|length == 1 %}
-    {% set previewUrl = url('mautic_knowledgebase_group', {slug: pathSlugs|first}) %}
-{% elseif pathSlugs|length > 1 %}
-    {% set previewUrl = url('mautic_knowledgebase_tree', {
-        rootSlug: pathSlugs|first,
-        slugPath: pathSlugs|slice(1)|join('/'),
-    }) %}
+{% set previewUrl = previewUrl|default(null) %}
+{% if not previewUrl %}
+    {% if pathSlugs|length == 1 %}
+        {% set previewUrl = url('mautic_knowledgebase_group', {slug: pathSlugs|first}) %}
+    {% elseif pathSlugs|length > 1 %}
+        {% set previewUrl = url('mautic_knowledgebase_tree', {
+            rootSlug: pathSlugs|first,
+            slugPath: pathSlugs|slice(1)|join('/'),
+        }) %}
+    {% endif %}
 {% endif %}
 
 {% block mauticContent %}{{ mauticContent }}{% endblock %}
@@ -84,7 +86,7 @@
 
                 <div class="row mb-md">
                     <div class="col-md-3"><strong>{{ 'plugin.kbpages.slug'|trans }}</strong></div>
-                    <div class="col-md-9"><code>{{ item.getSlug() }}</code></div>
+                    <div class="col-md-9"><code>/{{ pathSlugs|join('/') }}</code></div>
                 </div>
 
                 {% if previewUrl %}
@@ -98,7 +100,15 @@
 
                 <div class="row mb-md">
                     <div class="col-md-3"><strong>{{ 'plugin.kbpages.group'|trans }}</strong></div>
-                    <div class="col-md-9">{{ item.getParent() ? item.getParent().getTitle() : 'plugin.kbpages.empty'|trans }}</div>
+                    <div class="col-md-9">
+                        {% if item.getParent() %}
+                            {{ item.getParent().getTitle() }}
+                            <br>
+                            <code>/{{ item.getParent().getPathSlugs()|join('/') }}</code>
+                        {% else %}
+                            {{ 'plugin.kbpages.empty'|trans }}
+                        {% endif %}
+                    </div>
                 </div>
 
                 <div class="row mb-md">

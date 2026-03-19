@@ -85,15 +85,9 @@
                 {% for item in items %}
                     {% set updatedAt = item.getDateModified() ?: item.getDateAdded() %}
                     {% set pathSlugs = item.getPathSlugs() %}
-                    {% set previewUrl = null %}
-                    {% if pathSlugs|length == 1 %}
-                        {% set previewUrl = url('mautic_knowledgebase_group', {slug: pathSlugs|first}) %}
-                    {% elseif pathSlugs|length > 1 %}
-                        {% set previewUrl = url('mautic_knowledgebase_tree', {
-                            rootSlug: pathSlugs|first,
-                            slugPath: pathSlugs|slice(1)|join('/'),
-                        }) %}
-                    {% endif %}
+                    {% set depth = pathSlugs|length > 0 ? pathSlugs|length - 1 : 0 %}
+                    {% set fullPath = '/' ~ pathSlugs|join('/') %}
+                    {% set previewUrl = previewUrls[item.getId()]|default(null) %}
                     <tr>
                         <td>
                             {{ include('@MauticCore/Helper/list_actions.html.twig', {
@@ -129,7 +123,7 @@
                             }) }}
                         </td>
                         <td>
-                            <div class="d-flex ai-center gap-xs">
+                            <div class="d-flex ai-center gap-xs" style="padding-left: {{ depth * 16 }}px;">
                                 {{ include('@MauticCore/Helper/publishstatus_icon.html.twig', {
                                     item: item,
                                     model: modelName,
@@ -155,8 +149,17 @@
                                 }]
                             } %}
                         </td>
-                        <td class="visible-md visible-lg"><code>{{ item.getSlug() }}</code></td>
-                        <td class="visible-md visible-lg">{{ item.getParent() ? item.getParent().getTitle() : 'plugin.kbpages.empty'|trans }}</td>
+                        <td class="visible-md visible-lg" title="{{ fullPath }}">
+                            <code style="display:inline-block; max-width: 320px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; vertical-align:bottom;">{{ fullPath }}</code>
+                        </td>
+                        <td class="visible-md visible-lg">
+                            {% if item.getParent() %}
+                                {% set parentPath = '/' ~ item.getParent().getPathSlugs()|join('/') %}
+                                <span title="{{ parentPath }}">{{ item.getParent().getTitle() }}</span>
+                            {% else %}
+                                {{ 'plugin.kbpages.empty'|trans }}
+                            {% endif %}
+                        </td>
                         <td class="visible-md visible-lg" title="{{ updatedAt ? dateToFullConcat(updatedAt) : '' }}">
                             {{ updatedAt ? dateToDate(updatedAt) : '' }}
                         </td>

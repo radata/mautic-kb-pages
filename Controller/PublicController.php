@@ -20,15 +20,10 @@ class PublicController extends CommonController
 
     public function rootAction(): Response
     {
-        $defaultRoot = $this->resolveRootSlug();
+        $group = $this->resolveRootGroup();
 
-        if ('' !== $defaultRoot) {
-            $repo  = $this->getKnowledgebaseModel()->getRepository();
-            $group = $repo->findPublishedGroupBySlug($defaultRoot);
-
-            if ($group instanceof KbPages) {
-                return $this->renderGroupResponse($group);
-            }
+        if ($group instanceof KbPages) {
+            return $this->renderGroupResponse($group);
         }
 
         return $this->homeAction();
@@ -57,8 +52,7 @@ class PublicController extends CommonController
 
     public function groupAction(string $slug): Response
     {
-        $repo  = $this->getKnowledgebaseModel()->getRepository();
-        $group = $repo->findPublishedGroupBySlug($slug);
+        $group = $this->resolveVisibleGroupBySlug($slug);
 
         if (!$group instanceof KbPages) {
             throw $this->createNotFoundException();
@@ -69,8 +63,7 @@ class PublicController extends CommonController
 
     public function treeAction(string $slugPath, ?string $rootSlug = null): Response
     {
-        $repo      = $this->getKnowledgebaseModel()->getRepository();
-        $rootGroup = null !== $rootSlug ? $repo->findPublishedGroupBySlug($rootSlug) : $this->resolveRootGroup();
+        $rootGroup = null !== $rootSlug ? $this->resolveVisibleRootGroupBySlug($rootSlug) : $this->resolveRootGroup();
 
         if (!$rootGroup instanceof KbPages) {
             throw $this->createNotFoundException();
@@ -213,7 +206,7 @@ class PublicController extends CommonController
             return null;
         }
 
-        return $this->getKnowledgebaseModel()->getRepository()->findPublishedGroupBySlug($rootSlug);
+        return $this->resolveVisibleRootGroupBySlug($rootSlug);
     }
 
     private function resolveRootSlug(): string
@@ -288,12 +281,13 @@ class PublicController extends CommonController
         }
 
         $rootGroup = $this->resolveRootGroup();
+        $rootPath  = $rootGroup instanceof KbPages ? $this->getPathSegments($rootGroup) : [];
         if (
             $this->useHiddenRootUrls()
-            && $rootGroup instanceof KbPages
-            && $rootGroup->getSlug() === $segments[0]
+            && [] !== $rootPath
+            && array_slice($segments, 0, count($rootPath)) === $rootPath
         ) {
-            $descendantSegments = array_slice($segments, 1);
+            $descendantSegments = array_slice($segments, count($rootPath));
 
             if ([] === $descendantSegments) {
                 return $this->generateUrl('mautic_knowledgebase_root');
@@ -304,7 +298,7 @@ class PublicController extends CommonController
             ]);
         }
 
-        return $this->generateCanonicalPublicUrl($segments);
+        return $this->generateCanonicalPublicUrl($this->getCanonicalPathSegments($item));
     }
 
     /**
@@ -349,6 +343,31 @@ class PublicController extends CommonController
         return $segments;
     }
 
+    /**
+     * @return string[]
+     */
+    private function getCanonicalPathSegments(KbPages $item): array
+    {
+        $segments = $this->getPathSegments($item);
+        if ([] === $segments) {
+            return [];
+        }
+
+        $domainRoots = $this->getConfiguredDomainRoots();
+        if (1 === count($segments) && isset($domainRoots[$segments[0]])) {
+            return [$domainRoots[$segments[0]]];
+        }
+
+        $registeredRoots = $this->getRegisteredPublicRoots();
+        foreach ($segments as $index => $segment) {
+            if (in_array($segment, $registeredRoots, true)) {
+                return array_slice($segments, $index);
+            }
+        }
+
+        return $segments;
+    }
+
     private function getRootAncestor(KbPages $item): KbPages
     {
         $current = $item;
@@ -358,6 +377,43 @@ class PublicController extends CommonController
         }
 
         return $current;
+    }
+
+    private function resolveVisibleRootGroupBySlug(string $slug): ?KbPages
+    {
+        return $this->resolveVisibleGroupBySlug($slug);
+    }
+
+    private function resolveVisibleGroupBySlug(string $slug): ?KbPages
+    {
+        $repo  = $this->getKnowledgebaseModel()->getRepository();
+        $group = $repo->findPublishedGroupBySlug($slug);
+
+        if ($group instanceof KbPages) {
+            return $group;
+        }
+
+        $hostGroup = $this->resolveHostDomainGroup();
+        if (!$hostGroup instanceof KbPages) {
+            return null;
+        }
+
+        return $repo->findPublishedGroupBySlug($slug, $hostGroup);
+    }
+
+    private function resolveHostDomainGroup(): ?KbPages
+    {
+        $host = strtolower($this->getCurrentRequest()->getHost());
+        if ('' === $host) {
+            return null;
+        }
+
+        $hostKey = $this->normalizeDomainKey($host);
+        if ('' === $hostKey) {
+            return null;
+        }
+
+        return $this->getKnowledgebaseModel()->getRepository()->findPublishedGroupBySlug($hostKey);
     }
 
     private function resolveTreeItem(KbPages $rootGroup, string $slugPath): ?KbPages
@@ -390,6 +446,26 @@ class PublicController extends CommonController
     private function hasHostScopedRoutes(): bool
     {
         return '' !== trim((string) $this->coreParametersHelper->get('kbpages_root_hosts', ''));
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getRegisteredPublicRoots(): array
+    {
+        $value = (string) $this->coreParametersHelper->get('kbpages_public_roots', '');
+        if ('' === trim($value)) {
+            return [];
+        }
+
+        $roots = preg_split('/[\s,]+/', strtolower($value), -1, PREG_SPLIT_NO_EMPTY);
+        if (!is_array($roots)) {
+            return [];
+        }
+
+        $roots = array_map(fn (string $root): string => $this->normalizeSlug($root), $roots);
+
+        return array_values(array_filter(array_unique($roots)));
     }
 
     private function normalizeSlug(string $value): string

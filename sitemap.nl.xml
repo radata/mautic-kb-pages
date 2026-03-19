@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+<!--
+<url>
+  <loc>https://help.hollandworx.nl/nl/</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/freelancen</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/Starten-als-freelancer</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/voor-opdrachtgevers</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/mijn-account</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/aanmaken-and-toegang</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/beheer</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/hollandworx-app</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/aanmeldingen</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/shifts</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/flexpools</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/afspraken</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/geldzaken</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/betaling</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/administratie</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/uren-and-checkout</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/over-ons</loc>
+  <lastmod>2024-03-22T09:25:17+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+-->
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/Starten-als-freelancer/article/hoe-word-ik-freelancer</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/aanmaken-and-toegang/article/waar-moet-ik-aan-voldoen-om-via-hollandworx-te-werken</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/aanmaken-and-toegang/article/hoe-oud-moet-ik-zijn-om-via-hollandworx-te-mogen-werken</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/aanmaken-and-toegang/article/waarom-wordt-mijn-identiteitsbewijs-gecontroleerd</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/aanmaken-and-toegang/article/hoe-werkt-het-met-een-buitenlands-legitimatiebewijs</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/beheer/article/ik-ben-mijn-wachtwoord-vergeten</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/beheer/article/hoe-kan-ik-mijn-account-verwijderen-bij-hollandworx</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/beheer/article/wat-kan-ik-doen-bij-problemen-met-de-app</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/beheer/article/hoe-kan-ik-mijn-persoonlijke-gegevens-wijzigen</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/aanmeldingen/article/hoe-kan-ik-mij-aanmelden-voor-shifts</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/aanmeldingen/article/kan-ik-mij-aanmelden-voor-alle-shifts</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/aanmeldingen/article/wat-is-het-verschil-tussen-een-shift-claimen-en-je-aanmelden-voor-een-shift</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/aanmeldingen/article/hoe-weet-ik-of-een-aanmelding-geaccepteerd-is</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/aanmeldingen/article/hoeveel-tijd-heeft-een-opdrachtgever-de-tijd-om-een-aanmelding-goed-te-keuren</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/aanmeldingen/article/hoeveel-tijd-heeft-een-opdrachtgever-om-een-aanmelding-te-annuleren</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/aanmeldingen/article/hoe-annuleer-ik-mijn-aanmelding</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/shifts/article/hoe-werkt-het-regelen-van-vervanging-voor-een-shift</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/shifts/article/wat-gebeurt-als-je-niet-aanwezig-bent-bij-je-geclaimde-shift</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/shifts/article/kan-ik-een-shift-cancelen</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/shifts/article/kan-ik-in-de-app-ook-shifts-filteren</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/flexpools/article/hoe-kom-ik-in-een-flexpool-terecht</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/flexpools/article/hoe-kan-ik-zien-of-een-shift-buiten-of-binnen-de-flexpool-is</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/afspraken/article/wat-moet-ik-doen-als-ik-niet-op-mijn-dienst-kan-komen</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/afspraken/article/wat-kan-ik-doen-aan-een-onenigheid-met-mijn-opdrachtgever</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/afspraken/article/mag-een-opdrachtgever-andere-taken-van-mij-vragen</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/afspraken/article/wat-als-ik-eerder-naar-huis-moet</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/betaling/article/wie-of-wat-is-payday</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/betaling/article/hoe-werkt-de-betaling</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/betaling/article/hoe-maak-ik-een-payday-account-aan</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/administratie/article/hoe-zit-het-met-de-administratie</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/administratie/article/wat-is-de-kleineondernemingsregeling-kor</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/administratie/article/worden-mijn-reiskosten-vergoed</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/administratie/article/ontvang-ik-vakantiegeld</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/administratie/article/hoe-zit-het-met-mijn-pensioen</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/administratie/article/heeft-freelancen-effect-op-mijn-studiefinanciering</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/administratie/article/waarom-heb-ik-geen-btw-ontvangen-over-mijn-eerste-drie-diensten</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/administratie/article/wat-zijn-de-voordelen-van-het-openen-van-een-zakelijke-rekening</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/uren-and-checkout/article/ik-heb-mijn-uren-verkeerd-doorgegeven-wat-nu</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/uren-and-checkout/article/ik-wil-het-tegenvoorstel-van-mijn-uren-bespreken</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/uren-and-checkout/article/hoe-werkt-de-checkout</loc>
+  <lastmod>2024-02-22T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+<url>
+  <loc>https://doc.hollandworx.nl/gebruikersvoorwaarden-opdrachtgever/index.html</loc>
+  <lastmod>2024-02-23T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://doc.hollandworx.nl/gebruikersvoorwaarden-opdrachtgevers/index.html</loc>
+  <lastmod>2024-02-23T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://doc.hollandworx.nl/gebruikersvoorwaarden-opdrachtnemer/index.html</loc>
+  <lastmod>2024-02-23T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://doc.hollandworx.nl/gebruikersvoorwaarden-opdrachtnemers/index.html</loc>
+  <lastmod>2024-02-23T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://help.hollandworx.nl/nl/category/contact/article/hoe-neem-ik-contact-op-met-hollandworx</loc>
+  <lastmod>2024-03-23T09:25:17+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+</urlset>
