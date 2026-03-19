@@ -3,9 +3,9 @@
 {% block pageTitle %}{{ article.getTitle() }}{% endblock %}
 
 {% block kbBody %}
-    {% if group %}
+    {% if group and groupUrl %}
         <p class="kb-breadcrumb">
-            <a href="{{ path('mautic_knowledgebase_group', {slug: group.getSlug()}) }}">{{ group.getTitle() }}</a>
+            <a href="{{ groupUrl }}">{{ group.getTitle() }}</a>
         </p>
     {% endif %}
 

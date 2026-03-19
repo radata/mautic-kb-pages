@@ -34,6 +34,7 @@ class PublicController extends CommonController
             return [
                 'entity'    => $group,
                 'iconHtml'  => $this->getSettingsProvider()->renderIconHtml($group->getIcon()),
+                'url'       => $this->generatePublicUrl($group),
             ];
         }, $repo->findPublishedGroups());
 
@@ -59,26 +60,30 @@ class PublicController extends CommonController
         return $this->renderGroupResponse($group);
     }
 
-    public function articleAction(string $groupSlug, string $slug): Response
+    public function treeAction(string $slugPath, ?string $rootSlug = null): Response
     {
-        $repo    = $this->getKnowledgebaseModel()->getRepository();
-        $article = $repo->findPublishedArticleBySlugs($groupSlug, $slug);
+        $repo      = $this->getKnowledgebaseModel()->getRepository();
+        $rootGroup = null !== $rootSlug ? $repo->findPublishedGroupBySlug($rootSlug) : $this->resolveRootGroup();
 
-        if (!$article instanceof KbPages) {
+        if (!$rootGroup instanceof KbPages) {
             throw $this->createNotFoundException();
         }
 
-        return new Response(
-            $this->renderView(
-                '@MauticKbPages/Public/article.html.twig',
-                $this->getPublicViewParameters([
-                    'article'        => $article,
-                    'articleContent' => $this->renderPublicHtml($article->getContent()),
-                    'articleIconHtml' => $this->getSettingsProvider()->renderIconHtml($article->getIcon()),
-                    'group'          => $article->getParent(),
-                ])
-            )
-        );
+        $item = $this->resolveTreeItem($rootGroup, $slugPath);
+        if (!$item instanceof KbPages) {
+            throw $this->createNotFoundException();
+        }
+
+        if ($item->isGroup()) {
+            return $this->renderGroupResponse($item);
+        }
+
+        return $this->renderArticleResponse($item);
+    }
+
+    public function articleAction(string $groupSlug, string $slug): Response
+    {
+        return $this->treeAction($slug, $groupSlug);
     }
 
     /**
@@ -156,15 +161,52 @@ class PublicController extends CommonController
                     'group'        => $group,
                     'groupContent' => $this->renderPublicHtml($group->getContent()),
                     'groupIconHtml' => $this->getSettingsProvider()->renderIconHtml($group->getIcon()),
+                    'parentUrl'    => $group->getParent() instanceof KbPages ? $this->generatePublicUrl($group->getParent()) : null,
+                    'childGroups'  => array_map(function (KbPages $childGroup): array {
+                        return [
+                            'entity'   => $childGroup,
+                            'iconHtml' => $this->getSettingsProvider()->renderIconHtml($childGroup->getIcon()),
+                            'url'      => $this->generatePublicUrl($childGroup),
+                        ];
+                    }, $repo->findPublishedGroupsByParent($group)),
                     'articles'     => array_map(function (KbPages $article): array {
                         return [
                             'entity'   => $article,
                             'iconHtml' => $this->getSettingsProvider()->renderIconHtml($article->getIcon()),
+                            'url'      => $this->generatePublicUrl($article),
                         ];
                     }, $repo->findPublishedArticlesByGroup($group)),
                 ])
             )
         );
+    }
+
+    private function renderArticleResponse(KbPages $article): Response
+    {
+        $group = $article->getParent();
+
+        return new Response(
+            $this->renderView(
+                '@MauticKbPages/Public/article.html.twig',
+                $this->getPublicViewParameters([
+                    'article'         => $article,
+                    'articleContent'  => $this->renderPublicHtml($article->getContent()),
+                    'articleIconHtml' => $this->getSettingsProvider()->renderIconHtml($article->getIcon()),
+                    'group'           => $group,
+                    'groupUrl'        => $group instanceof KbPages ? $this->generatePublicUrl($group) : null,
+                ])
+            )
+        );
+    }
+
+    private function resolveRootGroup(): ?KbPages
+    {
+        $rootSlug = $this->resolveRootSlug();
+        if ('' === $rootSlug) {
+            return null;
+        }
+
+        return $this->getKnowledgebaseModel()->getRepository()->findPublishedGroupBySlug($rootSlug);
     }
 
     private function resolveRootSlug(): string
@@ -221,6 +263,115 @@ class PublicController extends CommonController
     private function getConfiguredRootSlug(): string
     {
         return $this->normalizeSlug((string) $this->coreParametersHelper->get('kbpages_default_root', ''));
+    }
+
+    private function useHiddenRootUrls(): bool
+    {
+        $route = (string) $this->getCurrentRequest()->attributes->get('_route', '');
+
+        return $this->hasHostScopedRoutes()
+            && in_array($route, ['mautic_knowledgebase_root', 'mautic_knowledgebase_host_tree'], true);
+    }
+
+    private function generatePublicUrl(KbPages $item): ?string
+    {
+        $segments = $this->getPathSegments($item);
+        if ([] === $segments) {
+            return null;
+        }
+
+        $rootGroup = $this->resolveRootGroup();
+        if (
+            $this->useHiddenRootUrls()
+            && $rootGroup instanceof KbPages
+            && $rootGroup->getSlug() === $segments[0]
+        ) {
+            $descendantSegments = array_slice($segments, 1);
+
+            if ([] === $descendantSegments) {
+                return $this->generateUrl('mautic_knowledgebase_root');
+            }
+
+            return $this->generateUrl('mautic_knowledgebase_host_tree', [
+                'slugPath' => implode('/', $descendantSegments),
+            ]);
+        }
+
+        return $this->generateCanonicalPublicUrl($segments);
+    }
+
+    /**
+     * @param string[] $segments
+     */
+    private function generateCanonicalPublicUrl(array $segments): ?string
+    {
+        if ([] === $segments) {
+            return null;
+        }
+
+        if (1 === count($segments)) {
+            return $this->generateUrl('mautic_knowledgebase_group', [
+                'slug' => $segments[0],
+            ]);
+        }
+
+        return $this->generateUrl('mautic_knowledgebase_tree', [
+            'rootSlug' => array_shift($segments),
+            'slugPath' => implode('/', $segments),
+        ]);
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getPathSegments(KbPages $item): array
+    {
+        $segments = [];
+        $current  = $item;
+
+        while ($current instanceof KbPages) {
+            $slug = (string) $current->getSlug();
+            if ('' === $slug) {
+                return [];
+            }
+
+            array_unshift($segments, $slug);
+            $current = $current->getParent();
+        }
+
+        return $segments;
+    }
+
+    private function resolveTreeItem(KbPages $rootGroup, string $slugPath): ?KbPages
+    {
+        $segments = array_values(array_filter(explode('/', trim($slugPath, '/')), static fn (string $segment): bool => '' !== $segment));
+        if ([] === $segments) {
+            return $rootGroup;
+        }
+
+        $repo    = $this->getKnowledgebaseModel()->getRepository();
+        $current = $rootGroup;
+
+        foreach ($segments as $index => $segment) {
+            $child = $repo->findPublishedChildBySlug($current, $segment);
+            if (!$child instanceof KbPages) {
+                return null;
+            }
+
+            $isLast = $index === count($segments) - 1;
+            if (!$isLast && !$child->isGroup()) {
+                return null;
+            }
+
+            $current = $child;
+        }
+
+        return $current;
+    }
+
+    private function hasHostScopedRoutes(): bool
+    {
+        return '' !== trim((string) $this->coreParametersHelper->get('kbpages_root_hosts', ''));
     }
 
     private function normalizeSlug(string $value): string

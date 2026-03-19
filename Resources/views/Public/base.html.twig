@@ -16,6 +16,9 @@
             --kb-text: #1f2937;
             --kb-text-soft: #4b5563;
             --kb-link: #2563eb;
+            --kb-icon-box-bg: #ffffff;
+            --kb-icon-box-border: rgba(37, 99, 235, 0.08);
+            --kb-icon-box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
         }
 
         * { box-sizing: border-box; }
@@ -62,27 +65,31 @@
             align-items: center;
             justify-content: center;
             flex: 0 0 auto;
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: #eff6ff;
+            width: 54px;
+            height: 54px;
+            padding: 12px;
+            border-radius: 16px;
+            border: 1px solid var(--kb-icon-box-border);
+            background: var(--kb-icon-box-bg);
+            box-shadow: var(--kb-icon-box-shadow);
             color: #2563eb;
         }
         .kb-icon i {
-            font-size: 20px;
+            font-size: 28px;
             line-height: 1;
         }
         .kb-icon img,
         .kb-icon svg {
             display: block;
-            width: 22px;
-            height: 22px;
+            width: 28px;
+            height: 28px;
             object-fit: contain;
         }
         .kb-list-link {
             display: inline-flex;
             align-items: center;
             gap: 10px;
+            min-height: 54px;
         }
         .kb-card figure.table,
         .kb-rich figure.table {

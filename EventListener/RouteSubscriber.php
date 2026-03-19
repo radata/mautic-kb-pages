@@ -28,17 +28,35 @@ class RouteSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $roots = $this->getRegisteredRoots();
-        $collection = $event->getCollection();
-        $host       = $this->getRootHostRequirement();
+        $roots         = $this->getRegisteredRoots();
+        $collection    = $event->getCollection();
+        $hostCondition = $this->getRootHostCondition();
 
         $collection->add('mautic_knowledgebase_root', new Route(
             '/',
             ['_controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::rootAction'],
             [],
             [],
-            $host
+            '',
+            [],
+            [],
+            $hostCondition
         ));
+
+        if ('' !== $hostCondition) {
+            $collection->add('mautic_knowledgebase_host_tree', new Route(
+                '/{slugPath}',
+                ['_controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::treeAction'],
+                [
+                    'slugPath' => $this->getHostTreeRequirement($roots),
+                ],
+                [],
+                '',
+                [],
+                [],
+                $hostCondition
+            ));
+        }
 
         if ([] === $roots) {
             return;
@@ -46,15 +64,14 @@ class RouteSubscriber implements EventSubscriberInterface
 
         $requirement = '(?:'.implode('|', array_map(static fn (string $root): string => preg_quote($root, '/'), $roots)).')';
 
-        $collection->add('mautic_knowledgebase_article', new Route(
-            '/{groupSlug}/{slug}',
-            ['_controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::articleAction'],
+        $collection->add('mautic_knowledgebase_tree', new Route(
+            '/{rootSlug}/{slugPath}',
+            ['_controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::treeAction'],
             [
-                'groupSlug' => $requirement,
-                'slug'      => '[^/]+',
+                'rootSlug' => $requirement,
+                'slugPath' => '.+',
             ],
-            [],
-            $host
+            []
         ));
 
         $collection->add('mautic_knowledgebase_group', new Route(
@@ -63,8 +80,7 @@ class RouteSubscriber implements EventSubscriberInterface
             [
                 'slug' => $requirement,
             ],
-            [],
-            $host
+            []
         ));
     }
 
@@ -95,7 +111,7 @@ class RouteSubscriber implements EventSubscriberInterface
         return $roots;
     }
 
-    private function getRootHostRequirement(): string
+    private function getRootHostCondition(): string
     {
         $value = (string) $this->coreParametersHelper->get('kbpages_root_hosts', '');
         if ('' === trim($value)) {
@@ -107,10 +123,14 @@ class RouteSubscriber implements EventSubscriberInterface
             return '';
         }
 
-        $hosts = array_map(static function (string $host): string {
+        $patterns = array_map(static function (string $host): string {
             $normalized = trim($host);
             $normalized = preg_replace('/[^a-z0-9\.\-\*]+/', '', $normalized) ?? '';
             $normalized = trim($normalized, '.');
+
+            if ('' === $normalized) {
+                return '';
+            }
 
             if (str_starts_with($normalized, '*.')) {
                 return '(?:.+\\.)?'.preg_quote(substr($normalized, 2), '/');
@@ -119,12 +139,39 @@ class RouteSubscriber implements EventSubscriberInterface
             return preg_quote($normalized, '/');
         }, $hosts);
 
-        $hosts = array_values(array_filter(array_unique($hosts)));
+        $patterns = array_values(array_filter(array_unique($patterns)));
 
-        if ([] === $hosts) {
+        if ([] === $patterns) {
             return '';
         }
 
-        return '(?:'.implode('|', $hosts).')';
+        return "context.getHost() matches '/^(?:".implode('|', $patterns).")$/i'";
+    }
+
+    /**
+     * @param string[] $roots
+     */
+    private function getHostTreeRequirement(array $roots): string
+    {
+        $reserved = [
+            's',
+            'api',
+            '_knowledgebase',
+            '_profiler',
+            '_wdt',
+            'css',
+            'images',
+            'js',
+            'favicon.ico',
+            'mtc',
+            'r',
+            'redirect',
+            'mtracking.gif',
+        ];
+
+        $excluded = array_values(array_filter(array_unique(array_merge($reserved, $roots))));
+        $pattern  = implode('|', array_map(static fn (string $value): string => preg_quote($value, '/'), $excluded));
+
+        return '(?!(?:'.$pattern.')(?:/|$)).+';
     }
 }

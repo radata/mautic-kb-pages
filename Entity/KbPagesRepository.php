@@ -11,24 +11,50 @@ class KbPagesRepository extends CommonRepository
      */
     public function findPublishedGroups(): array
     {
-        return $this->createQueryBuilder('e')
+        return $this->findPublishedGroupsByParent();
+    }
+
+    /**
+     * @return KbPages[]
+     */
+    public function findPublishedGroupsByParent(?KbPages $parent = null): array
+    {
+        $qb = $this->createQueryBuilder('e')
             ->where('e.type = :groupType')
             ->andWhere('e.isPublished = :published')
             ->setParameter('groupType', KbPages::TYPE_GROUP)
             ->setParameter('published', true)
             ->orderBy('e.position', 'ASC')
-            ->addOrderBy('e.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->addOrderBy('e.title', 'ASC');
+
+        if ($parent instanceof KbPages) {
+            $qb->andWhere('e.parent = :parent')
+                ->setParameter('parent', $parent);
+        } else {
+            $qb->andWhere('e.parent IS NULL');
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
-    public function findPublishedGroupBySlug(string $slug): ?KbPages
+    public function findPublishedGroupBySlug(string $slug, ?KbPages $parent = null): ?KbPages
     {
-        return $this->findOneBy([
-            'slug'        => $slug,
-            'type'        => KbPages::TYPE_GROUP,
-            'isPublished' => true,
-        ]);
+        $qb = $this->createQueryBuilder('e')
+            ->where('e.slug = :slug')
+            ->andWhere('e.type = :groupType')
+            ->andWhere('e.isPublished = :published')
+            ->setParameter('slug', $slug)
+            ->setParameter('groupType', KbPages::TYPE_GROUP)
+            ->setParameter('published', true);
+
+        if ($parent instanceof KbPages) {
+            $qb->andWhere('e.parent = :parent')
+                ->setParameter('parent', $parent);
+        } else {
+            $qb->andWhere('e.parent IS NULL');
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     /**
@@ -49,20 +75,29 @@ class KbPagesRepository extends CommonRepository
             ->getResult();
     }
 
-    public function findPublishedArticleBySlugs(string $groupSlug, string $slug): ?KbPages
+    public function findPublishedArticleByGroupAndSlug(KbPages $group, string $slug): ?KbPages
     {
         return $this->createQueryBuilder('article')
-            ->innerJoin('article.parent', 'parentGroup')
             ->where('article.type = :articleType')
             ->andWhere('article.slug = :slug')
             ->andWhere('article.isPublished = :published')
-            ->andWhere('parentGroup.type = :groupType')
-            ->andWhere('parentGroup.slug = :groupSlug')
-            ->andWhere('parentGroup.isPublished = :published')
+            ->andWhere('article.parent = :group')
             ->setParameter('articleType', KbPages::TYPE_ARTICLE)
-            ->setParameter('groupType', KbPages::TYPE_GROUP)
             ->setParameter('slug', $slug)
-            ->setParameter('groupSlug', $groupSlug)
+            ->setParameter('group', $group)
+            ->setParameter('published', true)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findPublishedChildBySlug(KbPages $parent, string $slug): ?KbPages
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.parent = :parent')
+            ->andWhere('e.slug = :slug')
+            ->andWhere('e.isPublished = :published')
+            ->setParameter('parent', $parent)
+            ->setParameter('slug', $slug)
             ->setParameter('published', true)
             ->getQuery()
             ->getOneOrNullResult();

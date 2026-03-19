@@ -3,6 +3,12 @@
 {% block pageTitle %}{{ group.getTitle() }}{% endblock %}
 
 {% block kbBody %}
+    {% if group.getParent() and parentUrl %}
+        <p class="kb-breadcrumb">
+            <a href="{{ parentUrl }}">{{ group.getParent().getTitle() }}</a>
+        </p>
+    {% endif %}
+
     <div class="kb-card">
         <h1 class="kb-title">
             {% if groupIconHtml %}
@@ -18,16 +24,31 @@
         {% endif %}
     </div>
 
+    {% if childGroups %}
+        <div class="kb-card">
+            <h2>Groups</h2>
+            <ul class="kb-list">
+                {% for childGroup in childGroups %}
+                    <li>
+                        <a class="kb-list-link" href="{{ childGroup.url }}">
+                            {% if childGroup.iconHtml %}
+                                <span class="kb-icon">{{ childGroup.iconHtml|raw }}</span>
+                            {% endif %}
+                            <span>{{ childGroup.entity.getTitle() }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
     <div class="kb-card">
         <h2>Articles</h2>
         {% if articles %}
             <ul class="kb-list">
                 {% for article in articles %}
                     <li>
-                        <a class="kb-list-link" href="{{ path('mautic_knowledgebase_article', {
-                            groupSlug: group.getSlug(),
-                            slug: article.entity.getSlug()
-                        }) }}">
+                        <a class="kb-list-link" href="{{ article.url }}">
                             {% if article.iconHtml %}
                                 <span class="kb-icon">{{ article.iconHtml|raw }}</span>
                             {% endif %}

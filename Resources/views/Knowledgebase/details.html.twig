@@ -1,12 +1,13 @@
 {% extends '@MauticCore/Default/content.html.twig' %}
 
+{% set pathSlugs = item.getPathSlugs() %}
 {% set previewUrl = null %}
-{% if item.isGroup() %}
-    {% set previewUrl = url('mautic_knowledgebase_group', {slug: item.getSlug()}) %}
-{% elseif item.getParent() %}
-    {% set previewUrl = url('mautic_knowledgebase_article', {
-        groupSlug: item.getParent().getSlug(),
-        slug: item.getSlug(),
+{% if pathSlugs|length == 1 %}
+    {% set previewUrl = url('mautic_knowledgebase_group', {slug: pathSlugs|first}) %}
+{% elseif pathSlugs|length > 1 %}
+    {% set previewUrl = url('mautic_knowledgebase_tree', {
+        rootSlug: pathSlugs|first,
+        slugPath: pathSlugs|slice(1)|join('/'),
     }) %}
 {% endif %}
 

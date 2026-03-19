@@ -28,7 +28,7 @@ class KbPages extends FormEntity
     public static function loadValidatorMetadata(ClassMetadata $metadata): void
     {
         $metadata->addConstraint(new UniqueEntity([
-            'fields'  => ['slug'],
+            'fields'  => ['slug', 'parent'],
             'message' => 'mautic.kbpages.slug.unique',
         ]));
 
@@ -99,12 +99,6 @@ class KbPages extends FormEntity
 
     public function validateHierarchy(ExecutionContextInterface $context): void
     {
-        if ($this->isGroup() && null !== $this->parent) {
-            $context->buildViolation('mautic.kbpages.parent.group_only')
-                ->atPath('parent')
-                ->addViolation();
-        }
-
         if ($this->isArticle() && null === $this->parent) {
             $context->buildViolation('mautic.kbpages.parent.required')
                 ->atPath('parent')
@@ -123,6 +117,7 @@ class KbPages extends FormEntity
                     ->atPath('parent')
                     ->addViolation();
             }
+
         }
     }
 
@@ -235,6 +230,27 @@ class KbPages extends FormEntity
     public function isArticle(): bool
     {
         return self::TYPE_ARTICLE === $this->type;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getPathSlugs(): array
+    {
+        $segments = [];
+        $current  = $this;
+
+        while ($current instanceof self) {
+            $slug = (string) $current->getSlug();
+            if ('' === $slug) {
+                return [];
+            }
+
+            array_unshift($segments, $slug);
+            $current = $current->getParent();
+        }
+
+        return $segments;
     }
 
     public function getName(): ?string
