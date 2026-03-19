@@ -4,7 +4,7 @@ return [
     'name'        => 'Knowledge Base',
     'description' => 'Manage grouped support articles with knowledge base pages.',
     'author'      => 'Abdullah Kiser / Friendly Automate',
-    'version'     => '1.0.9',
+    'version'     => '1.0.10',
     'routes'      => [
         'main' => [
             'mautic_knowledgebase_index' => [
@@ -79,5 +79,7 @@ return [
         'kbpages_custom_css'     => '',
         'kbpages_container_width' => 960,
         'kbpages_public_roots'   => 'nl,en',
+        'kbpages_default_root'   => 'nl',
+        'kbpages_root_hosts'     => '',
     ],
 ];

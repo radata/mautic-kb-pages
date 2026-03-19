@@ -10,6 +10,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PublicController extends CommonController
 {
+    public function rootAction(): Response
+    {
+        $defaultRoot = $this->getConfiguredRootSlug();
+
+        if ('' !== $defaultRoot) {
+            $repo  = $this->getKnowledgebaseModel()->getRepository();
+            $group = $repo->findPublishedGroupBySlug($defaultRoot);
+
+            if ($group instanceof KbPages) {
+                return $this->renderGroupResponse($group);
+            }
+        }
+
+        return $this->homeAction();
+    }
+
     public function homeAction(): Response
     {
         $repo = $this->getKnowledgebaseModel()->getRepository();
@@ -33,16 +49,7 @@ class PublicController extends CommonController
             throw $this->createNotFoundException();
         }
 
-        return new Response(
-            $this->renderView(
-                '@MauticKbPages/Public/group.html.twig',
-                $this->getPublicViewParameters([
-                    'group'        => $group,
-                    'groupContent' => $this->renderPublicHtml($group->getContent()),
-                    'articles'     => $repo->findPublishedArticlesByGroup($group),
-                ])
-            )
-        );
+        return $this->renderGroupResponse($group);
     }
 
     public function articleAction(string $groupSlug, string $slug): Response
@@ -121,6 +128,30 @@ class PublicController extends CommonController
         \assert($model instanceof KbPagesModel);
 
         return $model;
+    }
+
+    private function renderGroupResponse(KbPages $group): Response
+    {
+        $repo = $this->getKnowledgebaseModel()->getRepository();
+
+        return new Response(
+            $this->renderView(
+                '@MauticKbPages/Public/group.html.twig',
+                $this->getPublicViewParameters([
+                    'group'        => $group,
+                    'groupContent' => $this->renderPublicHtml($group->getContent()),
+                    'articles'     => $repo->findPublishedArticlesByGroup($group),
+                ])
+            )
+        );
+    }
+
+    private function getConfiguredRootSlug(): string
+    {
+        $slug = strtolower(trim((string) $this->coreParametersHelper->get('kbpages_default_root', '')));
+        $slug = preg_replace('/[^a-z0-9\-]+/', '-', $slug) ?? '';
+
+        return trim($slug, '-');
     }
 
     private function getPageModel(): PageModel
