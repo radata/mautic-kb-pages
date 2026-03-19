@@ -54,6 +54,11 @@ docker exec --user www-data --workdir /var/www/html mautic_web \
   -W --no-interaction --ignore-platform-req=ext-gd
 ```
 
+# if first run fails the the migration has to be forced
+```bash 
+docker exec --user www-data --workdir /var/www/html mautic_web php bin/console doctrine:query:sql --force-fetch "SELECT id, bundle, name, version FROM plugins WHERE bundle='MauticKbPagesBundle'"
+```
+
 > The `--ignore-platform-req=ext-gd` flag is needed because the `mautic/mautic:7.0-fpm` Docker image has a broken GD CLI extension (`libavif.so.15` missing). GD works fine at runtime via PHP-FPM.
 
 Update to the latest version:
