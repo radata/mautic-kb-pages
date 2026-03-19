@@ -226,8 +226,13 @@ class KbPagesController extends AbstractStandardFormController
 
     private function shouldSortListByPath(): bool
     {
-        $request = $this->requestStack->getCurrentRequest();
-        if (null === $request || !$request->hasSession()) {
+        try {
+            $request = $this->getCurrentRequest();
+        } catch (\RuntimeException) {
+            return true;
+        }
+
+        if (!$request->hasSession()) {
             return true;
         }
 
@@ -243,8 +248,13 @@ class KbPagesController extends AbstractStandardFormController
 
     private function getCurrentOrderDirection(): string
     {
-        $request = $this->requestStack->getCurrentRequest();
-        if (null === $request || !$request->hasSession()) {
+        try {
+            $request = $this->getCurrentRequest();
+        } catch (\RuntimeException) {
+            return 'ASC';
+        }
+
+        if (!$request->hasSession()) {
             return 'ASC';
         }
 
