@@ -4,7 +4,7 @@ return [
     'name'        => 'Knowledge Base',
     'description' => 'Manage grouped support articles with knowledge base pages.',
     'author'      => 'Abdullah Kiser / Friendly Automate',
-    'version'     => '1.0.4',
+    'version'     => '1.0.5',
     'routes'      => [
         'main' => [
             'mautic_knowledgebase_index' => [
@@ -18,14 +18,6 @@ return [
             ],
         ],
         'public' => [
-            'mautic_knowledgebase_article' => [
-                'path'       => '/{groupSlug}/{slug}',
-                'controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::articleAction',
-                'requirements' => [
-                    'groupSlug' => '^(?!(?:s|api|_knowledgebase|_profiler|_wdt|css|images|js|favicon\.ico|mtc|r|redirect|mtracking\.gif)$)[^/]+$',
-                    'slug'      => '^[^/]+$',
-                ],
-            ],
             'mautic_knowledgebase_home' => [
                 'path'       => '/_knowledgebase',
                 'controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::homeAction',
@@ -35,6 +27,16 @@ return [
                 'controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::groupAction',
                 'requirements' => [
                     'slug' => '^(?!(?:s|api|_knowledgebase|_profiler|_wdt|css|images|js|favicon\.ico|mtc|r|redirect|mtracking\.gif)$)[^/]+$',
+                ],
+            ],
+        ],
+        'catchall' => [
+            'mautic_knowledgebase_article' => [
+                'path'       => '/{groupSlug}/{slug}',
+                'controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::articleAction',
+                'requirements' => [
+                    'groupSlug' => '^(?!(?:s|api|_knowledgebase|_profiler|_wdt|css|images|js|favicon\.ico|mtc|r|redirect|mtracking\.gif)$)[^/]+$',
+                    'slug'      => '^[^/]+$',
                 ],
             ],
         ],
