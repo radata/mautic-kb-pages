@@ -13,7 +13,7 @@ class PublicController extends CommonController
 {
     public function rootAction(): Response
     {
-        $defaultRoot = $this->getConfiguredRootSlug();
+        $defaultRoot = $this->resolveRootSlug();
 
         if ('' !== $defaultRoot) {
             $repo  = $this->getKnowledgebaseModel()->getRepository();
@@ -167,12 +167,77 @@ class PublicController extends CommonController
         );
     }
 
+    private function resolveRootSlug(): string
+    {
+        $request = $this->getCurrentRequest();
+        $host    = strtolower($request->getHost());
+        $hostKey = $this->normalizeDomainKey($host);
+        $map     = $this->getConfiguredDomainRoots();
+
+        if (isset($map[$hostKey])) {
+            return $map[$hostKey];
+        }
+
+        return $this->getConfiguredRootSlug();
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getConfiguredDomainRoots(): array
+    {
+        $value = trim((string) $this->coreParametersHelper->get('kbpages_domain_roots', ''));
+        if ('' === $value) {
+            return [];
+        }
+
+        $lines = preg_split('/\r\n|\r|\n/', $value);
+        if (!is_array($lines)) {
+            return [];
+        }
+
+        $map = [];
+
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if ('' === $line || !str_contains($line, '=')) {
+                continue;
+            }
+
+            [$domain, $root] = array_map('trim', explode('=', $line, 2));
+            $domain = $this->normalizeDomainKey($domain);
+            $root   = $this->normalizeSlug($root);
+
+            if ('' === $domain || '' === $root) {
+                continue;
+            }
+
+            $map[$domain] = $root;
+        }
+
+        return $map;
+    }
+
     private function getConfiguredRootSlug(): string
     {
-        $slug = strtolower(trim((string) $this->coreParametersHelper->get('kbpages_default_root', '')));
+        return $this->normalizeSlug((string) $this->coreParametersHelper->get('kbpages_default_root', ''));
+    }
+
+    private function normalizeSlug(string $value): string
+    {
+        $slug = strtolower(trim($value));
         $slug = preg_replace('/[^a-z0-9\-]+/', '-', $slug) ?? '';
 
         return trim($slug, '-');
+    }
+
+    private function normalizeDomainKey(string $value): string
+    {
+        $value = strtolower(trim($value));
+        $value = str_replace('.', '-', $value);
+        $value = preg_replace('/[^a-z0-9\-]+/', '-', $value) ?? '';
+
+        return trim($value, '-');
     }
 
     private function getPageModel(): PageModel

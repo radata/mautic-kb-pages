@@ -55,6 +55,19 @@ class ConfigType extends AbstractType
             ],
         ]);
 
+        $builder->add('kbpages_domain_roots', TextareaType::class, [
+            'label'      => 'plugin.kbpages.config.domain_roots',
+            'label_attr' => ['class' => 'control-label'],
+            'required'   => false,
+            'help'       => 'plugin.kbpages.config.domain_roots.help',
+            'attr'       => [
+                'class'       => 'form-control',
+                'rows'        => 4,
+                'placeholder' => "help-hollandworx-nl=nl\nsupport-example-com=en",
+                'style'       => 'font-family: monospace;',
+            ],
+        ]);
+
         $builder->add('kbpages_default_root', TextType::class, [
             'label'      => 'plugin.kbpages.config.default_root',
             'label_attr' => ['class' => 'control-label'],
