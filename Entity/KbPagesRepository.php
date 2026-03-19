@@ -52,13 +52,13 @@ class KbPagesRepository extends CommonRepository
     public function findPublishedArticleBySlugs(string $groupSlug, string $slug): ?KbPages
     {
         return $this->createQueryBuilder('article')
-            ->innerJoin('article.parent', 'group')
+            ->innerJoin('article.parent', 'parentGroup')
             ->where('article.type = :articleType')
             ->andWhere('article.slug = :slug')
             ->andWhere('article.isPublished = :published')
-            ->andWhere('group.type = :groupType')
-            ->andWhere('group.slug = :groupSlug')
-            ->andWhere('group.isPublished = :published')
+            ->andWhere('parentGroup.type = :groupType')
+            ->andWhere('parentGroup.slug = :groupSlug')
+            ->andWhere('parentGroup.isPublished = :published')
             ->setParameter('articleType', KbPages::TYPE_ARTICLE)
             ->setParameter('groupType', KbPages::TYPE_GROUP)
             ->setParameter('slug', $slug)

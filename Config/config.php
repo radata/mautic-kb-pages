@@ -4,7 +4,7 @@ return [
     'name'        => 'Knowledge Base',
     'description' => 'Manage grouped support articles with knowledge base pages.',
     'author'      => 'Abdullah Kiser / Friendly Automate',
-    'version'     => '1.0.2',
+    'version'     => '1.0.3',
     'routes'      => [
         'main' => [
             'mautic_knowledgebase_index' => [
@@ -18,17 +18,17 @@ return [
             ],
         ],
         'public' => [
+            'mautic_knowledgebase_article' => [
+                'path'       => '/{groupSlug}/{slug}',
+                'controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::articleAction',
+            ],
             'mautic_knowledgebase_home' => [
-                'path'       => '/kb',
+                'path'       => '/_knowledgebase',
                 'controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::homeAction',
             ],
             'mautic_knowledgebase_group' => [
-                'path'       => '/kb/{slug}',
+                'path'       => '/{slug}',
                 'controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::groupAction',
-            ],
-            'mautic_knowledgebase_article' => [
-                'path'       => '/kb/{groupSlug}/{slug}',
-                'controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::articleAction',
             ],
         ],
     ],

@@ -92,8 +92,9 @@ class KbPagesType extends AbstractType
             'label_attr' => ['class' => 'control-label'],
             'required'   => false,
             'attr'       => [
-                'class' => 'form-control editor',
-                'rows'  => 16,
+                'class'           => 'form-control editor editor-advanced',
+                'rows'            => 16,
+                'allow-full-html' => 'true',
             ],
         ]);
 

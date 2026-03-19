@@ -84,6 +84,15 @@
                 <tbody>
                 {% for item in items %}
                     {% set updatedAt = item.getDateModified() ?: item.getDateAdded() %}
+                    {% set previewUrl = null %}
+                    {% if item.isGroup() %}
+                        {% set previewUrl = url('mautic_knowledgebase_group', {slug: item.getSlug()}) %}
+                    {% elseif item.getParent() %}
+                        {% set previewUrl = url('mautic_knowledgebase_article', {
+                            groupSlug: item.getParent().getSlug(),
+                            slug: item.getSlug(),
+                        }) %}
+                    {% endif %}
                     <tr>
                         <td>
                             {{ include('@MauticCore/Helper/list_actions.html.twig', {
@@ -104,6 +113,18 @@
                                         item.getCreatedBy()
                                     ),
                                 },
+                                customButtons: previewUrl ? [{
+                                    attr: {
+                                        class: 'btn btn-ghost btn-sm btn-nospin',
+                                        href: previewUrl,
+                                        target: '_blank',
+                                        rel: 'noopener noreferrer',
+                                        'data-toggle': '',
+                                    },
+                                    iconClass: 'ri-external-link-line',
+                                    btnText: 'mautic.core.open_link'|trans,
+                                    priority: 100,
+                                }] : [],
                             }) }}
                         </td>
                         <td>

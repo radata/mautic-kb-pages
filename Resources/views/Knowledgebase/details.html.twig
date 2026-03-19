@@ -1,5 +1,15 @@
 {% extends '@MauticCore/Default/content.html.twig' %}
 
+{% set previewUrl = null %}
+{% if item.isGroup() %}
+    {% set previewUrl = url('mautic_knowledgebase_group', {slug: item.getSlug()}) %}
+{% elseif item.getParent() %}
+    {% set previewUrl = url('mautic_knowledgebase_article', {
+        groupSlug: item.getParent().getSlug(),
+        slug: item.getSlug(),
+    }) %}
+{% endif %}
+
 {% block mauticContent %}{{ mauticContent }}{% endblock %}
 {% block headerTitle %}{{ item.getTitle() }}{% endblock %}
 
@@ -26,6 +36,19 @@
         indexRoute: indexRoute,
         langVar: 'kbpages',
         nameGetter: 'getTitle',
+        customButtons: previewUrl ? [{
+            attr: {
+                class: 'btn btn-tertiary btn-nospin',
+                href: previewUrl,
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                'data-toggle': '',
+            },
+            iconClass: 'ri-external-link-line',
+            btnText: 'mautic.core.open_link'|trans,
+            primary: true,
+            priority: 250,
+        }] : [],
         templateButtons: {
             edit: securityHasEntityAccess(
                 permissions[permissionBase ~ ':editown'],
@@ -62,6 +85,15 @@
                     <div class="col-md-3"><strong>{{ 'plugin.kbpages.slug'|trans }}</strong></div>
                     <div class="col-md-9"><code>{{ item.getSlug() }}</code></div>
                 </div>
+
+                {% if previewUrl %}
+                    <div class="row mb-md">
+                        <div class="col-md-3"><strong>{{ 'plugin.kbpages.public_url'|trans }}</strong></div>
+                        <div class="col-md-9">
+                            <a href="{{ previewUrl }}" target="_blank" rel="noopener noreferrer">{{ previewUrl }}</a>
+                        </div>
+                    </div>
+                {% endif %}
 
                 <div class="row mb-md">
                     <div class="col-md-3"><strong>{{ 'plugin.kbpages.group'|trans }}</strong></div>

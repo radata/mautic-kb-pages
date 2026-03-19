@@ -15,12 +15,11 @@
 </head>
 <body>
 <div class="wrap">
-    <p>
-        <a href="{{ path('mautic_knowledgebase_home') }}">Knowledge Base</a>
-        {% if group %}
-            / <a href="{{ path('mautic_knowledgebase_group', {slug: group.getSlug()}) }}">{{ group.getTitle() }}</a>
-        {% endif %}
-    </p>
+    {% if group %}
+        <p>
+            <a href="{{ path('mautic_knowledgebase_group', {slug: group.getSlug()}) }}">{{ group.getTitle() }}</a>
+        </p>
+    {% endif %}
 
     <div class="card">
         <h1>{{ article.getTitle() }}</h1>
