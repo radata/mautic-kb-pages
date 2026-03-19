@@ -53,10 +53,6 @@ class KbPagesController extends AbstractStandardFormController
         );
 
         if (isset($viewParameters['items']) && is_array($viewParameters['items'])) {
-            if ($this->shouldSortListByPath()) {
-                $this->sortItemsByPath($viewParameters['items']);
-            }
-
             $viewParameters['previewUrls'] = [];
             foreach ($viewParameters['items'] as $item) {
                 if (!$item instanceof KbPages) {
@@ -124,27 +120,108 @@ class KbPagesController extends AbstractStandardFormController
     /**
      * @param KbPages[] $items
      */
-    private function sortItemsByPath(array &$items): void
+    protected function getIndexItems($start, $limit, $filter, $orderBy, $orderByDir, array $args = [])
+    {
+        if (!$this->shouldSortListByPath()) {
+            return parent::getIndexItems($start, $limit, $filter, $orderBy, $orderByDir, $args);
+        }
+
+        $items = $this->getModel($this->getModelName())->getEntities(array_merge(
+            [
+                'filter'           => $filter,
+                'orderBy'          => $orderBy,
+                'orderByDir'       => $orderByDir,
+                'ignore_paginator' => true,
+            ],
+            $args
+        ));
+
+        if (!is_array($items)) {
+            $items = iterator_to_array($items);
+        }
+
+        $items = $this->sortItemsByHierarchy($items);
+        $count = count($items);
+
+        if ($limit > 0) {
+            $items = array_slice($items, max(0, (int) $start), (int) $limit);
+        }
+
+        return [$count, $items];
+    }
+
+    /**
+     * @param KbPages[] $items
+     *
+     * @return KbPages[]
+     */
+    private function sortItemsByHierarchy(array $items): array
     {
         $direction = $this->getCurrentOrderDirection();
+        $itemsById = [];
+        $children  = [];
 
-        usort($items, function (KbPages $left, KbPages $right) use ($direction): int {
-            $result = strnatcasecmp(implode('/', $left->getPathSlugs()), implode('/', $right->getPathSlugs()));
+        foreach ($items as $item) {
+            if (!$item instanceof KbPages || null === $item->getId()) {
+                continue;
+            }
 
-            if (0 === $result) {
-                if ($left->isGroup() !== $right->isGroup()) {
+            $itemsById[$item->getId()] = $item;
+        }
+
+        foreach ($items as $item) {
+            if (!$item instanceof KbPages) {
+                continue;
+            }
+
+            $parent   = $item->getParent();
+            $parentId = $parent instanceof KbPages ? (int) $parent->getId() : 0;
+
+            if ($parentId > 0 && !isset($itemsById[$parentId])) {
+                $parentId = 0;
+            }
+
+            $children[$parentId][] = $item;
+        }
+
+        foreach ($children as &$siblings) {
+            usort($siblings, function (KbPages $left, KbPages $right) use ($direction): int {
+                $result = $left->getPosition() <=> $right->getPosition();
+
+                if (0 === $result && $left->isGroup() !== $right->isGroup()) {
                     $result = $left->isGroup() ? -1 : 1;
-                } else {
-                    $result = $left->getPosition() <=> $right->getPosition();
+                }
+
+                if (0 === $result) {
+                    $result = strnatcasecmp((string) $left->getTitle(), (string) $right->getTitle());
+                }
+
+                if (0 === $result) {
+                    $result = strnatcasecmp(implode('/', $left->getPathSlugs()), implode('/', $right->getPathSlugs()));
+                }
+
+                if ('DESC' === $direction) {
+                    $result *= -1;
+                }
+
+                return $result;
+            });
+        }
+        unset($siblings);
+
+        $ordered = [];
+        $appendChildren = function (int $parentId) use (&$appendChildren, &$ordered, $children): void {
+            foreach ($children[$parentId] ?? [] as $child) {
+                $ordered[] = $child;
+                if (null !== $child->getId()) {
+                    $appendChildren((int) $child->getId());
                 }
             }
+        };
 
-            if ('DESC' === $direction) {
-                $result *= -1;
-            }
+        $appendChildren(0);
 
-            return $result;
-        });
+        return $ordered;
     }
 
     private function shouldSortListByPath(): bool
