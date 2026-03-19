@@ -4,7 +4,7 @@ return [
     'name'        => 'Knowledge Base',
     'description' => 'Manage grouped support articles with knowledge base pages.',
     'author'      => 'Abdullah Kiser / Friendly Automate',
-    'version'     => '1.0.8',
+    'version'     => '1.0.9',
     'routes'      => [
         'main' => [
             'mautic_knowledgebase_index' => [
@@ -21,21 +21,6 @@ return [
             'mautic_knowledgebase_home' => [
                 'path'       => '/_knowledgebase',
                 'controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::homeAction',
-            ],
-            'mautic_knowledgebase_article' => [
-                'path'       => '/{groupSlug}/{slug}',
-                'controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::articleAction',
-                'requirements' => [
-                    'groupSlug' => '(?!(?:s|api|_knowledgebase|_profiler|_wdt|css|images|js|favicon\.ico|mtc|r|redirect|mtracking\.gif)(?:/|$))[^/]+',
-                    'slug'      => '[^/]+',
-                ],
-            ],
-            'mautic_knowledgebase_group' => [
-                'path'       => '/{slug}',
-                'controller' => 'MauticPlugin\MauticKbPagesBundle\Controller\PublicController::groupAction',
-                'requirements' => [
-                    'slug' => '(?!(?:s|api|_knowledgebase|_profiler|_wdt|css|images|js|favicon\.ico|mtc|r|redirect|mtracking\.gif)$)[^/]+',
-                ],
             ],
         ],
         'catchall' => [],
@@ -55,6 +40,12 @@ return [
             'mautic.kbpages.config.subscriber' => [
                 'class' => \MauticPlugin\MauticKbPagesBundle\EventListener\ConfigSubscriber::class,
                 'arguments' => [],
+            ],
+            'mautic.kbpages.route.subscriber' => [
+                'class' => \MauticPlugin\MauticKbPagesBundle\EventListener\RouteSubscriber::class,
+                'arguments' => [
+                    'mautic.helper.core_parameters',
+                ],
             ],
         ],
         'forms' => [
@@ -87,5 +78,6 @@ return [
         'kbpages_footer_html'    => '',
         'kbpages_custom_css'     => '',
         'kbpages_container_width' => 960,
+        'kbpages_public_roots'   => 'nl,en',
     ],
 ];
