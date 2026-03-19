@@ -23,9 +23,9 @@ class KbPagesType extends AbstractType
     {
         $builder->addEventSubscriber(new CleanFormSubscriber([
             'summary'    => 'html',
-            'content'    => 'html',
-            'headerHtml' => 'html',
-            'footerHtml' => 'html',
+            'content'    => 'raw',
+            'headerHtml' => 'raw',
+            'footerHtml' => 'raw',
         ]));
         $builder->addEventSubscriber(new FormExitSubscriber('knowledgebase', $options));
 

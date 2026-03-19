@@ -1,61 +1,170 @@
--- Existing rows (IDs 1-9, already inserted):
+-- ## NL ##;
 -- 1: nl                    (root NL)
 -- 2: mijn-account          (parent=1)
--- 3: en                    (root EN)
--- 4: my-account            (parent=3)
--- 5: aanmaken-en-toegang   (parent=2)
--- 6: create-and-access     (parent=4)
--- 7: beheren               (parent=2)
--- 8: manage                (parent=4)
--- 9: waar-moet-ik-aan-voldoen-om-via-hollandworx-te-werken (parent=5)
+-- 2: aanmaken-en-toegang   (parent=2)
+-- 4: beheren               (parent=2)
+
+
+
+
+-- ## EN ##;
+-- : en                    (root EN)
+-- : my-account            (parent=3)
+-- : create-and-access     (parent=4)
+-- : manage                (parent=4)
+
 
 
 # 1
-insert into kb_pages(id,is_published,date_added,created_by,created_by_user,date_modified,modified_by,modified_by_user,checked_out,checked_out_by,checked_out_by_user,title,slug,`type`,summary,content,icon,position,parent_id,header_html,footer_html,custom_css,container_width) values(1,1,'2026-03-19 05:06:47',1,'Services Go','2026-03-19 05:06:47',1,'Services Go',null,null,'Services Go','Kennisbank','nl','group','Summary','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Content</span></span></p>','brain',0,null,'<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Root Header HTML</span></span></p>','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Root Footer HTML</span></span></p>',null,1200);
+insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('nl',null,0,'Kennisbank','group','Summary','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Content</span></span></p>','brain','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Root Header HTML</span></span></p>','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Root Footer HTML</span></span></p>',null,1200);
 
-# 2
-insert into kb_pages(id,is_published,date_added,created_by,created_by_user,date_modified,modified_by,modified_by_user,checked_out,checked_out_by,checked_out_by_user,title,slug,`type`,summary,content,icon,position,parent_id,header_html,footer_html,custom_css,container_width) values(2,1,'2026-03-19 05:14:38',1,'Services Go','2026-03-19 05:14:38',1,'Services Go',null,null,'Services Go','Mijn account','mijn-account','group','Summary 1','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Content 1</span></span></p>','user-square',0,1,null,null,null,null);
+    ## 2
+    insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('mijn-account',1,0,'Mijn account','group','Summary 1','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Content 1</span></span></p>','user-square',null,null,null,null);
+        ### 21
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('annmaken-en-toegang',2,0,'Aanmaken en toegang','group',null,null,null,null,null,null,null);
+            insert into kb_pages(slug,parent_id,title,`type`) values('waar-moet-ik-aan-voldoen-om-via-hollandworx-te-werken',21,'Waar moet ik aan voldoen om via Hollandworx te werken?','article');
+            insert into kb_pages(slug,parent_id,title,`type`) values('hoe-oud-moet-ik-zijn-om-via-hollandworx-te-mogen-werken',21,'Hoe oud moet ik zijn om via Hollandworx te mogen werken?','article');
+            insert into kb_pages(slug,parent_id,title,`type`) values('waarom-wordt-mijn-identiteitsbewijs-gecontroleerd',21,'Waarom wordt mijn identiteitsbewijs gecontroleerd?','article');
+            insert into kb_pages(slug,parent_id,title,`type`) values('hoe-werkt-het-met-een-buitenlands-legitimatiebewijs',21,'Hoe werkt het met een buitenlands legitimatiebewijs?','article');
 
-insert into kb_pages(slug,parent_id,title,`type`) values('contact',1,'Contact','group');
--- EN top-level categories (parent_id=3) → IDs 39-52
-insert into kb_pages(slug,parent_id,title,`type`) values('over-ons',1,'Over ons','group');
-insert into kb_pages(slug,parent_id,title,`type`) values('for-clients',1,'For clients','group');
-insert into kb_pages(slug,parent_id,title,`type`) values('freelancing',1,'Freelancing','group');
-insert into kb_pages(slug,parent_id,title,`type`) values('starting-as-a-freelancer',1,'Starting as a freelancer','group');
-insert into kb_pages(slug,parent_id,title,`type`) values('hollandworx-app',1,'Hollandworx app','group');
-insert into kb_pages(slug,parent_id,title,`type`) values('agreements',1,'Agreements','group');
-insert into kb_pages(slug,parent_id,title,`type`) values('applications',1,'Applications','group');
-insert into kb_pages(slug,parent_id,title,`type`) values('flexpools',1,'Flexpools','group');
-insert into kb_pages(slug,parent_id,title,`type`) values('shifts',1,'Shifts','group');
-insert into kb_pages(slug,parent_id,title,`type`) values('money-matters',1,'Money matters','group');
-insert into kb_pages(slug,parent_id,title,`type`) values('payment',1,'Payment','group');
-insert into kb_pages(slug,parent_id,title,`type`) values('administration',1,'Administration','group');
-insert into kb_pages(slug,parent_id,title,`type`) values('hours-and-checkout',1,'Hours and checkout','group');
+        ### 22
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('beheer',2,0,'Beheer','group',null,null,null,null,null,null,null);
+            insert into kb_pages(slug,parent_id,title,`type`) values('ik-ben-mijn-wachtwoord-vergeten',22,'Ik ben mijn wachtwoord vergeten','article');
+            insert into kb_pages(slug,parent_id,title,`type`) values('hoe-kan-ik-mijn-account-verwijderen-bij-hollandworx',22,'Hoe kan ik mijn account verwijderen bij Hollandworx?','article');
+            insert into kb_pages(slug,parent_id,title,`type`) values('wat-kan-ik-doen-bij-problemen-met-de-app',22,'Wat kan ik doen bij problemen met de app?','article');
+            insert into kb_pages(slug,parent_id,title,`type`) values('hoe-kan-ik-mijn-persoonlijke-gegevens-wijzigen',22,'Hoe kan ik mijn persoonlijke gegevens wijzigen?','article');
+            insert into kb_pages(slug,parent_id,title,`type`) values('kan-ik-mijn-voorkeuren-van-communicatie-wijzigen',22,'Kan ik mijn voorkeuren van communicatie wijzigen?','article');
+
+    ## 3
+    insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('contact',1,0,'Contact','group',null,null,'messages',null,null,null,null);
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('hoe-neem-ik-contact-met-jullie-op',3,0,'Hoe neem ik contact met jullie op?','article',null,null,null,null,null,null,null);
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('hoe-wordt-ik-door-jullie-benaderd',3,0,'Hoe wordt ik door jullie benaderd?','article',null,null,null,null,null,null,null);
+        -- Ik heb feedback of ik zou wat willen toevoegen aan de FAQ.
+
+    ## 4
+    insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('over-ons',1,0,'Over ons','group',null,null,'building',null,null,null,null);
+
+    ## 5
+    insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('voor-opdrachtgevers',1,0,'Voor opdrachtgevers','group',null,null,'briefcase',null,null,null,null);
+        -- Samenwerken met Flexwerkers
+            -- Hoe werkt het annuleringsbeleid?
+            -- Wat doe ik bij onenigheid met de opdrachtnemer?
+
+        -- Gebruik van het platform
+            -- Hoe werkt de check-out?
+            -- Hoe pas ik een shift aan?
+            -- Wat zijn de voordelen van een flexpool?
+            -- Ik wil mijn flexpool wijzigen
+            -- Hoe nodig ik iemand uit voor een flexpool?
+            -- Hoe werkt een flexpool?
+            -- Wat is een flexpool?
+            -- Hoe verwijder ik een dienst?
+            -- Wat is een shiftmanager?
+            -- Hoe voeg ik diensten toe?
+            -- Kan ik meerdere klussen in een keer plaatsen?
+            -- Problemen bij het inloggen
+
+        -- Betalingen & Kosten
+            -- Hoe werkt de facturatie voor opdrachtgevers
+            -- Waarom ontvang ik een factuur zonder btw?
+            -- Hoe wijzig ik mijn factuurgegevens?
+
+        -- Over Hollandworx
+            -- Hoe neem ik contact op als opdrachtgever?
+            -- Wat is Hollandworx nou eigenlijk?
+            -- Wat kost het platform voor flexwerkers?
+            -- Waarom kiezen voor Hollandworx?
+            -- Hoe werkt Hollandworx?
+
+
+    ## 6
+    insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('freelancen',1,0,'Freelancen','group',null,null,'mood-pin',null,null,null,null);
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('belastingen',6,0,'Belastingen','group',null,null,null,null,null,null,null);
+            -- Inkomstenbelasting & btw-aangifte als freelancer
+            -- Wat zijn de gevolgen als ik geen btw-aangifte doe?
+
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('verzekeringen',6,0,'Verzekeringen','group',null,null,null,null,null,null,null);
+            -- Ben ik verzekerd als freelancer via Hollandworx?
+            -- Hoe werkt de bedrijfsaansprakelijkheidsverzekering?
+            -- Hoe werkt de ongevallenverzekering?
+            -- Hoe dien ik een verzekeringsclaim in?
+
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('btw-en-kvk',6,0,'Btw en KvK','group',null,null,null,null,null,null,null);
+            -- Hoe kan ik een btw-id aanvragen?
+            -- Hoe kan ik mijn KvK-nummer of btw-id stopzetten?
+            -- Mag ik werken met het btw-id van iemand anders?
+            -- Kan ik werken terwijl ik wacht op mijn btw-id?
+
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('starten-als-freelancer',6,0,'Starten als frrelancer','group',null,null,null,null,null,null,null);
+            insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('hoe-word-ik-freelancer',26,0,'Hoe word ik freelancer?','article',null,null,null,null,null,null,null);
+            -- Waar moet ik rekening mee houden als freelancer?
+            -- Zit ik ergens aan vast als flexwerker?
+            -- Verschil tussen werken als freelancer en werken in loondienst
+            -- Kan ik naast werken als freelancer ook werken in loondienst?
+            -- Wat is het verschil tussen Hollandworx en een uitzendbureau?
+
+    ## 7 (this file )
+    insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('hollandworx-app',1,0,'Hollandworx app','group',null,null,'device-mobile-heart',null,null,null,null);
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('aanmelden',7,0,'Aanmelelden','group',null,null,null,null,null,null,null);
+            -- Hoe kan ik mij aanmelden voor shifts?
+            -- Kan ik mij aanmelden voor alle shifts?
+            -- Wat is het verschil tussen een shift claimen en je aanmelden voor een shift?
+            -- Hoe weet ik of een aanmelding geaccepteerd is?
+            -- Hoeveel tijd heeft een opdrachtgever de tijd om een aanmelding goed te keuren?
+            -- Hoeveel tijd heeft een opdrachtgever om een aanmelding te annuleren?
+            -- Hoe annuleer ik mijn aanmelding?
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('shifts',7,0,'Shifts','group',null,null,null,null,null,null,null);
+            -- Hoe werkt het regelen van vervanging voor een shift?
+            -- Wat gebeurt als je niet aanwezig bent bij je geclaimde shift?
+            -- Kan ik een shift cancelen?
+            -- Kan ik in de app ook shifts filteren?
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('flexpools',7,0,'Flexpools','group',null,null,null,null,null,null,null);
+            -- Hoe kom ik in een flexpool terecht?
+            -- Hoe kan ik zien of een shift buiten of binnen de flexpool is?
+
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('agreements',7,0,'Afspraken','group',null,null,null,null,null,null,null);
+            -- Wat moet ik doen als ik niet op mijn dienst kan komen?
+            -- Wat kan ik doen aan een onenigheid met mijn opdrachtgever?
+            -- Mag een opdrachtgever andere taken van mij vragen?
+            -- Wat als ik eerder naar huis moet?
+
+    ## 8 (this file )
+    insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('geld-zaken',1,0,'Geld zaken','group',null,null,'currency-euro',null,null,null,null);
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('betaling',13,0,'Betaling','group',null,null,null,null,null,null,null);
+            -- Hoe werkt ons uitbetalingsysteem?
+            -- Hoe werkt de betaling?
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('administratie',13,0,'Administratie','group',null,null,null,null,null,null,null);
+            -- Hoe zit het met de administratie?
+            -- Wat is de Kleineondernemingsregeling (KOR)?
+            -- Worden mijn reiskosten vergoed?
+            -- Ontvang ik vakantiegeld?
+            -- Hoe zit het met mijn pensioen?
+            -- Heeft freelancen effect op mijn studiefinanciering?
+            -- Waarom heb ik geen btw ontvangen over mijn eerste drie diensten?
+            -- Wat zijn de voordelen van het openen van een zakelijke rekening?
+        insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('uren-en-checkout',13,0,'Uren en checkout','group',null,null,null,null,null,null,null);
+            -- Ik heb mijn uren verkeerd doorgegeven, wat nu?
+            -- Ik wil het tegenvoorstel van mijn uren bespreken.
+            -- Hoe werkt de checkout?
+
+
 
 # 7
-insert into kb_pages(id,is_published,date_added,created_by,created_by_user,date_modified,modified_by,modified_by_user,checked_out,checked_out_by,checked_out_by_user,title,slug,`type`,summary,content,icon,position,parent_id,header_html,footer_html,custom_css,container_width) values(7,1,'2026-03-19 15:01:06',1,'Services Go','2026-03-19 15:01:06',1,'Services Go',null,null,null,'Beheren','beheren','group','Summary','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Content</span></span></p>','user-edit',0,2,null,null,null,null);
+insert into kb_pages(id,is_published,date_added,created_by,created_by_user,date_modified,modified_by,modified_by_user,checked_out,checked_out_by,checked_out_by_user,title,slug,`type`,summary,content,icon,position,parent_id,header_html,footer_html,custom_css,container_width) values(7,1,'2026-03-19 15:01:06',1,null,'2026-03-19 15:01:06',1,null,null,null,null,'Beheren','beheren','group','Summary','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Content</span></span></p>','user-edit',0,2,null,null,null,null);
 -- Articles under beheren (parent_id=7) → IDs 17-20
-insert into kb_pages(slug,parent_id,title,`type`) values('ik-ben-mijn-wachtwoord-vergeten',7,'Ik ben mijn wachtwoord vergeten','article');
-insert into kb_pages(slug,parent_id,title,`type`) values('hoe-kan-ik-mijn-account-verwijderen-bij-hollandworx',7,'Hoe kan ik mijn account verwijderen bij Hollandworx?','article');
-insert into kb_pages(slug,parent_id,title,`type`) values('wat-kan-ik-doen-bij-problemen-met-de-app',7,'Wat kan ik doen bij problemen met de app?','article');
-insert into kb_pages(slug,parent_id,title,`type`) values('hoe-kan-ik-mijn-persoonlijke-gegevens-wijzigen',7,'Hoe kan ik mijn persoonlijke gegevens wijzigen?','article');
 
 
 # 5
-insert into kb_pages(id,is_published,date_added,created_by,created_by_user,date_modified,modified_by,modified_by_user,checked_out,checked_out_by,checked_out_by_user,title,slug,`type`,summary,content,icon,position,parent_id,header_html,footer_html,custom_css,container_width) values(5,1,'2026-03-19 14:58:23',1,'Services Go','2026-03-19 14:58:23',1,'Services Go',null,null,'Services Go','Aanmaken en toegang','aanmaken-en-toegang','group','Summary','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Content</span></span></p>','user-plus',0,2,null,null,null,null);
+insert into kb_pages(id,is_published,date_added,created_by,created_by_user,date_modified,modified_by,modified_by_user,checked_out,checked_out_by,checked_out_by_user,title,slug,`type`,summary,content,icon,position,parent_id,header_html,footer_html,custom_css,container_width) values(5,1,'2026-03-19 14:58:23',1,null,'2026-03-19 14:58:23',1,null,null,null,null,'Aanmaken en toegang','aanmaken-en-toegang','group','Summary','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Content</span></span></p>','user-plus',0,2,null,null,null,null);
 -- Remaining articles under aanmaken-en-toegang (parent_id=5) → IDs 10-12
-insert into kb_pages(slug,parent_id,title,`type`) values('waar-moet-ik-aan-voldoen-om-via-hollandworx-te-werken',5,'Waar moet ik aan voldoen om via Hollandworx te werken?','article');
-insert into kb_pages(slug,parent_id,title,`type`) values('hoe-oud-moet-ik-zijn-om-via-hollandworx-te-mogen-werken',5,'Hoe oud moet ik zijn om via Hollandworx te mogen werken?','article');
-insert into kb_pages(slug,parent_id,title,`type`) values('waarom-wordt-mijn-identiteitsbewijs-gecontroleerd',5,'Waarom wordt mijn identiteitsbewijs gecontroleerd?','article');
-insert into kb_pages(slug,parent_id,title,`type`) values('hoe-werkt-het-met-een-buitenlands-legitimatiebewijs',5,'Hoe werkt het met een buitenlands legitimatiebewijs?','article');
 
 
 # 3
-insert into kb_pages(id,is_published,date_added,created_by,created_by_user,date_modified,modified_by,modified_by_user,checked_out,checked_out_by,checked_out_by_user,title,slug,`type`,summary,content,icon,position,parent_id,header_html,footer_html,custom_css,container_width) values(3,1,'2026-03-19 10:52:49',1,'Services Go','2026-03-19 10:52:49',1,'Services Go',null,null,'Services Go','Knowledge Base','en','group','Summary','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Content</span></span></p>','brain',0,null,'<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Root Header HTML</span></span></p>','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Root Footer HTML</span></span></p>',null,1200);
+insert into kb_pages(id,is_published,date_added,created_by,created_by_user,date_modified,modified_by,modified_by_user,checked_out,checked_out_by,checked_out_by_user,title,slug,`type`,summary,content,icon,position,parent_id,header_html,footer_html,custom_css,container_width) values(3,1,'2026-03-19 10:52:49',1,null,'2026-03-19 10:52:49',1,null,null,null,null,'Knowledge Base','en','group','Summary','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Content</span></span></p>','brain',0,null,'<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Root Header HTML</span></span></p>','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Root Footer HTML</span></span></p>',null,1200);
 
 insert into kb_pages(slug,parent_id,title,`type`) values('contact',3,'Contact','group');
 -- EN top-level categories (parent_id=3) → IDs 39-52
-insert into kb_pages(slug,parent_id,title,`type`) values('over-ons',3,'Over ons','group');
+insert into kb_pages(slug,parent_id,title,`type`) values('about-us',3,'Aboux us','group');
 insert into kb_pages(slug,parent_id,title,`type`) values('for-clients',3,'For clients','group');
 insert into kb_pages(slug,parent_id,title,`type`) values('freelancing',3,'Freelancing','group');
 insert into kb_pages(slug,parent_id,title,`type`) values('starting-as-a-freelancer',3,'Starting as a freelancer','group');
@@ -69,11 +178,11 @@ insert into kb_pages(slug,parent_id,title,`type`) values('payment',3,'Payment','
 insert into kb_pages(slug,parent_id,title,`type`) values('administration',3,'Administration','group');
 insert into kb_pages(slug,parent_id,title,`type`) values('hours-and-checkout',3,'Hours and checkout','group');
 # 4
-insert into kb_pages(id,is_published,date_added,created_by,created_by_user,date_modified,modified_by,modified_by_user,checked_out,checked_out_by,checked_out_by_user,title,slug,`type`,summary,content,icon,position,parent_id,header_html,footer_html,custom_css,container_width) values(4,1,'2026-03-19 14:27:00',1,'Services Go','2026-03-19 14:27:00',1,'Services Go',null,null,'Services Go','My Account','my-account','group','Summary 1','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Content 1</span></span></p>','user-square',0,3,null,null,null,null);
+insert into kb_pages(id,is_published,date_added,created_by,created_by_user,date_modified,modified_by,modified_by_user,checked_out,checked_out_by,checked_out_by_user,title,slug,`type`,summary,content,icon,position,parent_id,header_html,footer_html,custom_css,container_width) values(4,1,'2026-03-19 14:27:00',1,null,'2026-03-19 14:27:00',1,null,null,null,null,'My Account','my-account','group','Summary 1','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Content 1</span></span></p>','user-square',0,3,null,null,null,null);
 
 
 # 6
-insert into kb_pages(id,is_published,date_added,created_by,created_by_user,date_modified,modified_by,modified_by_user,checked_out,checked_out_by,checked_out_by_user,title,slug,`type`,summary,content,icon,position,parent_id,header_html,footer_html,custom_css,container_width) values(6,1,'2026-03-19 15:00:24',1,'Services Go','2026-03-19 15:00:24',1,'Services Go',null,null,null,'Create and access','create-and-access','group','Summary','<p>Content</p>','user-plus',0,4,null,null,null,null);
+insert into kb_pages(id,is_published,date_added,created_by,created_by_user,date_modified,modified_by,modified_by_user,checked_out,checked_out_by,checked_out_by_user,title,slug,`type`,summary,content,icon,position,parent_id,header_html,footer_html,custom_css,container_width) values(6,1,'2026-03-19 15:00:24',1,null,'2026-03-19 15:00:24',1,null,null,null,null,'Create and access','create-and-access','group','Summary','<p>Content</p>','user-plus',0,4,null,null,null,null);
 -- Articles under create-and-access (parent_id=6) → IDs 13-16
 insert into kb_pages(slug,parent_id,title,`type`) values('waar-moet-ik-aan-voldoen-om-via-hollandworx-te-werken',6,'Waar moet ik aan voldoen om via Hollandworx te werken?','article');
 insert into kb_pages(slug,parent_id,title,`type`) values('hoe-oud-moet-ik-zijn-om-via-hollandworx-te-mogen-werken',6,'Hoe oud moet ik zijn om via Hollandworx te mogen werken?','article');
@@ -82,7 +191,7 @@ insert into kb_pages(slug,parent_id,title,`type`) values('why-is-my-id-checked',
 
 
 # 8
-insert into kb_pages(id,is_published,date_added,created_by,created_by_user,date_modified,modified_by,modified_by_user,checked_out,checked_out_by,checked_out_by_user,title,slug,`type`,summary,content,icon,position,parent_id,header_html,footer_html,custom_css,container_width) values(8,1,'2026-03-19 15:01:35',1,'Services Go','2026-03-19 15:01:35',1,'Services Go',null,null,null,'Manage','manage','group','Summary','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Content</span></span></p>','user-edit',0,4,null,null,null,null);
+insert into kb_pages(id,is_published,date_added,created_by,created_by_user,date_modified,modified_by,modified_by_user,checked_out,checked_out_by,checked_out_by_user,title,slug,`type`,summary,content,icon,position,parent_id,header_html,footer_html,custom_css,container_width) values(8,1,'2026-03-19 15:01:35',1,null,'2026-03-19 15:01:35',1,null,null,null,null,'Manage','manage','group','Summary','<p><span style="background-color:rgb(255,255,255);color:rgb(82,82,82);font-size:14px;"><span style="-webkit-text-stroke-width:0px;display:inline !important;float:none;font-family:&quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Content</span></span></p>','user-edit',0,4,null,null,null,null);
 -- Articles under manage (parent_id=8) → IDs 21-24
 insert into kb_pages(slug,parent_id,title,`type`) values('how-can-i-change-my-personal-information',8,'How can I change my personal information?','article');
 insert into kb_pages(slug,parent_id,title,`type`) values('how-can-i-delete-my-account-at-hollandworx',8,'How can I delete my account at Hollandworx?','article');
