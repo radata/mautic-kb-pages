@@ -14,8 +14,8 @@
         {% if article.getSummary() %}
             <p>{{ article.getSummary()|striptags }}</p>
         {% endif %}
-        {% if article.getContent() %}
-            <div>{{ article.getContent()|raw }}</div>
+        {% if articleContent is not empty %}
+            <div>{{ articleContent|raw }}</div>
         {% endif %}
     </div>
 {% endblock %}

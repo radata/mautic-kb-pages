@@ -8,8 +8,8 @@
         {% if group.getSummary() %}
             <p>{{ group.getSummary()|striptags }}</p>
         {% endif %}
-        {% if group.getContent() %}
-            <div>{{ group.getContent()|raw }}</div>
+        {% if groupContent is not empty %}
+            <div>{{ groupContent|raw }}</div>
         {% endif %}
     </div>
 
