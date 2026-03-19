@@ -4,6 +4,7 @@ namespace MauticPlugin\MauticKbPagesBundle\Service;
 
 use Mautic\CoreBundle\Helper\CoreParametersHelper;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
+use MauticPlugin\MauticKbPagesBundle\Entity\KbPages;
 
 class KbPagesSettings
 {
@@ -16,11 +17,10 @@ class KbPagesSettings
     /**
      * @return array<string, mixed>
      */
-    public function getPublicSettings(): array
+    public function getPublicSettings(?KbPages $rootGroup = null): array
     {
         $features = $this->getFeatureSettings();
-
-        return [
+        $settings = [
             'headerHtml'      => (string) $this->coreParametersHelper->get('kbpages_header_html', ''),
             'footerHtml'      => (string) $this->coreParametersHelper->get('kbpages_footer_html', ''),
             'customCss'       => (string) $this->coreParametersHelper->get('kbpages_custom_css', ''),
@@ -29,6 +29,31 @@ class KbPagesSettings
             'mediaCdnUrl'     => $this->normalizeBaseUrl((string) ($features['media_cdn_url'] ?? '')),
             'iconDocsUrl'     => 'https://tabler.io/icons',
         ];
+
+        if ($rootGroup instanceof KbPages) {
+            $headerHtml = trim((string) $rootGroup->getHeaderHtml());
+            $footerHtml = trim((string) $rootGroup->getFooterHtml());
+            $customCss  = trim((string) $rootGroup->getCustomCss());
+            $width      = $rootGroup->getContainerWidth();
+
+            if ('' !== $headerHtml) {
+                $settings['headerHtml'] = $headerHtml;
+            }
+
+            if ('' !== $footerHtml) {
+                $settings['footerHtml'] = $footerHtml;
+            }
+
+            if ('' !== $customCss) {
+                $settings['customCss'] = $customCss;
+            }
+
+            if (null !== $width && $width >= 480) {
+                $settings['containerWidth'] = $width;
+            }
+        }
+
+        return $settings;
     }
 
     public function renderIconHtml(?string $icon): string

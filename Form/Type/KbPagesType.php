@@ -21,7 +21,12 @@ class KbPagesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventSubscriber(new CleanFormSubscriber(['summary' => 'html', 'content' => 'html']));
+        $builder->addEventSubscriber(new CleanFormSubscriber([
+            'summary'    => 'html',
+            'content'    => 'html',
+            'headerHtml' => 'html',
+            'footerHtml' => 'html',
+        ]));
         $builder->addEventSubscriber(new FormExitSubscriber('knowledgebase', $options));
 
         $data      = $options['data'] instanceof KbPages ? $options['data'] : null;
@@ -106,6 +111,53 @@ class KbPagesType extends AbstractType
             'attr'       => [
                 'class'       => 'form-control',
                 'placeholder' => 'book, ti ti-book, <svg>...</svg>, icons/help.svg',
+            ],
+        ]);
+
+        $builder->add('headerHtml', TextareaType::class, [
+            'label'      => 'plugin.kbpages.root_header_html',
+            'label_attr' => ['class' => 'control-label'],
+            'required'   => false,
+            'help'       => 'plugin.kbpages.root_shell.help',
+            'attr'       => [
+                'class'           => 'form-control editor editor-advanced',
+                'rows'            => 8,
+                'allow-full-html' => true,
+            ],
+        ]);
+
+        $builder->add('footerHtml', TextareaType::class, [
+            'label'      => 'plugin.kbpages.root_footer_html',
+            'label_attr' => ['class' => 'control-label'],
+            'required'   => false,
+            'help'       => 'plugin.kbpages.root_shell.help',
+            'attr'       => [
+                'class'           => 'form-control editor editor-advanced',
+                'rows'            => 8,
+                'allow-full-html' => true,
+            ],
+        ]);
+
+        $builder->add('containerWidth', IntegerType::class, [
+            'label'      => 'plugin.kbpages.root_container_width',
+            'label_attr' => ['class' => 'control-label'],
+            'required'   => false,
+            'help'       => 'plugin.kbpages.root_shell.help',
+            'attr'       => [
+                'class' => 'form-control',
+                'min'   => 480,
+                'step'  => 1,
+            ],
+        ]);
+
+        $builder->add('customCss', TextareaType::class, [
+            'label'      => 'plugin.kbpages.root_custom_css',
+            'label_attr' => ['class' => 'control-label'],
+            'required'   => false,
+            'help'       => 'plugin.kbpages.root_shell.help',
+            'attr'       => [
+                'class' => 'form-control',
+                'rows'  => 8,
             ],
         ]);
 

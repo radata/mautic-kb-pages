@@ -22,6 +22,10 @@ class KbPages extends FormEntity
     private ?string $summary = null;
     private ?string $content = null;
     private ?string $icon = null;
+    private ?string $headerHtml = null;
+    private ?string $footerHtml = null;
+    private ?string $customCss = null;
+    private ?int $containerWidth = null;
     private int $position = 0;
     private ?self $parent = null;
 
@@ -85,6 +89,26 @@ class KbPages extends FormEntity
         $builder->createField('icon', 'string')
             ->columnName('icon')
             ->length(191)
+            ->nullable()
+            ->build();
+
+        $builder->createField('headerHtml', 'text')
+            ->columnName('header_html')
+            ->nullable()
+            ->build();
+
+        $builder->createField('footerHtml', 'text')
+            ->columnName('footer_html')
+            ->nullable()
+            ->build();
+
+        $builder->createField('customCss', 'text')
+            ->columnName('custom_css')
+            ->nullable()
+            ->build();
+
+        $builder->createField('containerWidth', 'integer')
+            ->columnName('container_width')
             ->nullable()
             ->build();
 
@@ -194,6 +218,54 @@ class KbPages extends FormEntity
     public function setIcon(?string $icon): self
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function getHeaderHtml(): ?string
+    {
+        return $this->headerHtml;
+    }
+
+    public function setHeaderHtml(?string $headerHtml): self
+    {
+        $this->headerHtml = $headerHtml;
+
+        return $this;
+    }
+
+    public function getFooterHtml(): ?string
+    {
+        return $this->footerHtml;
+    }
+
+    public function setFooterHtml(?string $footerHtml): self
+    {
+        $this->footerHtml = $footerHtml;
+
+        return $this;
+    }
+
+    public function getCustomCss(): ?string
+    {
+        return $this->customCss;
+    }
+
+    public function setCustomCss(?string $customCss): self
+    {
+        $this->customCss = $customCss;
+
+        return $this;
+    }
+
+    public function getContainerWidth(): ?int
+    {
+        return $this->containerWidth;
+    }
+
+    public function setContainerWidth(?int $containerWidth): self
+    {
+        $this->containerWidth = $containerWidth;
 
         return $this;
     }

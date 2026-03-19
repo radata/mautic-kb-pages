@@ -11,6 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PublicController extends CommonController
 {
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            KbPagesSettings::class => KbPagesSettings::class,
+        ]);
+    }
+
     public function rootAction(): Response
     {
         $defaultRoot = $this->resolveRootSlug();
@@ -91,9 +98,9 @@ class PublicController extends CommonController
      *
      * @return array<string, mixed>
      */
-    private function getPublicViewParameters(array $parameters): array
+    private function getPublicViewParameters(array $parameters, ?KbPages $settingsGroup = null): array
     {
-        $kbSettings = $this->getSettingsProvider()->getPublicSettings();
+        $kbSettings = $this->getSettingsProvider()->getPublicSettings($settingsGroup);
 
         return array_merge(
             [
@@ -176,7 +183,7 @@ class PublicController extends CommonController
                             'url'      => $this->generatePublicUrl($article),
                         ];
                     }, $repo->findPublishedArticlesByGroup($group)),
-                ])
+                ], $this->getRootAncestor($group))
             )
         );
     }
@@ -194,7 +201,7 @@ class PublicController extends CommonController
                     'articleIconHtml' => $this->getSettingsProvider()->renderIconHtml($article->getIcon()),
                     'group'           => $group,
                     'groupUrl'        => $group instanceof KbPages ? $this->generatePublicUrl($group) : null,
-                ])
+                ], $this->getRootAncestor($article))
             )
         );
     }
@@ -342,6 +349,17 @@ class PublicController extends CommonController
         return $segments;
     }
 
+    private function getRootAncestor(KbPages $item): KbPages
+    {
+        $current = $item;
+
+        while ($current->getParent() instanceof KbPages) {
+            $current = $current->getParent();
+        }
+
+        return $current;
+    }
+
     private function resolveTreeItem(KbPages $rootGroup, string $slugPath): ?KbPages
     {
         $segments = array_values(array_filter(explode('/', trim($slugPath, '/')), static fn (string $segment): bool => '' !== $segment));
@@ -401,7 +419,7 @@ class PublicController extends CommonController
 
     private function getSettingsProvider(): KbPagesSettings
     {
-        $service = $this->container->get('mautic.kbpages.settings');
+        $service = $this->container->get(KbPagesSettings::class);
         \assert($service instanceof KbPagesSettings);
 
         return $service;
