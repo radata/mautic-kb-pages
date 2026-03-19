@@ -1,22 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ group.getTitle() }}</title>
-    <style>
-        body { font-family: sans-serif; margin: 0; background: #f5f7fb; color: #1f2937; }
-        .wrap { max-width: 960px; margin: 0 auto; padding: 48px 20px; }
-        .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
-        a { color: #2563eb; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        p { color: #4b5563; }
-        ul { margin: 16px 0 0; padding-left: 18px; }
-    </style>
-</head>
-<body>
-<div class="wrap">
-    <div class="card">
+{% extends '@MauticKbPages/Public/base.html.twig' %}
+
+{% block pageTitle %}{{ group.getTitle() }}{% endblock %}
+
+{% block kbBody %}
+    <div class="kb-card">
         <h1>{{ group.getTitle() }}</h1>
         {% if group.getSummary() %}
             <p>{{ group.getSummary()|striptags }}</p>
@@ -26,10 +13,10 @@
         {% endif %}
     </div>
 
-    <div class="card">
+    <div class="kb-card">
         <h2>Articles</h2>
         {% if articles %}
-            <ul>
+            <ul class="kb-list">
                 {% for article in articles %}
                     <li>
                         <a href="{{ path('mautic_knowledgebase_article', {
@@ -43,6 +30,4 @@
             <p>No articles are published in this group yet.</p>
         {% endif %}
     </div>
-</div>
-</body>
-</html>
+{% endblock %}

@@ -16,9 +16,9 @@ class PublicController extends CommonController
         return new Response(
             $this->renderView(
                 '@MauticKbPages/Public/index.html.twig',
-                [
+                $this->getPublicViewParameters([
                     'groups' => $repo->findPublishedGroups(),
-                ]
+                ])
             )
         );
     }
@@ -35,10 +35,10 @@ class PublicController extends CommonController
         return new Response(
             $this->renderView(
                 '@MauticKbPages/Public/group.html.twig',
-                [
+                $this->getPublicViewParameters([
                     'group'    => $group,
                     'articles' => $repo->findPublishedArticlesByGroup($group),
-                ]
+                ])
             )
         );
     }
@@ -55,11 +55,31 @@ class PublicController extends CommonController
         return new Response(
             $this->renderView(
                 '@MauticKbPages/Public/article.html.twig',
-                [
+                $this->getPublicViewParameters([
                     'article' => $article,
                     'group'   => $article->getParent(),
-                ]
+                ])
             )
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $parameters
+     *
+     * @return array<string, mixed>
+     */
+    private function getPublicViewParameters(array $parameters): array
+    {
+        return array_merge(
+            [
+                'kbSettings' => [
+                    'headerHtml'    => (string) $this->coreParametersHelper->get('kbpages_header_html', ''),
+                    'footerHtml'    => (string) $this->coreParametersHelper->get('kbpages_footer_html', ''),
+                    'customCss'     => (string) $this->coreParametersHelper->get('kbpages_custom_css', ''),
+                    'containerWidth' => (int) $this->coreParametersHelper->get('kbpages_container_width', 960),
+                ],
+            ],
+            $parameters
         );
     }
 

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|default('en')|replace({'_': '-'}) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block pageTitle %}Knowledge Base{% endblock %}</title>
+    <style>
+        :root {
+            --kb-shell-width: {{ kbSettings.containerWidth|default(960) }}px;
+            --kb-shell-bg: #f5f7fb;
+            --kb-panel-bg: #ffffff;
+            --kb-panel-border: #e5e7eb;
+            --kb-text: #1f2937;
+            --kb-text-soft: #4b5563;
+            --kb-link: #2563eb;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background: var(--kb-shell-bg);
+            color: var(--kb-text);
+        }
+        a { color: var(--kb-link); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        p { color: var(--kb-text-soft); }
+        .kb-shell {
+            width: min(100%, var(--kb-shell-width));
+            margin: 0 auto;
+            padding: 32px 20px 56px;
+        }
+        .kb-rich {
+            width: min(100%, var(--kb-shell-width));
+            margin: 0 auto;
+            padding: 24px 20px 0;
+        }
+        .kb-card {
+            background: var(--kb-panel-bg);
+            border: 1px solid var(--kb-panel-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .kb-list {
+            margin: 16px 0 0;
+            padding-left: 18px;
+        }
+        .kb-breadcrumb {
+            margin: 0 0 20px;
+        }
+    </style>
+    {% if kbSettings.customCss %}
+        <style>{{ kbSettings.customCss|raw }}</style>
+    {% endif %}
+</head>
+<body>
+{% if kbSettings.headerHtml %}
+    <div class="kb-rich kb-header">
+        {{ kbSettings.headerHtml|raw }}
+    </div>
+{% endif %}
+
+<main class="kb-shell">
+    {% block kbBody %}{% endblock %}
+</main>
+
+{% if kbSettings.footerHtml %}
+    <div class="kb-rich kb-footer">
+        {{ kbSettings.footerHtml|raw }}
+    </div>
+{% endif %}
+</body>
+</html>

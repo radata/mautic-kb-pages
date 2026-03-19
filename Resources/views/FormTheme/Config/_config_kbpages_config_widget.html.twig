@@ -1,0 +1,24 @@
+{% block _config_kbpages_config_widget %}
+<h4 class="fw-sb mt-48 mb-xs">{{ 'mautic.config.tab.kbpages_config'|trans }}</h4>
+<div class="text-muted small pb-md">{{ 'plugin.kbpages.config.description'|trans }}</div>
+<div class="row">
+    <div class="panel panel-default mb-md">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    {{ form_row(form.kbpages_header_html) }}
+                </div>
+                <div class="col-xs-12">
+                    {{ form_row(form.kbpages_footer_html) }}
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    {{ form_row(form.kbpages_container_width) }}
+                </div>
+                <div class="col-xs-12">
+                    {{ form_row(form.kbpages_custom_css) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

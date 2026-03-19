@@ -1,27 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ article.getTitle() }}</title>
-    <style>
-        body { font-family: sans-serif; margin: 0; background: #f5f7fb; color: #1f2937; }
-        .wrap { max-width: 960px; margin: 0 auto; padding: 48px 20px; }
-        .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
-        a { color: #2563eb; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        p { color: #4b5563; }
-    </style>
-</head>
-<body>
-<div class="wrap">
+{% extends '@MauticKbPages/Public/base.html.twig' %}
+
+{% block pageTitle %}{{ article.getTitle() }}{% endblock %}
+
+{% block kbBody %}
     {% if group %}
-        <p>
+        <p class="kb-breadcrumb">
             <a href="{{ path('mautic_knowledgebase_group', {slug: group.getSlug()}) }}">{{ group.getTitle() }}</a>
         </p>
     {% endif %}
 
-    <div class="card">
+    <div class="kb-card">
         <h1>{{ article.getTitle() }}</h1>
         {% if article.getSummary() %}
             <p>{{ article.getSummary()|striptags }}</p>
@@ -30,6 +18,4 @@
             <div>{{ article.getContent()|raw }}</div>
         {% endif %}
     </div>
-</div>
-</body>
-</html>
+{% endblock %}
