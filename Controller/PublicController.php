@@ -3,6 +3,7 @@
 namespace MauticPlugin\MauticKbPagesBundle\Controller;
 
 use Mautic\CoreBundle\Controller\CommonController;
+use Mautic\AssetBundle\Model\AssetModel;
 use Mautic\FormBundle\Model\FormModel;
 use Mautic\PageBundle\Model\PageModel;
 use MauticPlugin\MauticKbPagesBundle\Entity\KbPages;
@@ -139,14 +140,37 @@ class PublicController extends CommonController
             return '';
         }
 
-        $rendered = preg_replace_callback('/{pagelink=(\d+)}/', function (array $matches): string {
-            return $this->resolvePageLinkToken($matches[0], (int) $matches[1]);
-        }, $html);
-
-        $rendered = is_string($rendered) ? $rendered : $html;
+        $rendered = $this->decodeEncodedTokens($html);
+        $rendered = $this->renderPageLinkTokens($rendered);
+        $rendered = $this->renderAssetLinkTokens($rendered);
         $rendered = $this->renderFormTokens($rendered);
 
         return $this->getSettingsProvider()->rewriteMediaUrls($rendered);
+    }
+
+    private function decodeEncodedTokens(string $html): string
+    {
+        $decoded = preg_replace('/(%7B)(.*?)(%7D)/i', '{$2}', $html);
+
+        return is_string($decoded) ? $decoded : $html;
+    }
+
+    private function renderPageLinkTokens(string $html): string
+    {
+        $rendered = preg_replace_callback('/{pagelink=(\d+)}/i', function (array $matches): string {
+            return $this->resolvePageLinkToken($matches[0], (int) $matches[1]);
+        }, $html);
+
+        return is_string($rendered) ? $rendered : $html;
+    }
+
+    private function renderAssetLinkTokens(string $html): string
+    {
+        $rendered = preg_replace_callback('/{assetlink=(\d+)}/i', function (array $matches): string {
+            return $this->resolveAssetLinkToken((int) $matches[1]);
+        }, $html);
+
+        return is_string($rendered) ? $rendered : $html;
     }
 
     private function renderFormTokens(string $html): string
@@ -194,6 +218,22 @@ class PublicController extends CommonController
             return $pageModel->generateUrl($page, true);
         } catch (\Throwable) {
             return $token;
+        }
+    }
+
+    private function resolveAssetLinkToken(int $assetId): string
+    {
+        try {
+            $assetModel = $this->getAssetModel();
+            $asset      = $assetModel->getEntity($assetId);
+
+            if (null === $asset) {
+                return '';
+            }
+
+            return $assetModel->generateUrl($asset, true);
+        } catch (\Throwable) {
+            return '';
         }
     }
 
@@ -544,6 +584,14 @@ class PublicController extends CommonController
     {
         $model = $this->getModel('page');
         \assert($model instanceof PageModel);
+
+        return $model;
+    }
+
+    private function getAssetModel(): AssetModel
+    {
+        $model = $this->getModel('asset');
+        \assert($model instanceof AssetModel);
 
         return $model;
     }
