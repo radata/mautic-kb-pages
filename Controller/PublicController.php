@@ -3,6 +3,7 @@
 namespace MauticPlugin\MauticKbPagesBundle\Controller;
 
 use Mautic\CoreBundle\Controller\CommonController;
+use Mautic\FormBundle\Model\FormModel;
 use Mautic\PageBundle\Model\PageModel;
 use MauticPlugin\MauticKbPagesBundle\Entity\KbPages;
 use MauticPlugin\MauticKbPagesBundle\Model\KbPagesModel;
@@ -143,8 +144,41 @@ class PublicController extends CommonController
         }, $html);
 
         $rendered = is_string($rendered) ? $rendered : $html;
+        $rendered = $this->renderFormTokens($rendered);
 
         return $this->getSettingsProvider()->rewriteMediaUrls($rendered);
+    }
+
+    private function renderFormTokens(string $html): string
+    {
+        $rendered = preg_replace_callback('/{form=(\d+)}/i', function (array $matches): string {
+            return $this->resolveFormToken((int) $matches[1]);
+        }, $html);
+
+        return is_string($rendered) ? $rendered : $html;
+    }
+
+    private function resolveFormToken(int $formId): string
+    {
+        try {
+            $formModel = $this->getFormModel();
+            $form      = $formModel->getEntity($formId);
+
+            if (null === $form || !$form->isPublished(false)) {
+                return '';
+            }
+
+            $formHtml = $form->isPublished() ? $formModel->getContent($form) : '';
+            if ('' === $formHtml) {
+                return '';
+            }
+
+            $formModel->populateValuesWithGetParameters($form, $formHtml);
+
+            return $formHtml;
+        } catch (\Throwable) {
+            return '';
+        }
     }
 
     private function resolvePageLinkToken(string $token, int $pageId): string
@@ -510,6 +544,14 @@ class PublicController extends CommonController
     {
         $model = $this->getModel('page');
         \assert($model instanceof PageModel);
+
+        return $model;
+    }
+
+    private function getFormModel(): FormModel
+    {
+        $model = $this->getModel('form');
+        \assert($model instanceof FormModel);
 
         return $model;
     }

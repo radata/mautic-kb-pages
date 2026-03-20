@@ -67,18 +67,6 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{ form_row(form.contentUseRaw) }}
-                        </div>
-                    </div>
-
-                    <div id="kb-content-raw-panel" class="row">
-                        <div class="col-xs-12">
-                            {{ form_row(form.contentRaw) }}
-                        </div>
-                    </div>
-
                     <div id="kb-root-settings-panel" class="panel panel-default mt-lg">
                         <div class="panel-heading">
                             <h4 class="panel-title">{{ 'plugin.kbpages.root_shell.title'|trans }}</h4>
@@ -102,31 +90,7 @@
 
                             <div class="row">
                                 <div class="col-xs-12">
-                                    {{ form_row(form.headerHtmlUseRaw) }}
-                                </div>
-                            </div>
-
-                            <div id="kb-header-raw-panel" class="row">
-                                <div class="col-xs-12">
-                                    {{ form_row(form.headerHtmlRaw) }}
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xs-12">
                                     {{ form_row(form.footerHtml) }}
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    {{ form_row(form.footerHtmlUseRaw) }}
-                                </div>
-                            </div>
-
-                            <div id="kb-footer-raw-panel" class="row">
-                                <div class="col-xs-12">
-                                    {{ form_row(form.footerHtmlRaw) }}
                                 </div>
                             </div>
 
@@ -165,18 +129,6 @@
             var typeField = document.getElementById('knowledgebase_item_type');
             var parentField = document.getElementById('knowledgebase_item_parent');
             var panel = document.getElementById('kb-root-settings-panel');
-            var contentField = document.getElementById('knowledgebase_item_content');
-            var contentUseRawField = document.getElementById('knowledgebase_item_contentUseRaw');
-            var contentRawField = document.getElementById('knowledgebase_item_contentRaw');
-            var contentRawPanel = document.getElementById('kb-content-raw-panel');
-            var headerField = document.getElementById('knowledgebase_item_headerHtml');
-            var headerUseRawField = document.getElementById('knowledgebase_item_headerHtmlUseRaw');
-            var headerRawField = document.getElementById('knowledgebase_item_headerHtmlRaw');
-            var headerRawPanel = document.getElementById('kb-header-raw-panel');
-            var footerField = document.getElementById('knowledgebase_item_footerHtml');
-            var footerUseRawField = document.getElementById('knowledgebase_item_footerHtmlUseRaw');
-            var footerRawField = document.getElementById('knowledgebase_item_footerHtmlRaw');
-            var footerRawPanel = document.getElementById('kb-footer-raw-panel');
             var widthField = document.getElementById('knowledgebase_item_containerWidth');
             var editorWidthPreview = document.getElementById('kb-editor-width-preview');
 
@@ -226,42 +178,6 @@
                 editorWidthPreview.style.maxWidth = resolvePreviewWidth() + 'px';
             }
 
-            function getEditorInstance(textarea) {
-                if (!textarea || !window.ckEditors || typeof window.ckEditors.has !== 'function') {
-                    return null;
-                }
-
-                return window.ckEditors.has(textarea) ? window.ckEditors.get(textarea) : null;
-            }
-
-            function syncEditorToTextarea(textarea) {
-                var editor = getEditorInstance(textarea);
-                if (editor && typeof editor.updateSourceElement === 'function') {
-                    editor.updateSourceElement();
-                }
-            }
-
-            function syncRawToggle(toggleField, editorField, rawField, rawPanel) {
-                if (!toggleField || !editorField || !rawField || !rawPanel) {
-                    return;
-                }
-
-                if (toggleField.checked) {
-                    syncEditorToTextarea(editorField);
-                    rawField.value = editorField.value;
-                    rawPanel.style.display = '';
-                } else {
-                    editorField.value = rawField.value;
-
-                    var editor = getEditorInstance(editorField);
-                    if (editor && typeof editor.setData === 'function') {
-                        editor.setData(rawField.value || '');
-                    }
-
-                    rawPanel.style.display = 'none';
-                }
-            }
-
             typeField.addEventListener('change', toggleRootSettings);
             parentField.addEventListener('change', toggleRootSettings);
             typeField.addEventListener('change', updatePreviewWidth);
@@ -272,29 +188,8 @@
                 widthField.addEventListener('change', updatePreviewWidth);
             }
 
-            if (contentUseRawField) {
-                contentUseRawField.addEventListener('change', function () {
-                    syncRawToggle(contentUseRawField, contentField, contentRawField, contentRawPanel);
-                });
-            }
-
-            if (headerUseRawField) {
-                headerUseRawField.addEventListener('change', function () {
-                    syncRawToggle(headerUseRawField, headerField, headerRawField, headerRawPanel);
-                });
-            }
-
-            if (footerUseRawField) {
-                footerUseRawField.addEventListener('change', function () {
-                    syncRawToggle(footerUseRawField, footerField, footerRawField, footerRawPanel);
-                });
-            }
-
             toggleRootSettings();
             updatePreviewWidth();
-            syncRawToggle(contentUseRawField, contentField, contentRawField, contentRawPanel);
-            syncRawToggle(headerUseRawField, headerField, headerRawField, headerRawPanel);
-            syncRawToggle(footerUseRawField, footerField, footerRawField, footerRawPanel);
         })();
     </script>
 {% endblock %}

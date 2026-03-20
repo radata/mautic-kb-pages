@@ -226,3 +226,31 @@ Upgrade by: https://github.com/rjocoleman
 ## License
 
 MIT - see [LICENSE](LICENSE) for details.
+
+
+<div class="row-fluid-wrapper row-depth-1 row-number-5 dnd-row" style="-webkit-text-stroke-width:0px;background-color:rgb(249, 252, 255);box-sizing:border-box;color:rgb(68, 68, 68);font-family:&quot;Pathway Extreme&quot;, sans-serif;font-size:16px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">
+    <div class="row-fluid " style="box-sizing:border-box;display:flex;flex-wrap:nowrap;justify-content:space-between;width:704.25px;">
+        <div class="span12 widget-span widget-type-custom_widget dnd-module" style="box-sizing:border-box;min-height:1px;width:704.25px;" data-widget-type="custom_widget" data-x="0" data-w="12">
+            <div class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module" style="box-sizing:border-box;" id="hs_cos_wrapper_kb-article-module-5" data-hs-cos-general-type="widget" data-hs-cos-type="module">
+                <div class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_inline_richtext_field" style="box-sizing:border-box;overflow-y:auto;" id="hs_cos_wrapper_kb-article-module-5_" data-hs-cos-general-type="widget" data-hs-cos-type="inline_richtext_field">
+                    <p style="box-sizing:border-box;margin:0px 0px 1.4rem;">
+                        <strong style="box-sizing:border-box;font-weight:bolder;">Heb jij een problemen met inloggen?</strong> Dit kan alleen via de app worden opgelost. Wanneer jouw wachtwoord niet werkt, kan je op het inlogscherm aangeven dat je het wachtwoord bent vergeten en een nieuwe wilt. Vul jouw email adres in waarmee je een account hebt aangemaakt, Hollandworx zal je vervolgens een email sturen om je wachtwoord te resetten.&nbsp;
+                    </p>
+                    <p style="box-sizing:border-box;margin:0px 0px 1.4rem;">
+                        Herkent de app jouw email adres niet? Stuur dan een mailtje naar <a style="background-color:transparent;box-sizing:border-box;color:rgb(68, 68, 68);cursor:pointer;font-family:&quot;Pathway Extreme&quot;, sans-serif;font-style:normal;font-weight:400;line-height:1.4;text-decoration:rgb(68, 68, 68);text-transform:none;" href="mailto:support@hollandworx.nl" rel="noopener">support@hollandworx.nl</a>, zij zullen kijken of het probleem kan worden opgelost.
+                    </p>
+                    <div class="hs-callout-type-caution" style="-webkit-text-stroke-width:0px;background-color:rgb(253, 237, 238);border-left:5px solid rgb(248, 169, 173);box-sizing:border-box;clear:both;color:rgb(0, 0, 0);font-family:&quot;Pathway Extreme&quot;, sans-serif;font-size:16px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;margin:0px 0px 1.4rem;orphans:2;padding:20px 30px;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;width:704.25px;word-spacing:0px;" data-hs-callout-type="caution">
+                        <p style="box-sizing:border-box;margin:0px;">
+                            Let op: Als je hoofdletters in je email adres hebt gebruikt dan moet het nu weer. Check je email van ons of neem contact met ons op.
+                        </p>
+                    </div>
+                    <div class="hs-callout-type-caution" style="background-color:rgb(253, 237, 238);border-left:5px solid rgb(248, 169, 173);box-sizing:border-box;clear:both;color:rgb(0, 0, 0);margin:0px 0px 1.4rem;padding:20px 30px;width:704.25px;" data-hs-callout-type="caution">
+                        <p style="box-sizing:border-box;margin:0px;">
+                            Let op: geen mail ontvangen? Check altijd even je spambox. Het kan soms voorkomen dat de mail daar belandt.&nbsp;
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

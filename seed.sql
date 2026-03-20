@@ -128,12 +128,23 @@ insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,h
             -- Mag een opdrachtgever andere taken van mij vragen?
             -- Wat als ik eerder naar huis moet?
 
-    ## 8 (this file )
+    ## 13
     insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('geld-zaken',1,0,'Geld zaken','group',null,null,'currency-euro',null,null,null,null);
+        ### 14
         insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('betaling',13,0,'Betaling','group',null,null,null,null,null,null,null);
             -- Hoe werkt ons uitbetalingsysteem?
             -- Hoe werkt de betaling?
+        ### 15
         insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('administratie',13,0,'Administratie','group',null,null,null,null,null,null,null);
+            insert into kb_pages(slug,parent_id,title,`type`) values('hoe-zit-het-met-de-administratie',15,'Hoe zit het met de administratie?','article');
+            insert into kb_pages(slug,parent_id,title,`type`) values('wat-is-de-kleineondernemingsregeling-kor',15,'Wat is de kleineondernemersregeling (KOR)?','article');
+            insert into kb_pages(slug,parent_id,title,`type`) values('worden-mijn-reiskosten-vergoed',15,'Worden mijn reiskosten vergoed?','article');
+            insert into kb_pages(slug,parent_id,title,`type`) values('ontvang-ik-vakantiegeld',15,'Ontvang ik vakantiegeld?','article');
+            insert into kb_pages(slug,parent_id,title,`type`) values('hoe-zit-het-met-mijn-pensioen',15,'Hoe zit het met mijn pensioen?','article');
+            insert into kb_pages(slug,parent_id,title,`type`) values('heeft-freelancen-effect-op-mijn-studiefinanciering',15,'Heeft freelancen effect op mijn studiefinanciering?','article');
+            insert into kb_pages(slug,parent_id,title,`type`) values('waarom-heb-ik-geen-btw-ontvangen-over-mijn-eerste-drie-diensten',15,'Waarom heb ik geen btw ontvangen over mijn eerste drie diensten?','article');
+            insert into kb_pages(slug,parent_id,title,`type`) values('wat-zijn-de-voordelen-van-het-openen-van-een-zakelijke-rekening',15,'Wat zijn de voordelen van het openen van een zakelijke rekening?','article');
+            
             -- Hoe zit het met de administratie?
             -- Wat is de Kleineondernemingsregeling (KOR)?
             -- Worden mijn reiskosten vergoed?
@@ -142,6 +153,7 @@ insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,h
             -- Heeft freelancen effect op mijn studiefinanciering?
             -- Waarom heb ik geen btw ontvangen over mijn eerste drie diensten?
             -- Wat zijn de voordelen van het openen van een zakelijke rekening?
+        
         insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,header_html,footer_html,custom_css,container_width) values('uren-en-checkout',13,0,'Uren en checkout','group',null,null,null,null,null,null,null);
             -- Ik heb mijn uren verkeerd doorgegeven, wat nu?
             -- Ik wil het tegenvoorstel van mijn uren bespreken.
