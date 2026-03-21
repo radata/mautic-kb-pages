@@ -12,7 +12,7 @@ class KbPagesController extends AbstractStandardFormController
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
-            KbPagesUrlGenerator::class => KbPagesUrlGenerator::class,
+            'mautic.kbpages.url_generator' => KbPagesUrlGenerator::class,
         ]);
     }
 
@@ -329,7 +329,7 @@ class KbPagesController extends AbstractStandardFormController
 
     private function getKbPagesUrlGenerator(): KbPagesUrlGenerator
     {
-        $service = $this->container->get(KbPagesUrlGenerator::class);
+        $service = $this->container->get('mautic.kbpages.url_generator');
         \assert($service instanceof KbPagesUrlGenerator);
 
         return $service;

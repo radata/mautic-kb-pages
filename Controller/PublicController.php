@@ -18,9 +18,9 @@ class PublicController extends CommonController
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
-            KbPagesTokenHelper::class => KbPagesTokenHelper::class,
-            KbPagesSettings::class => KbPagesSettings::class,
-            KbPagesUrlGenerator::class => KbPagesUrlGenerator::class,
+            'mautic.kbpages.token_helper' => KbPagesTokenHelper::class,
+            'mautic.kbpages.settings' => KbPagesSettings::class,
+            'mautic.kbpages.url_generator' => KbPagesUrlGenerator::class,
         ]);
     }
 
@@ -555,7 +555,7 @@ class PublicController extends CommonController
 
     private function getSettingsProvider(): KbPagesSettings
     {
-        $service = $this->container->get(KbPagesSettings::class);
+        $service = $this->container->get('mautic.kbpages.settings');
         \assert($service instanceof KbPagesSettings);
 
         return $service;
@@ -563,7 +563,7 @@ class PublicController extends CommonController
 
     private function getKbPagesTokenHelper(): KbPagesTokenHelper
     {
-        $service = $this->container->get(KbPagesTokenHelper::class);
+        $service = $this->container->get('mautic.kbpages.token_helper');
         \assert($service instanceof KbPagesTokenHelper);
 
         return $service;
@@ -571,7 +571,7 @@ class PublicController extends CommonController
 
     private function getKbPagesUrlGenerator(): KbPagesUrlGenerator
     {
-        $service = $this->container->get(KbPagesUrlGenerator::class);
+        $service = $this->container->get('mautic.kbpages.url_generator');
         \assert($service instanceof KbPagesUrlGenerator);
 
         return $service;

@@ -100,6 +100,11 @@ docker exec --user www-data --workdir /var/www/html mautic_web \
 docker exec --user www-data mautic_web rm -rf /var/www/html/var/cache/prod /var/www/html/var/cache/dev
 docker exec --user www-data --workdir /var/www/html mautic_web \
   php bin/console cache:warmup --env=prod
+
+```
+
+```bash
+docker exec mautic_web tail -5 /var/www/html/var/logs/mautic_prod-$(date +%Y-%m-%d).php
 ```
 
 ### Plugin Migrations

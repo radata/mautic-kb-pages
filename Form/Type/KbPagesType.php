@@ -28,7 +28,7 @@ class KbPagesType extends AbstractType
             'footerHtml' => 'raw',
             'snippetsHtml' => 'raw',
         ]));
-        $builder->addEventSubscriber(new FormExitSubscriber('knowledgebase', $options));
+        $builder->addEventSubscriber(new FormExitSubscriber('kbpages.kbpages', $options));
 
         $data      = $options['data'] instanceof KbPages ? $options['data'] : null;
         $currentId = $data?->getId();

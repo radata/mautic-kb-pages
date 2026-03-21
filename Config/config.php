@@ -4,7 +4,7 @@ return [
     'name'        => 'Knowledge Base',
     'description' => 'Manage grouped support articles with knowledge base pages.',
     'author'      => 'Abdullah Kiser / Friendly Automate',
-    'version'     => '1.0.28',
+    'version'     => '1.0.29',
     'routes'      => [
         'main' => [
             'mautic_knowledgebase_index' => [
@@ -63,7 +63,7 @@ return [
             'mautic.kbpages.builder.subscriber' => [
                 'class' => \MauticPlugin\MauticKbPagesBundle\EventListener\BuilderSubscriber::class,
                 'arguments' => [
-                    \MauticPlugin\MauticKbPagesBundle\Helper\KbPagesTokenHelper::class,
+                    'mautic.kbpages.token_helper',
                     'mautic.helper.token_builder.factory',
                 ],
             ],
@@ -121,14 +121,14 @@ return [
                 'class'     => \MauticPlugin\MauticKbPagesBundle\Helper\KbPagesTokenHelper::class,
                 'arguments' => [
                     'mautic.kbpages.model.kbpages',
-                    \MauticPlugin\MauticKbPagesBundle\Service\KbPagesUrlGenerator::class,
+                    'mautic.kbpages.url_generator',
                 ],
             ],
             \MauticPlugin\MauticKbPagesBundle\Helper\KbPagesTokenHelper::class => [
                 'class'     => \MauticPlugin\MauticKbPagesBundle\Helper\KbPagesTokenHelper::class,
                 'arguments' => [
                     'mautic.kbpages.model.kbpages',
-                    \MauticPlugin\MauticKbPagesBundle\Service\KbPagesUrlGenerator::class,
+                    'mautic.kbpages.url_generator',
                 ],
             ],
             'mautic.kbpages.settings' => [
