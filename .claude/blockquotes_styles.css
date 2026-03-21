@@ -1,0 +1,416 @@
+/* Notification style */
+:root {
+  --kb-info-bg: #4cb3d433;
+  --kb-info-border: #4cb3d4;
+
+  --kb-success-bg: #2e7d3233;
+  --kb-success-border: #2e7d32;
+
+  --kb-warning-bg: #f9a82533;
+  --kb-warning-border: #f9a825;
+
+  --kb-danger-bg: #d32f2f33;
+  --kb-danger-border: #d32f2f;
+
+  --kb-neutral-bg: #607d8b33;
+  --kb-neutral-border: #607d8b;
+
+  --kb-card-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --kb-info-bg: #4cb3d433;
+    --kb-success-bg: #66bb6a33;
+    --kb-warning-bg: #ffca2833;
+    --kb-danger-bg: #ef535033;
+    --kb-neutral-bg: #90a4ae33;
+    --kb-card-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  }
+}
+
+blockquote.quote-card.info-card,
+blockquote.quote-card.success-card,
+blockquote.quote-card.warning-card,
+blockquote.quote-card.danger-card,
+blockquote.quote-card.neutral-card {
+  margin: 24px 0;
+  padding: 17.5px;
+  min-height: 0;
+  border: 0;
+  border-left-width: 5px;
+  border-left-style: solid;
+  border-radius: 7px;
+  box-shadow: var(--kb-card-shadow);
+  font-family: inherit;
+}
+
+blockquote.quote-card.info-card::before,
+blockquote.quote-card.info-card::after,
+blockquote.quote-card.success-card::before,
+blockquote.quote-card.success-card::after,
+blockquote.quote-card.warning-card::before,
+blockquote.quote-card.warning-card::after,
+blockquote.quote-card.danger-card::before,
+blockquote.quote-card.danger-card::after,
+blockquote.quote-card.neutral-card::before,
+blockquote.quote-card.neutral-card::after {
+  display: none;
+}
+
+blockquote.quote-card.info-card {
+  background: var(--kb-info-bg);
+  border-left-color: var(--kb-info-border);
+}
+
+blockquote.quote-card.success-card {
+  background: var(--kb-success-bg);
+  border-left-color: var(--kb-success-border);
+}
+
+blockquote.quote-card.warning-card {
+  background: var(--kb-warning-bg);
+  border-left-color: var(--kb-warning-border);
+}
+
+blockquote.quote-card.danger-card {
+  background: var(--kb-danger-bg);
+  border-left-color: var(--kb-danger-border);
+}
+
+blockquote.quote-card.neutral-card {
+  background: var(--kb-neutral-bg);
+  border-left-color: var(--kb-neutral-border);
+}
+
+blockquote.quote-card .info-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  margin: 0 0 0.3rem 0;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+blockquote.quote-card p {
+  margin: 0 0 0.75rem 0;
+  max-width: none;
+  font-size: 17.5px;
+  line-height: 1.55;
+}
+
+blockquote.quote-card p:last-child {
+  margin-bottom: 0;
+}
+
+/*
+
+<blockquote class="quote-card info-card">
+  <p class="info-title"><i class="ti ti-info-circle"></i> Info</p>
+  <p>From this point on, we'll show unprintable characters in <code>\NN</code> Info.</p>
+  <p>line 2</p>
+</blockquote>
+<blockquote class="quote-card danger-card">
+  <p class="info-title"><i class="ti ti-info-circle"></i> Danger</p>
+  <p>From this point on, we'll show unprintable characters in <code>\NN</code> Danger.</p>
+  <p>line 2</p>
+</blockquote>
+<blockquote class="quote-card neutral-card">
+  <p class="info-title"><i class="ti ti-info-circle"></i> Neutral</p>
+  <p>From this point on, we'll show unprintable characters in <code>\NN</code> Neutral.</p>
+  <p>line 2</p>
+</blockquote>
+<blockquote class="quote-card warning-card">
+  <p class="info-title"><i class="ti ti-info-circle"></i> Warning</p>
+  <p>From this point on, we'll show unprintable characters in <code>\NN</code> Warning.</p>
+  <p>line 2</p>
+</blockquote>
+<blockquote class="quote-card success-card">
+  <p class="info-title"><i class="ti ti-info-circle"></i> Success</p>
+  <p>From this point on, we'll show unprintable characters in <code>\NN</code> Success.</p>
+  <p>line 2</p>
+</blockquote>
+
+*/
+
+
+/* Quote Style */
+blockquote.quote-card {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin: 24px 0;
+  padding: 20px 20px 20px 50px;
+  min-height: 120px;
+  border: 0;
+  background: #fff;
+  color: #222222 !important;
+  box-shadow: 0 2px 4px rgba(34, 34, 34, 0.12);
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+}
+
+blockquote.quote-card,
+blockquote.quote-card p,
+blockquote.quote-card cite,
+blockquote.quote-card strong,
+blockquote.quote-card em,
+blockquote.quote-card span {
+  color: inherit !important;
+}
+
+blockquote.quote-card > p {
+  margin: 0;
+  max-width: 95%;
+  font-size: 22px;
+  line-height: 1.5;
+}
+
+blockquote.quote-card cite {
+  display: block;
+  margin-top: 10px;
+  font-size: 16px;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+blockquote.quote-card::before {
+  content: "“";
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-family: Georgia, serif;
+  font-size: 5em;
+  line-height: 1;
+  font-weight: normal;
+  color: rgba(238, 238, 238, 0.8);
+}
+
+blockquote.quote-card::after {
+  content: "”";
+  position: absolute;
+  right: -32px;
+  bottom: -110px;
+  font-family: Georgia, serif;
+  font-size: 25em;
+  line-height: 100px;
+  font-weight: normal;
+  color: rgba(238, 238, 238, 0.8);
+}
+
+blockquote.quote-card.blue-card {
+  background: #303f9f;
+  color: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(34, 34, 34, 0.12), 0 2px 4px rgba(34, 34, 34, 0.24);
+}
+
+blockquote.quote-card.blue-card::before,
+blockquote.quote-card.blue-card::after {
+  color: rgba(255, 255, 255, 0.28);
+}
+
+blockquote.quote-card.red-card {
+  background: #d32f2f;
+  color: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(34, 34, 34, 0.12), 0 2px 4px rgba(34, 34, 34, 0.24);
+}
+
+blockquote.quote-card.red-card::before,
+blockquote.quote-card.red-card::after {
+  color: rgba(255, 255, 255, 0.28);
+}
+
+blockquote.quote-card.green-card {
+  background: #2e7d32;
+  color: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(34, 34, 34, 0.12), 0 2px 4px rgba(34, 34, 34, 0.24);
+}
+
+blockquote.quote-card.green-card::before,
+blockquote.quote-card.green-card::after {
+  color: rgba(255, 255, 255, 0.28);
+}
+
+blockquote.quote-card.yellow-card {
+  background: #f9a825;
+  color: #222222 !important;
+  box-shadow: 0 1px 2px rgba(34, 34, 34, 0.12), 0 2px 4px rgba(34, 34, 34, 0.24);
+}
+
+blockquote.quote-card.yellow-card::before,
+blockquote.quote-card.yellow-card::after {
+  color: rgba(34, 34, 34, 0.18);
+}
+
+blockquote.quote-card.gray-card {
+  background: #eceff1;
+  color: #222222 !important;
+  box-shadow: 0 1px 2px rgba(34, 34, 34, 0.08), 0 2px 4px rgba(34, 34, 34, 0.12);
+}
+
+blockquote.quote-card.gray-card::before,
+blockquote.quote-card.gray-card::after {
+  color: rgba(34, 34, 34, 0.14);
+}
+
+
+@media (max-width: 640px) {
+  blockquote.quote-card::after {
+    right: -25px;
+    font-size: 22em;
+  }
+}
+
+/*
+
+<blockquote class="quote-card gray-card">
+  <p>A creative man is motivated by the desire to achieve.</p>
+  <cite>Ayn Rand</cite>
+</blockquote>
+<blockquote class="quote-card red-card">
+  <p>A creative man is motivated by the desire to achieve.</p>
+  <cite>Ayn Rand</cite>
+</blockquote>
+<blockquote class="quote-card blue-card">
+  <p>A creative man is motivated by the desire to achieve.</p>
+  <cite>Ayn Rand</cite>
+</blockquote>
+<blockquote class="quote-card yelloe-card">
+  <p>A creative man is motivated by the desire to achieve.</p>
+  <cite>Ayn Rand</cite>
+</blockquote>
+<blockquote class="quote-card green-card">
+  <p>A creative man is motivated by the desire to achieve.</p>
+  <cite>Ayn Rand</cite>
+</blockquote>
+
+*/
+
+
+/* Media */
+.kb-media-card {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 28px;
+  align-items: center;
+  margin: 28px 0;
+  padding: 24px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.kb-media-card.reverse {
+  grid-template-columns: 1fr 1.1fr;
+}
+
+.kb-media-card__media {
+  margin: 0;
+}
+
+.kb-media-card__media img {
+  display: block;
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.kb-media-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.kb-media-card__eyebrow {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+
+.kb-media-card__title {
+  margin: 0;
+  font-size: clamp(1.6rem, 2vw, 2.3rem);
+  line-height: 1.15;
+}
+
+.kb-media-card__text {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  opacity: 0.88;
+}
+
+.kb-media-card__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.kb-media-card__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.kb-media-card.reverse .kb-media-card__media {
+  order: 2;
+}
+
+.kb-media-card.reverse .kb-media-card__body {
+  order: 1;
+}
+
+@media (max-width: 860px) {
+  .kb-media-card,
+  .kb-media-card.reverse {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 18px;
+  }
+
+  .kb-media-card__media,
+  .kb-media-card.reverse .kb-media-card__media,
+  .kb-media-card__body,
+  .kb-media-card.reverse .kb-media-card__body {
+    order: initial;
+  }
+
+  .kb-media-card__media img {
+    height: 220px;
+  }
+}
+
+/*
+
+<section class="kb-media-card">
+  <figure class="kb-media-card__media">
+    <img src="https://cdn.example.com/app-image.jpg" alt="Mijn account" />
+  </figure>
+
+  <div class="kb-media-card__body">
+    <p class="kb-media-card__eyebrow">Mijn account</p>
+    <h2 class="kb-media-card__title">Hoe neem ik contact met jullie op?</h2>
+    <p class="kb-media-card__text">
+      Korte uitleg hier. Gewoon normale tekstkleur laten erven van de pagina.
+    </p>
+    <div class="kb-media-card__actions">
+      <a class="kb-media-card__link" href="/nl/contact">Meer lezen</a>
+    </div>
+  </div>
+</section>
+
+*/

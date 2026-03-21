@@ -7,8 +7,10 @@ use Mautic\AssetBundle\Model\AssetModel;
 use Mautic\FormBundle\Model\FormModel;
 use Mautic\PageBundle\Model\PageModel;
 use MauticPlugin\MauticKbPagesBundle\Entity\KbPages;
+use MauticPlugin\MauticKbPagesBundle\Helper\KbPagesTokenHelper;
 use MauticPlugin\MauticKbPagesBundle\Model\KbPagesModel;
 use MauticPlugin\MauticKbPagesBundle\Service\KbPagesSettings;
+use MauticPlugin\MauticKbPagesBundle\Service\KbPagesUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 
 class PublicController extends CommonController
@@ -16,7 +18,9 @@ class PublicController extends CommonController
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
+            KbPagesTokenHelper::class => KbPagesTokenHelper::class,
             KbPagesSettings::class => KbPagesSettings::class,
+            KbPagesUrlGenerator::class => KbPagesUrlGenerator::class,
         ]);
     }
 
@@ -142,6 +146,7 @@ class PublicController extends CommonController
 
         $rendered = $this->decodeEncodedTokens($html);
         $rendered = $this->renderPageLinkTokens($rendered);
+        $rendered = $this->renderKbPageLinkTokens($rendered);
         $rendered = $this->renderAssetLinkTokens($rendered);
         $rendered = $this->renderFormTokens($rendered);
 
@@ -180,6 +185,16 @@ class PublicController extends CommonController
         }, $html);
 
         return is_string($rendered) ? $rendered : $html;
+    }
+
+    private function renderKbPageLinkTokens(string $html): string
+    {
+        $tokens = $this->getKbPagesTokenHelper()->findKbPageTokens($html);
+        if ([] === $tokens) {
+            return $html;
+        }
+
+        return str_ireplace(array_keys($tokens), $tokens, $html);
     }
 
     private function resolveFormToken(int $formId): string
@@ -393,28 +408,7 @@ class PublicController extends CommonController
             ]);
         }
 
-        return $this->generateCanonicalPublicUrl($this->getCanonicalPathSegments($item));
-    }
-
-    /**
-     * @param string[] $segments
-     */
-    private function generateCanonicalPublicUrl(array $segments): ?string
-    {
-        if ([] === $segments) {
-            return null;
-        }
-
-        if (1 === count($segments)) {
-            return $this->generateUrl('mautic_knowledgebase_group', [
-                'slug' => $segments[0],
-            ]);
-        }
-
-        return $this->generateUrl('mautic_knowledgebase_tree', [
-            'rootSlug' => array_shift($segments),
-            'slugPath' => implode('/', $segments),
-        ]);
+        return $this->getKbPagesUrlGenerator()->generateCanonicalUrl($item);
     }
 
     /**
@@ -433,31 +427,6 @@ class PublicController extends CommonController
 
             array_unshift($segments, $slug);
             $current = $current->getParent();
-        }
-
-        return $segments;
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getCanonicalPathSegments(KbPages $item): array
-    {
-        $segments = $this->getPathSegments($item);
-        if ([] === $segments) {
-            return [];
-        }
-
-        $domainRoots = $this->getConfiguredDomainRoots();
-        if (1 === count($segments) && isset($domainRoots[$segments[0]])) {
-            return [$domainRoots[$segments[0]]];
-        }
-
-        $registeredRoots = $this->getRegisteredPublicRoots();
-        foreach ($segments as $index => $segment) {
-            if (in_array($segment, $registeredRoots, true)) {
-                return array_slice($segments, $index);
-            }
         }
 
         return $segments;
@@ -543,26 +512,6 @@ class PublicController extends CommonController
         return '' !== trim((string) $this->coreParametersHelper->get('kbpages_root_hosts', ''));
     }
 
-    /**
-     * @return string[]
-     */
-    private function getRegisteredPublicRoots(): array
-    {
-        $value = (string) $this->coreParametersHelper->get('kbpages_public_roots', '');
-        if ('' === trim($value)) {
-            return [];
-        }
-
-        $roots = preg_split('/[\s,]+/', strtolower($value), -1, PREG_SPLIT_NO_EMPTY);
-        if (!is_array($roots)) {
-            return [];
-        }
-
-        $roots = array_map(fn (string $root): string => $this->normalizeSlug($root), $roots);
-
-        return array_values(array_filter(array_unique($roots)));
-    }
-
     private function normalizeSlug(string $value): string
     {
         $slug = strtolower(trim($value));
@@ -608,6 +557,22 @@ class PublicController extends CommonController
     {
         $service = $this->container->get(KbPagesSettings::class);
         \assert($service instanceof KbPagesSettings);
+
+        return $service;
+    }
+
+    private function getKbPagesTokenHelper(): KbPagesTokenHelper
+    {
+        $service = $this->container->get(KbPagesTokenHelper::class);
+        \assert($service instanceof KbPagesTokenHelper);
+
+        return $service;
+    }
+
+    private function getKbPagesUrlGenerator(): KbPagesUrlGenerator
+    {
+        $service = $this->container->get(KbPagesUrlGenerator::class);
+        \assert($service instanceof KbPagesUrlGenerator);
 
         return $service;
     }

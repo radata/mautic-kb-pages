@@ -9,6 +9,7 @@
     {% endif %}
     <style>
         :root {
+            color-scheme: light dark;
             --kb-shell-width: {{ kbSettings.containerWidth|default(960) }}px;
             --kb-shell-bg: #f5f7fb;
             --kb-panel-bg: #ffffff;
@@ -19,6 +20,30 @@
             --kb-icon-box-bg: #ffffff;
             --kb-icon-box-border: rgba(37, 99, 235, 0.08);
             --kb-icon-box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+            --kb-icon-color: #2563eb;
+            --kb-table-bg: #ffffff;
+            --kb-table-head-bg: #f8fafc;
+            --kb-code-bg: rgba(37, 99, 235, 0.08);
+            --kb-code-border: rgba(148, 163, 184, 0.35);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --kb-shell-bg: #0b1220;
+                --kb-panel-bg: #0f172a;
+                --kb-panel-border: #243244;
+                --kb-text: #e5edf7;
+                --kb-text-soft: #b6c2d2;
+                --kb-link: #7cb5ff;
+                --kb-icon-box-bg: #101a2d;
+                --kb-icon-box-border: rgba(124, 181, 255, 0.18);
+                --kb-icon-box-shadow: 0 12px 28px rgba(2, 6, 23, 0.35);
+                --kb-icon-color: #8ec5ff;
+                --kb-table-bg: #0f172a;
+                --kb-table-head-bg: #162133;
+                --kb-code-bg: rgba(148, 163, 184, 0.14);
+                --kb-code-border: rgba(148, 163, 184, 0.28);
+            }
         }
 
         * { box-sizing: border-box; }
@@ -76,7 +101,7 @@
             border: 1px solid var(--kb-icon-box-border);
             background: var(--kb-icon-box-bg);
             box-shadow: var(--kb-icon-box-shadow);
-            color: #2563eb;
+            color: var(--kb-icon-color);
         }
         .kb-icon i {
             font-size: 28px;
@@ -104,7 +129,7 @@
         .kb-rich table {
             width: 100%;
             border-collapse: collapse;
-            background: #fff;
+            background: var(--kb-table-bg);
         }
         .kb-card th,
         .kb-card td,
@@ -117,9 +142,16 @@
         }
         .kb-card thead th,
         .kb-rich thead th {
-            background: #f8fafc;
+            background: var(--kb-table-head-bg);
             color: var(--kb-text);
             font-weight: 600;
+        }
+        .kb-card code,
+        .kb-rich code {
+            padding: 0.16rem 0.34rem;
+            border: 1px solid var(--kb-code-border);
+            border-radius: 7px;
+            background: var(--kb-code-bg);
         }
     </style>
     {% if kbSettings.customCss %}

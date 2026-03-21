@@ -4,10 +4,18 @@ namespace MauticPlugin\MauticKbPagesBundle\Controller;
 
 use Mautic\CoreBundle\Controller\AbstractStandardFormController;
 use MauticPlugin\MauticKbPagesBundle\Entity\KbPages;
+use MauticPlugin\MauticKbPagesBundle\Service\KbPagesUrlGenerator;
 use Symfony\Component\HttpFoundation\Request;
 
 class KbPagesController extends AbstractStandardFormController
 {
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            KbPagesUrlGenerator::class => KbPagesUrlGenerator::class,
+        ]);
+    }
+
     protected function getModelName(): string
     {
         return 'kbpages';
@@ -271,21 +279,7 @@ class KbPagesController extends AbstractStandardFormController
 
     private function buildPreviewUrl(KbPages $item): ?string
     {
-        $segments = $this->getCanonicalPreviewSegments($item);
-        if ([] === $segments) {
-            return null;
-        }
-
-        if (1 === count($segments)) {
-            return $this->generateUrl('mautic_knowledgebase_group', [
-                'slug' => $segments[0],
-            ]);
-        }
-
-        return $this->generateUrl('mautic_knowledgebase_tree', [
-            'rootSlug' => array_shift($segments),
-            'slugPath' => implode('/', $segments),
-        ]);
+        return $this->getKbPagesUrlGenerator()->generateCanonicalUrl($item);
     }
 
     private function buildSnippetsPreviewUrl(KbPages $item): ?string
@@ -294,7 +288,7 @@ class KbPagesController extends AbstractStandardFormController
             return null;
         }
 
-        $canonicalSegments = $this->getCanonicalPreviewSegments($item);
+        $canonicalSegments = $this->getKbPagesUrlGenerator()->getCanonicalPathSegments($item);
         $pathSegments      = $item->getPathSlugs();
         if (1 !== count($canonicalSegments) || $canonicalSegments !== $pathSegments) {
             return null;
@@ -303,31 +297,6 @@ class KbPagesController extends AbstractStandardFormController
         return $this->generateUrl('mautic_knowledgebase_snippets', [
             'rootSlug' => $canonicalSegments[0],
         ]);
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getCanonicalPreviewSegments(KbPages $item): array
-    {
-        $segments = $item->getPathSlugs();
-        if ([] === $segments) {
-            return [];
-        }
-
-        $domainRoots = $this->getConfiguredDomainRoots();
-        if (1 === count($segments) && isset($domainRoots[$segments[0]])) {
-            return [$domainRoots[$segments[0]]];
-        }
-
-        $registeredRoots = $this->getRegisteredRoots();
-        foreach ($segments as $index => $segment) {
-            if (in_array($segment, $registeredRoots, true)) {
-                return array_slice($segments, $index);
-            }
-        }
-
-        return $segments;
     }
 
     private function resolveEditorPreviewWidth(?KbPages $item): int
@@ -358,77 +327,11 @@ class KbPagesController extends AbstractStandardFormController
         return $current;
     }
 
-    /**
-     * @return array<string, string>
-     */
-    private function getConfiguredDomainRoots(): array
+    private function getKbPagesUrlGenerator(): KbPagesUrlGenerator
     {
-        $value = trim((string) $this->coreParametersHelper->get('kbpages_domain_roots', ''));
-        if ('' === $value) {
-            return [];
-        }
+        $service = $this->container->get(KbPagesUrlGenerator::class);
+        \assert($service instanceof KbPagesUrlGenerator);
 
-        $lines = preg_split('/\r\n|\r|\n/', $value);
-        if (!is_array($lines)) {
-            return [];
-        }
-
-        $map = [];
-
-        foreach ($lines as $line) {
-            $line = trim($line);
-            if ('' === $line || !str_contains($line, '=')) {
-                continue;
-            }
-
-            [$domain, $root] = array_map('trim', explode('=', $line, 2));
-            $domain = $this->normalizeDomainKey($domain);
-            $root   = $this->normalizeSlug($root);
-
-            if ('' === $domain || '' === $root) {
-                continue;
-            }
-
-            $map[$domain] = $root;
-        }
-
-        return $map;
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getRegisteredRoots(): array
-    {
-        $value = (string) $this->coreParametersHelper->get('kbpages_public_roots', '');
-        if ('' === trim($value)) {
-            return [];
-        }
-
-        $roots = preg_split('/[\s,]+/', strtolower($value), -1, PREG_SPLIT_NO_EMPTY);
-        if (!is_array($roots)) {
-            return [];
-        }
-
-        $roots = array_map(fn (string $root): string => $this->normalizeSlug($root), $roots);
-
-        return array_values(array_filter(array_unique($roots)));
-    }
-
-    private function normalizeSlug(string $value): string
-    {
-        $slug = strtolower(trim($value));
-        $slug = preg_replace('/[^a-z0-9\-]+/', '-', $slug) ?? '';
-
-        return trim($slug, '-');
-    }
-
-    private function normalizeDomainKey(string $value): string
-    {
-        $value = strtolower(trim($value));
-        $value = str_replace('.', '-', $value);
-        $value = preg_replace('/[^a-z0-9\-]+/', '-', $value) ?? '';
-
-        return trim($value, '-');
+        return $service;
     }
 }

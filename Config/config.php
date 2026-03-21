@@ -4,7 +4,7 @@ return [
     'name'        => 'Knowledge Base',
     'description' => 'Manage grouped support articles with knowledge base pages.',
     'author'      => 'Abdullah Kiser / Friendly Automate',
-    'version'     => '1.0.25',
+    'version'     => '1.0.28',
     'routes'      => [
         'main' => [
             'mautic_knowledgebase_index' => [
@@ -60,6 +60,13 @@ return [
             ],
         ],
         'events' => [
+            'mautic.kbpages.builder.subscriber' => [
+                'class' => \MauticPlugin\MauticKbPagesBundle\EventListener\BuilderSubscriber::class,
+                'arguments' => [
+                    \MauticPlugin\MauticKbPagesBundle\Helper\KbPagesTokenHelper::class,
+                    'mautic.helper.token_builder.factory',
+                ],
+            ],
             'mautic.kbpages.config.subscriber' => [
                 'class' => \MauticPlugin\MauticKbPagesBundle\EventListener\ConfigSubscriber::class,
                 'arguments' => [],
@@ -96,6 +103,34 @@ return [
             ],
         ],
         'others' => [
+            'mautic.kbpages.url_generator' => [
+                'class'     => \MauticPlugin\MauticKbPagesBundle\Service\KbPagesUrlGenerator::class,
+                'arguments' => [
+                    'mautic.helper.core_parameters',
+                    'router',
+                ],
+            ],
+            \MauticPlugin\MauticKbPagesBundle\Service\KbPagesUrlGenerator::class => [
+                'class'     => \MauticPlugin\MauticKbPagesBundle\Service\KbPagesUrlGenerator::class,
+                'arguments' => [
+                    'mautic.helper.core_parameters',
+                    'router',
+                ],
+            ],
+            'mautic.kbpages.token_helper' => [
+                'class'     => \MauticPlugin\MauticKbPagesBundle\Helper\KbPagesTokenHelper::class,
+                'arguments' => [
+                    'mautic.kbpages.model.kbpages',
+                    \MauticPlugin\MauticKbPagesBundle\Service\KbPagesUrlGenerator::class,
+                ],
+            ],
+            \MauticPlugin\MauticKbPagesBundle\Helper\KbPagesTokenHelper::class => [
+                'class'     => \MauticPlugin\MauticKbPagesBundle\Helper\KbPagesTokenHelper::class,
+                'arguments' => [
+                    'mautic.kbpages.model.kbpages',
+                    \MauticPlugin\MauticKbPagesBundle\Service\KbPagesUrlGenerator::class,
+                ],
+            ],
             'mautic.kbpages.settings' => [
                 'class'     => \MauticPlugin\MauticKbPagesBundle\Service\KbPagesSettings::class,
                 'arguments' => [

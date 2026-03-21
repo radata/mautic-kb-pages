@@ -1,0 +1,56 @@
+<!-- Simple Portfolio Component for Knowledge Base -->
+<section class="py-16 px-4">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Featured Categories</h2>
+      <p class="text-gray-600 text-lg">
+        Explore our comprehensive knowledge base with curated categories covering essential topics.
+      </p>
+    </div>
+
+    <div id="kb_slides" data-carousel class="relative overflow-hidden rounded-lg">
+      <div class="carousel-body flex transition-transform duration-300 ease-in-out">
+        {% for group in featuredGroups %}
+        <div class="carousel-slide flex-shrink-0 w-full">
+          <div class="grid md:grid-cols-2 gap-8 p-8 bg-white rounded-lg shadow-sm">
+            <div class="order-2 md:order-1">
+              <img
+                src="{{ group.image|default('https://via.placeholder.com/500x300/e5e7eb/6b7280?text=' ~ group.entity.getTitle()|slice(0, 20)|url_encode) }}"
+                alt="{{ group.entity.getTitle() }}"
+                class="w-full h-64 object-cover rounded-lg"
+              />
+            </div>
+            <div class="order-1 md:order-2 flex flex-col justify-center">
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">{{ group.entity.getTitle() }}</h3>
+              <p class="text-gray-600 mb-6 leading-relaxed">
+                {{ group.entity.getSummary()|default('Explore comprehensive guides and resources in this category.')|striptags|slice(0, 150) ~ '...' }}
+              </p>
+              <a href="{{ group.url }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors self-start">
+                View Category
+                <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="flex justify-center items-center gap-4 mt-8">
+      <button class="carousel-prev p-2 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
+      <div class="carousel-pagination flex gap-2"></div>
+      <button class="carousel-next p-2 border border-gray-300 rounded-md hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>

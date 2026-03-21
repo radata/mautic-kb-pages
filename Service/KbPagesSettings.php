@@ -109,6 +109,8 @@ class KbPagesSettings
     private function resolveMediaUrl(string $url): string
     {
         $url = trim($url);
+        $url = $this->normalizeLocalMediaPath($url);
+
         if ('' === $url || $this->isAbsoluteUrl($url) || str_starts_with($url, 'data:') || str_starts_with($url, '#')) {
             return $url;
         }
@@ -171,6 +173,23 @@ class KbPagesSettings
     private function isAbsoluteUrl(string $value): bool
     {
         return (bool) preg_match('#^(?:https?:)?//#i', $value);
+    }
+
+    private function normalizeLocalMediaPath(string $value): string
+    {
+        if (!str_starts_with($value, '//')) {
+            return $value;
+        }
+
+        if ((bool) preg_match('#^//(?:[a-z0-9-]+\.)+[a-z0-9-]+(?::\d+)?(?:/|$)#i', $value)) {
+            return $value;
+        }
+
+        if ((bool) preg_match('#^//(?:localhost|\d{1,3}(?:\.\d{1,3}){3})(?::\d+)?(?:/|$)#i', $value)) {
+            return $value;
+        }
+
+        return '/'.ltrim($value, '/');
     }
 
     private function normalizeAbsoluteUrl(string $value): string

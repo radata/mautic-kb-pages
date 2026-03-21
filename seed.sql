@@ -144,7 +144,6 @@ insert into kb_pages(slug,parent_id,position,title,`type`,summary,content,icon,h
             insert into kb_pages(slug,parent_id,title,`type`) values('heeft-freelancen-effect-op-mijn-studiefinanciering',15,'Heeft freelancen effect op mijn studiefinanciering?','article');
             insert into kb_pages(slug,parent_id,title,`type`) values('waarom-heb-ik-geen-btw-ontvangen-over-mijn-eerste-drie-diensten',15,'Waarom heb ik geen btw ontvangen over mijn eerste drie diensten?','article');
             insert into kb_pages(slug,parent_id,title,`type`) values('wat-zijn-de-voordelen-van-het-openen-van-een-zakelijke-rekening',15,'Wat zijn de voordelen van het openen van een zakelijke rekening?','article');
-            
             -- Hoe zit het met de administratie?
             -- Wat is de Kleineondernemingsregeling (KOR)?
             -- Worden mijn reiskosten vergoed?
