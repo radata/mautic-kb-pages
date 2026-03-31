@@ -107,6 +107,21 @@ docker exec --user www-data --workdir /var/www/html mautic_web \
 docker exec mautic_web tail -5 /var/www/html/var/logs/mautic_prod-$(date +%Y-%m-%d).php
 ```
 
+## if any columns are missing. 
+```bash
+docker exec --user www-data \
+  -e HOME=/var/www \
+  -e COMPOSER_HOME=/var/www/.composer \
+  --workdir /var/www/html mautic_web \
+  php bin/console doctrine:schema:update --force
+
+docker exec --user www-data --workdir /var/www/html mautic_web \
+  php bin/console doctrine:query:sql \
+  "ALTER TABLE kb_pages ADD COLUMN theme VARCHAR(100) NULL DEFAULT NULL"
+
+
+```
+
 ### Plugin Migrations
 
 Container restart logs only show Mautic core migrations. Rebooting the Docker containers does **not** apply KB plugin schema changes by itself.
