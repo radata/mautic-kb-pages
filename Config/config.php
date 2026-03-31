@@ -4,7 +4,7 @@ return [
     'name'        => 'Knowledge Base',
     'description' => 'Manage grouped support articles with knowledge base pages.',
     'author'      => 'Abdullah Kiser / Friendly Automate',
-    'version'     => '1.0.29',
+    'version'     => '1.1.2',
     'routes'      => [
         'main' => [
             'mautic_knowledgebase_index' => [
@@ -60,6 +60,9 @@ return [
             ],
         ],
         'events' => [
+            'mautic.kbpages.ckeditor.subscriber' => [
+                'class' => \MauticPlugin\MauticKbPagesBundle\EventListener\CkEditorSubscriber::class,
+            ],
             'mautic.kbpages.builder.subscriber' => [
                 'class' => \MauticPlugin\MauticKbPagesBundle\EventListener\BuilderSubscriber::class,
                 'arguments' => [
@@ -80,7 +83,8 @@ return [
         ],
         'forms' => [
             'mautic.form.type.kbpages' => [
-                'class' => \MauticPlugin\MauticKbPagesBundle\Form\Type\KbPagesType::class,
+                'class'     => \MauticPlugin\MauticKbPagesBundle\Form\Type\KbPagesType::class,
+                'arguments' => ['mautic.helper.paths'],
             ],
             'mautic.form.type.kbpages.config' => [
                 'class' => \MauticPlugin\MauticKbPagesBundle\Form\Type\ConfigType::class,

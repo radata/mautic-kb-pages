@@ -22,6 +22,7 @@ class KbPages extends FormEntity
     private ?string $summary = null;
     private ?string $content = null;
     private ?string $icon = null;
+    private ?string $theme = null;
     private ?string $headerHtml = null;
     private ?string $footerHtml = null;
     private ?string $customCss = null;
@@ -90,6 +91,12 @@ class KbPages extends FormEntity
         $builder->createField('icon', 'string')
             ->columnName('icon')
             ->length(191)
+            ->nullable()
+            ->build();
+
+        $builder->createField('theme', 'string')
+            ->columnName('theme')
+            ->length(100)
             ->nullable()
             ->build();
 
@@ -224,6 +231,18 @@ class KbPages extends FormEntity
     public function setIcon(?string $icon): self
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function getTheme(): ?string
+    {
+        return $this->theme;
+    }
+
+    public function setTheme(?string $theme): self
+    {
+        $this->theme = $theme;
 
         return $this;
     }

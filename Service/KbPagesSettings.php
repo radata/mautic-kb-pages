@@ -21,6 +21,7 @@ class KbPagesSettings
     {
         $features = $this->getFeatureSettings();
         $settings = [
+            'theme'           => '',
             'headerHtml'      => (string) $this->coreParametersHelper->get('kbpages_header_html', ''),
             'footerHtml'      => (string) $this->coreParametersHelper->get('kbpages_footer_html', ''),
             'customCss'       => (string) $this->coreParametersHelper->get('kbpages_custom_css', ''),
@@ -31,10 +32,15 @@ class KbPagesSettings
         ];
 
         if ($rootGroup instanceof KbPages) {
+            $theme      = trim((string) $rootGroup->getTheme());
             $headerHtml = trim((string) $rootGroup->getHeaderHtml());
             $footerHtml = trim((string) $rootGroup->getFooterHtml());
             $customCss  = trim((string) $rootGroup->getCustomCss());
             $width      = $rootGroup->getContainerWidth();
+
+            if ('' !== $theme) {
+                $settings['theme'] = $theme;
+            }
 
             if ('' !== $headerHtml) {
                 $settings['headerHtml'] = $headerHtml;

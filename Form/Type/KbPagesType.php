@@ -10,6 +10,7 @@ use Mautic\CoreBundle\Form\Type\YesNoButtonGroupType;
 use MauticPlugin\MauticKbPagesBundle\Entity\KbPages;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Mautic\CoreBundle\Helper\PathsHelper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,6 +20,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class KbPagesType extends AbstractType
 {
+    public function __construct(private PathsHelper $pathsHelper)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventSubscriber(new CleanFormSubscriber([
@@ -127,6 +132,16 @@ class KbPagesType extends AbstractType
             ],
         ]);
 
+        $builder->add('theme', ChoiceType::class, [
+            'label'      => 'plugin.kbpages.theme',
+            'label_attr' => ['class' => 'control-label'],
+            'required'   => false,
+            'placeholder' => 'plugin.kbpages.theme.placeholder',
+            'choices'    => $this->resolveThemeChoices(),
+            'attr'       => ['class' => 'form-control'],
+            'help'       => 'plugin.kbpages.root_shell.help',
+        ]);
+
         $builder->add('headerHtml', TextareaType::class, [
             'label'      => 'plugin.kbpages.root_header_html',
             'label_attr' => ['class' => 'control-label'],
@@ -211,6 +226,30 @@ class KbPagesType extends AbstractType
         $resolver->setDefaults([
             'data_class' => KbPages::class,
         ]);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function resolveThemeChoices(): array
+    {
+        $themesDir = rtrim($this->pathsHelper->getSystemPath('themes', true), '/');
+        $choices   = [];
+
+        foreach (glob($themesDir.'/*/config.json') ?: [] as $configFile) {
+            $dir  = dirname($configFile);
+            $name = basename($dir);
+            $json = json_decode((string) file_get_contents($configFile), true);
+            if (!is_array($json)) {
+                continue;
+            }
+            $label           = (string) ($json['name'] ?? $name);
+            $choices[$label] = $name;
+        }
+
+        asort($choices);
+
+        return $choices;
     }
 
     private function resolveRootPreviewWidth(?KbPages $item): ?int
