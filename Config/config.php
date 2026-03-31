@@ -4,7 +4,7 @@ return [
     'name'        => 'Knowledge Base',
     'description' => 'Manage grouped support articles with knowledge base pages.',
     'author'      => 'Abdullah Kiser / Friendly Automate',
-    'version'     => '1.1.3',
+    'version'     => '1.1.4',
     'routes'      => [
         'main' => [
             'mautic_knowledgebase_index' => [

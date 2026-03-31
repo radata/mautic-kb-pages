@@ -7,7 +7,7 @@
     {% if kbSettings.tablerCssUrl %}
         <link rel="stylesheet" href="{{ kbSettings.tablerCssUrl }}">
     {% endif %}
-    {% if kbSettings.theme %}
+    {% if kbSettings.theme|default('') %}
         <link rel="stylesheet" href="{{ asset('themes/'~kbSettings.theme~'/css/'~kbSettings.theme~'.css') }}">
     {% endif %}
     <style>
